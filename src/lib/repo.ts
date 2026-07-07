@@ -3,9 +3,9 @@
 // runs with no backend. Pages should import ONLY from here, never touch the
 // supabase client directly — that keeps the fallback honest and the call sites
 // simple (§11: boring, legible code).
-import type { AttributeStatus, Listing, ListingKind } from './types';
+import type { AttributeStatus, ClaimForConfirm, Listing, ListingKind } from './types';
 import { supabase, isDbConfigured } from './supabase';
-import { LISTINGS, seedStatuses } from './seed';
+import { LISTINGS, seedStatuses, seedClaimForConfirm } from './seed';
 
 export async function getListings(kind?: ListingKind): Promise<Listing[]> {
   if (!isDbConfigured || !supabase) {
@@ -54,6 +54,39 @@ export async function getStatusesForListing(
     .eq('listing_id', listingId);
   if (error) throw error;
   return (data ?? []).map(rowToStatus);
+}
+
+// A claim plus the attribute's structured question — everything the confirmation
+// form needs. Falls back to seed data (read-only) so the form renders with no DB;
+// actual writes are separately gated (see the confirmations endpoint).
+export async function getClaimForConfirm(claimId: string): Promise<ClaimForConfirm | null> {
+  if (!isDbConfigured || !supabase) return seedClaimForConfirm(claimId);
+  const { data, error } = await supabase
+    .from('attribute_claims')
+    .select(
+      'id, listing_id, listings(name, kind), attribute_definitions(label, question_text, requires_photo, relevant_identity_tag)',
+    )
+    .eq('id', claimId)
+    .maybeSingle();
+  if (error) throw error;
+  if (!data) return null;
+
+  const listing = Array.isArray(data.listings) ? data.listings[0] : data.listings;
+  const attr = Array.isArray(data.attribute_definitions)
+    ? data.attribute_definitions[0]
+    : data.attribute_definitions;
+  if (!listing || !attr) return null;
+
+  return {
+    claimId: data.id,
+    listingId: data.listing_id,
+    listingName: listing.name,
+    listingKind: listing.kind,
+    attributeLabel: attr.label,
+    questionText: attr.question_text,
+    requiresPhoto: !!attr.requires_photo,
+    relevantIdentityTag: attr.relevant_identity_tag ?? null,
+  };
 }
 
 // --- row mappers (snake_case DB -> camelCase domain) ------------------------

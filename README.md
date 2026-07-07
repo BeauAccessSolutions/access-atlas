@@ -54,10 +54,36 @@ To read real data, set `PUBLIC_SUPABASE_URL` and `PUBLIC_SUPABASE_ANON_KEY` in
 - Every PR should note its keyboard path, screen-reader labels, and contrast (§11).
 - User-customizable UI (text size, contrast, reduced motion) is scaffolded in `src/styles/global.css` via CSS custom properties and `prefers-*` media queries.
 
+## Contributing a confirmation (the validation flow)
+
+The core §4 flow is built: from any listing, "Report your visit" opens a zero-JS
+form (`/contribute/confirm/<claimId>`) that asks the attribute's structured
+question. Submitting records a first-person confirmation or dissent; the derived
+`attribute_claim_status` view relabels the claim (≥3 independent agreements →
+community-verified; any dissent → disputed).
+
+**Writes are hard-gated.** The endpoint refuses to save anything unless
+`ALLOW_PROVISIONAL_CONTRIBUTIONS=true` — a local/preview-only interlock, because
+real contributor auth (platform Keycloak) isn't stood up yet. To exercise the
+full write path locally:
+
+```sh
+npm run db:start     # local Postgres with the schema + seed
+# in .env: set PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY,
+#          SUPABASE_SERVICE_ROLE_KEY, and ALLOW_PROVISIONAL_CONTRIBUTIONS=true
+npm run dev
+```
+
+With no DB attached, the form still renders (from seed) and submitting reports
+"contributions not open yet" — never a silent failure. Evidence photos are
+re-encoded server-side to strip EXIF/GPS before storage (§6). See
+[`docs/platform-membership.md`](docs/platform-membership.md).
+
 ## What is intentionally NOT here yet
 
 - No map (list-first; add only as progressive enhancement).
-- No contributor write flow / auth — writes are deliberately not open yet (§6). The schema is ready; the pseudonymous contribution design is an open decision (§13).
+- No **new-listing** submission flow yet (the §13 one-shared-flow decision) — only the *confirmation* flow above. That's the next increment.
+- No real contributor auth — the identity seam is provisional/gated pending platform Keycloak (§6; `docs/platform-membership.md`).
 - No real listings — the seed is tiny and Buffalo/Erie-County-scoped on purpose (§3). Do not seed to NYC/nationwide scale.
 
 ## Open decisions that affect this code

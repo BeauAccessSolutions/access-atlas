@@ -33,6 +33,19 @@ export interface Listing {
   };
 }
 
+// A claim plus its attribute's structured question — everything the confirmation
+// form needs to render.
+export interface ClaimForConfirm {
+  claimId: string;
+  listingId: string;
+  listingName: string;
+  listingKind: ListingKind;
+  attributeLabel: string;
+  questionText: string;
+  requiresPhoto: boolean;
+  relevantIdentityTag: string | null;
+}
+
 // One row of attribute_claim_status — a single, separately-labeled claim (§4).
 export interface AttributeStatus {
   claimId: string;

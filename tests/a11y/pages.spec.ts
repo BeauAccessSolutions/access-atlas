@@ -12,6 +12,9 @@ const ROUTES = [
   // seeded detail pages (ids from supabase/seed.sql + src/lib/seed.ts)
   '/places/11111111-1111-1111-1111-111111111111/',
   '/providers/33333333-3333-3333-3333-333333333333/',
+  // contribute route (on-demand). With no DB attached in CI it renders the
+  // accessible "needs a connected database" notice — still must pass axe.
+  '/contribute/confirm/c1111111-1111-1111-1111-111111111111/',
 ];
 
 for (const route of ROUTES) {

@@ -28,6 +28,9 @@ const { statuses } = Astro.props;
               </span>
             )}
             {stale && <span class="stale-note">{stale}</span>}
+            <a class="report-link" href={`/contribute/confirm/${status.claimId}/`}>
+              Report your visit for “{status.label}”
+            </a>
           </li>
         );
       })}

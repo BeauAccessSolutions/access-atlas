@@ -1,0 +1,141 @@
+---
+// Report-your-visit form for one attribute claim (§4). On-demand: it reads the
+// claim's structured question at request time and accepts the POST. Pure
+// semantic HTML — no JS ships here (§5). The server tells the user what happened
+// via a status banner after redirect.
+export const prerender = false;
+
+import Base from '../../../layouts/Base.astro';
+import { getClaimForConfirm } from '../../../lib/repo';
+import { IDENTITY_TAGS } from '../../../lib/identity-tags';
+import { contributionGateReason } from '../../../lib/contributor';
+import { isDbConfigured } from '../../../lib/supabase';
+
+const { claimId } = Astro.params;
+const status = Astro.url.searchParams.get('status');
+const claim = claimId ? await getClaimForConfirm(claimId) : null;
+const gateReason = contributionGateReason();
+
+// Status banners — honest, plain-language. `alert` for problems the person must
+// fix; `status` for outcomes/notices.
+const BANNERS: Record<string, { role: 'status' | 'alert'; text: string }> = {
+  thanks: { role: 'status', text: 'Thank you — your visit was recorded. It counts toward this claim once enough independent visits agree.' },
+  already: { role: 'status', text: "You've already reported this claim. Each person can report a given claim once (that's what keeps the count independent)." },
+  need_answer: { role: 'alert', text: 'Please choose whether your visit confirmed the claim or not.' },
+  photo_required: { role: 'alert', text: 'A photo is required to confirm this attribute. (You can dissent without one.)' },
+  photo_too_big: { role: 'alert', text: 'That photo is too large — please use one under 10 MB.' },
+  notfound: { role: 'alert', text: 'That claim could not be found.' },
+  disabled: { role: 'status', text: 'Contributions are not open yet — the community sign-in is still being set up. Your report was not saved.' },
+  error: { role: 'alert', text: 'Something went wrong and your report was not saved. Please try again.' },
+};
+const banner = status ? BANNERS[status] : null;
+
+const listingHref = claim
+  ? `/${claim.listingKind === 'provider' ? 'providers' : 'places'}/${claim.listingId}/`
+  : null;
+---
+
+<Base title={claim ? `Report your visit — ${claim.attributeLabel}` : 'Report your visit'}>
+  {banner && (
+    <p class="disclaimer" role={banner.role}>{banner.text}</p>
+  )}
+
+  {
+    !claim ? (
+      !isDbConfigured ? (
+        <>
+          <h1>Report your visit</h1>
+          <p class="disclaimer" role="status">
+            Contributions need a connected database. This is a static preview with
+            no backend attached, so there's nothing to report against yet.
+          </p>
+        </>
+      ) : (
+        <>
+          <h1>Claim not found</h1>
+          <p>We couldn't find that claim. <a href="/places/">Browse places</a>.</p>
+        </>
+      )
+    ) : (
+      <>
+        <p><a href={listingHref}>← Back to {claim.listingName}</a></p>
+        <h1>Report your visit</h1>
+        <p>
+          For <strong>{claim.listingName}</strong> — the claim
+          “<strong>{claim.attributeLabel}</strong>”. Answer from your own visit,
+          not from what others have said — that's what makes this trustworthy.
+        </p>
+
+        {gateReason && (
+          <p class="disclaimer" role="status">{gateReason} You can still see the form below.</p>
+        )}
+
+        <form method="post" action="/api/confirmations" enctype="multipart/form-data">
+          <input type="hidden" name="claimId" value={claim.claimId} />
+
+          <fieldset>
+            <legend>{claim.questionText}</legend>
+            <p>
+              <input type="radio" id="agrees-yes" name="agrees" value="yes" required />
+              <label for="agrees-yes">Yes — my visit confirms this</label>
+            </p>
+            <p>
+              <input type="radio" id="agrees-no" name="agrees" value="no" />
+              <label for="agrees-no">No — this was NOT true on my visit</label>
+            </p>
+            <p class="attr-desc">
+              A single credible “no” freezes the claim for re-review — reporting a
+              problem is as valuable as confirming.
+            </p>
+          </fieldset>
+
+          <p>
+            <label for="visited_on">Date of your visit (optional)</label><br />
+            <input type="date" id="visited_on" name="visited_on" />
+          </p>
+
+          <p>
+            <label for="photo">
+              Photo evidence{claim.requiresPhoto ? ' — required to confirm this attribute' : ' (optional)'}
+            </label><br />
+            <input
+              type="file"
+              id="photo"
+              name="photo"
+              accept="image/*"
+              aria-describedby="photo-help"
+            />
+            <span id="photo-help" class="attr-desc">
+              Location and device data are removed from your photo before it is stored.
+            </span>
+          </p>
+
+          <fieldset>
+            <legend>
+              Optional: which access experience are you speaking from? Never shown
+              tied to you — used only to weight your report.
+            </legend>
+            {IDENTITY_TAGS.map((tag) => (
+              <p>
+                <input type="checkbox" id={`tag-${tag.key}`} name="identity_tags" value={tag.key} />
+                <label for={`tag-${tag.key}`}>{tag.label}</label>
+              </p>
+            ))}
+          </fieldset>
+
+          <p>
+            <label for="observed_note">Anything else from your visit? (optional)</label><br />
+            <textarea id="observed_note" name="observed_note" rows="3" maxlength="2000"></textarea>
+          </p>
+
+          <p>
+            <label for="pseudonym">A display name to post under (optional, not your real name)</label><br />
+            <input type="text" id="pseudonym" name="pseudonym" autocomplete="off" />
+          </p>
+
+          <p><button type="submit">Submit my report</button></p>
+        </form>
+      </>
+    )
+  }
+</Base>

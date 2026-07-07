@@ -43,14 +43,24 @@ Never reference those docs by filesystem path or symlink — always by the URLs 
 
 ## Current status (2026-07-07)
 
-Onboarding is a **commitment on paper**, not yet wired up. Nothing below is
-implemented yet; the platform IdP itself is still Phase 0 (not stood up):
+The contribution flow exists; the *identity* half is still on paper because the
+platform IdP is Phase 0 (not stood up). Current state:
 
-- [ ] Register an OIDC client for Access Atlas on Keycloak (when the IdP exists).
-- [ ] Build the pseudonymous contributor auth flow via `packages/auth` (PKCE).
-- [ ] Token-exchange → own Supabase data-access session for contributor writes.
-- [ ] Adopt shared a11y design tokens where they don't regress the zero-JS browsing surface.
 - [x] Governance pointer + invariants fallback (this file).
+- [x] Contributor **confirmation flow** built — zero-JS semantic form
+  (`src/pages/contribute/confirm/[claimId].astro`) + write endpoint
+  (`src/pages/api/confirmations.ts`) with server-side validation, evidence-photo
+  handling (EXIF stripped via sharp before storage, §6), and the §4 independence
+  rule enforced by the DB.
+- [x] Contributor-identity **seam** (`src/lib/contributor.ts`) — provisional
+  pseudonymous id today, keyed so Keycloak `sub` drops in later.
+- [x] Write **hard-gate** — the endpoint refuses unless
+  `ALLOW_PROVISIONAL_CONTRIBUTIONS=true` (local/preview only), so an
+  unauthenticated write endpoint cannot ship by accident.
+- [ ] Register an OIDC client for Access Atlas on Keycloak (when the IdP exists).
+- [ ] Replace the provisional cookie seam with the Keycloak-verified `sub`.
+- [ ] Token-exchange → own Supabase data-access session + step-up for writes.
+- [ ] Adopt shared a11y design tokens where they don't regress the zero-JS browsing surface.
 
 ## The five platform invariants (fallback copy — canonical version in governance `INVARIANTS.md`)
 

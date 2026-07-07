@@ -6,6 +6,7 @@ import type {
   AttributeCategory,
   AttributeState,
   AttributeStatus,
+  ClaimForConfirm,
   Listing,
 } from './types';
 
@@ -15,6 +16,8 @@ interface AttrDef {
   category: AttributeCategory;
   reverifyIntervalDays: number;
   relevantIdentityTag: string | null;
+  questionText: string;
+  requiresPhoto: boolean;
 }
 
 interface Confirmation {
@@ -39,6 +42,8 @@ const ATTR: Record<string, AttrDef> = {
     category: 'facility_objective',
     reverifyIntervalDays: 365,
     relevantIdentityTag: 'wheelchair_user',
+    questionText: 'On your visit, could you enter with zero steps (level or ramped)?',
+    requiresPhoto: true,
   },
   accessible_restroom: {
     key: 'accessible_restroom',
@@ -46,6 +51,8 @@ const ATTR: Record<string, AttrDef> = {
     category: 'facility_objective',
     reverifyIntervalDays: 365,
     relevantIdentityTag: 'wheelchair_user',
+    questionText: 'On your visit, was there a wheelchair-accessible restroom you could use?',
+    requiresPhoto: true,
   },
   height_adjustable_exam_table: {
     key: 'height_adjustable_exam_table',
@@ -53,6 +60,9 @@ const ATTR: Record<string, AttrDef> = {
     category: 'facility_objective',
     reverifyIntervalDays: 365,
     relevantIdentityTag: 'wheelchair_user',
+    questionText:
+      'On your visit, did the provider have a height-adjustable / low-transfer exam table?',
+    requiresPhoto: true,
   },
 };
 
@@ -136,6 +146,25 @@ const CLAIMS: Claim[] = [
     confirmations: [],
   },
 ];
+
+// Read-only claim details for the confirmation form, from seed (no DB). Writes
+// still require a real DB + the contribution gate — this only renders the form.
+export function seedClaimForConfirm(claimId: string): ClaimForConfirm | null {
+  const claim = CLAIMS.find((c) => c.id === claimId);
+  if (!claim) return null;
+  const listing = LISTINGS.find((l) => l.id === claim.listingId);
+  if (!listing) return null;
+  return {
+    claimId: claim.id,
+    listingId: claim.listingId,
+    listingName: listing.name,
+    listingKind: listing.kind,
+    attributeLabel: claim.attr.label,
+    questionText: claim.attr.questionText,
+    requiresPhoto: claim.attr.requiresPhoto,
+    relevantIdentityTag: claim.attr.relevantIdentityTag,
+  };
+}
 
 // Mirrors the SQL view's derived state (§4). Precedence: dissent > sourced >
 // verified (>=3 agree, +1 weighted if a tag is privileged) > confirmations > self.
