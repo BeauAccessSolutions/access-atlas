@@ -5,7 +5,7 @@ import { defineConfig, devices } from '@playwright/test';
 // passing here is necessary, NOT sufficient. Manual assistive-tech testing
 // (NVDA, VoiceOver) is still required before shipping any user-facing feature.
 export default defineConfig({
-  testDir: './tests',
+  testDir: './tests/a11y',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,

@@ -14,7 +14,8 @@
     "preview": "astro preview",
     "check": "astro check",
     "lint": "astro check",
-    "test": "playwright test",
+    "test": "vitest run && playwright test",
+    "test:unit": "vitest run",
     "test:a11y": "playwright test",
     "db:start": "npx supabase start",
     "db:reset": "npx supabase db reset",
@@ -37,6 +38,7 @@
     "@types/node": "^22.20.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.9"
   }
 }

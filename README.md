@@ -36,8 +36,9 @@ npm run build       # build the static site to dist/
 npm run preview     # preview the built site
 npm run check       # type-check (astro check) — also the lint step
 npm run lint        # alias for check
+npm run test:unit   # vitest — labeling vocabulary + consensus formula
 npm run test:a11y   # build + run axe-core accessibility tests (REQUIRED in CI)
-npm run test        # alias for test:a11y
+npm run test        # unit + a11y
 
 # Database (optional; needs Docker + the Supabase CLI via npx)
 npm run db:start    # boot local Postgres + apply migrations + seed

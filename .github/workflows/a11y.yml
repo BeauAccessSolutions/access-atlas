@@ -25,6 +25,9 @@ jobs:
       - name: Type-check
         run: npm run check
 
+      - name: Unit tests (labeling vocabulary + consensus formula)
+        run: npm run test:unit
+
       - name: Install Playwright browser (chromium)
         run: npx playwright install --with-deps chromium
 

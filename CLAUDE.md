@@ -140,8 +140,9 @@ npm run build        # build static site to dist/
 npm run preview      # preview the built site
 npm run check        # type-check (astro check) — also the lint step
 npm run lint         # alias for check
+npm run test:unit    # vitest — labeling vocabulary + consensus formula (§4/§14)
 npm run test:a11y    # build + axe-core accessibility tests  <- required in CI
-npm run test         # alias for test:a11y
+npm run test         # unit + a11y
 
 # Database (optional; needs Docker + Supabase CLI via npx)
 npm run db:start     # local Postgres + migrations + seed
@@ -149,10 +150,11 @@ npm run db:reset     # re-apply migrations and re-seed
 npm run db:stop
 ```
 
-Note: there is no separate unit-test suite yet; the validation formula is
-currently exercised through the seed + a11y build. Add unit tests for
-`src/lib/labeling.ts` and the consensus logic when the contributor write flow
-lands.
+Unit tests (`tests/unit/`, vitest) cover the safety-critical core: the labeling
+vocabulary (§4/§14 — only `sourced` may say "high confidence"; self-reported is
+never "verified") and the consensus formula mirror (all five states, the ≥3 +
+weighted bar, dissent-freezes, time-decay). The SQL side of that formula is
+verified against real Postgres via `supabase db reset` + the seeded states.
 
 ---
 
