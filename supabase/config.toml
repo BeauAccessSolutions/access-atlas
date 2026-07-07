@@ -1,0 +1,22 @@
+# Local Supabase config. `npm run db:start` boots Postgres + reads migrations.
+# Minimal on purpose. Project id is a local handle only.
+project_id = "access-directory"
+
+[db]
+port = 54322
+major_version = 15
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public"]
+extra_search_path = ["public"]
+
+[studio]
+enabled = true
+port = 54323
+
+# Seed the DB from seed.sql on `db reset`.
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]

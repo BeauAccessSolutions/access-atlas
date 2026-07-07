@@ -1,0 +1,39 @@
+---
+import Base from '../../layouts/Base.astro';
+import AttributeList from '../../components/AttributeList.astro';
+import { getListings, getListing, getStatusesForListing } from '../../lib/repo';
+
+// Static output: enumerate one page per place at build time.
+export async function getStaticPaths() {
+  const places = await getListings('place');
+  return places.map((p) => ({ params: { id: p.id } }));
+}
+
+const { id } = Astro.params;
+const listing = await getListing(id!);
+if (!listing) return Astro.redirect('/places/');
+const statuses = await getStatusesForListing(listing.id);
+const place = [listing.city, listing.region].filter(Boolean).join(', ');
+---
+
+<Base title={listing.name} description={listing.summary ?? undefined}>
+  <p><a href="/places/">← All places</a></p>
+  <h1>{listing.name}</h1>
+  {place && <p class="listing-meta">{place}</p>}
+  {listing.summary && <p>{listing.summary}</p>}
+
+  <h2>Accessibility</h2>
+  <p>
+    Each item below is validated on its own. We never roll accessibility up into
+    a single star rating.
+  </p>
+  <AttributeList statuses={statuses} />
+
+  <div class="disclaimer">
+    <p>
+      Accessibility facts change — ramps break, elevators fail. Dates show when
+      each claim was last confirmed. Visited recently?
+      <a href="/about/privacy/">Learn how to contribute a confirmation.</a>
+    </p>
+  </div>
+</Base>

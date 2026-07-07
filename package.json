@@ -1,0 +1,40 @@
+{
+  "name": "access-directory",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Disability-focused discovery platform — accessible providers, accessible places, community validation. Working name: [PROJECT NAME — TBD].",
+  "engines": {
+    "node": ">=20.3.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "lint": "astro check",
+    "test": "playwright test",
+    "test:a11y": "playwright test",
+    "db:start": "npx supabase start",
+    "db:reset": "npx supabase db reset",
+    "db:stop": "npx supabase stop"
+  },
+  "dependencies": {
+    "@astrojs/react": "^4.2.0",
+    "@supabase/supabase-js": "^2.45.0",
+    "astro": "^5.2.0",
+    "react": "^18.3.1",
+    "react-aria-components": "^1.5.0",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@axe-core/playwright": "^4.10.0",
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^22.20.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "typescript": "^5.7.0"
+  }
+}

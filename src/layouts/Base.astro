@@ -1,0 +1,54 @@
+---
+// Base layout. Semantic landmarks (header/nav/main/footer), a skip link, a
+// lang attribute, and a sensible <title> — the floor every page stands on (§5).
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description } = Astro.props;
+const siteName = '[PROJECT NAME — TBD]';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} — {siteName}</title>
+    {description && <meta name="description" content={description} />}
+    <!-- No third-party trackers, ever (§6, §14). No analytics phone-home. -->
+  </head>
+  <body>
+    <!-- First focusable element: keyboard users skip straight to content (§5). -->
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <header class="site">
+      <div class="container">
+        <a href="/" aria-label={`${siteName} — home`}><strong>{siteName}</strong></a>
+        <nav aria-label="Primary">
+          <ul>
+            <li><a href="/places/">Places</a></li>
+            <li><a href="/providers/">Providers</a></li>
+            <li><a href="/about/privacy/">Privacy</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="container" tabindex="-1">
+      <slot />
+    </main>
+
+    <footer class="site">
+      <div class="container">
+        <p>
+          Accessibility tools built <em>with</em> the community, not sold
+          <em>to</em> it. Listings are self-reported and community-sourced —
+          see <a href="/about/privacy/">how we label trust</a>.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

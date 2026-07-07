@@ -1,0 +1,48 @@
+---
+import Base from '../layouts/Base.astro';
+import { isDbConfigured } from '../lib/supabase';
+---
+
+<Base
+  title="Home"
+  description="A disability-focused directory of accessible places and disability-competent, disabled-led providers — validated by the people who use it."
+>
+  <h1>Accessible places & providers, validated by the community</h1>
+
+  <p>
+    A directory of <strong>accessible places</strong> and
+    <strong>providers</strong> who serve disabled people well — and who are
+    disabled-owned or disabled-led. Every accessibility claim is validated by
+    first-person disabled experience, and labeled honestly about how confident
+    we are.
+  </p>
+
+  <p>
+    <a href="/places/">Browse places</a> · <a href="/providers/">Browse providers</a>
+  </p>
+
+  <div class="disclaimer">
+    <p>
+      <strong>How to read our labels.</strong> Listings start as
+      <em>self-reported / awaiting verification</em>. They become
+      <em>community-verified</em> only after at least three independent
+      first-person confirmations. A single credible “this is not accessible”
+      report freezes a claim. We never call self-reported data “verified” or
+      “high confidence”. <a href="/about/privacy/">Read the full policy.</a>
+    </p>
+  </div>
+
+  {
+    !isDbConfigured && (
+      <div class="disclaimer" role="note">
+        <p>
+          <strong>Developer note:</strong> no database is connected, so this
+          page is showing local seed data. Set{' '}
+          <code>PUBLIC_SUPABASE_URL</code> / <code>PUBLIC_SUPABASE_ANON_KEY</code>{' '}
+          to read real data. (This note is dev-only; it never ships a trust
+          claim.)
+        </p>
+      </div>
+    )
+  }
+</Base>

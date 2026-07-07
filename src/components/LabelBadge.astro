@@ -1,0 +1,24 @@
+---
+// Renders a single validation label. All wording comes from labeling.ts — the
+// one place allowed to phrase trust (§4). Never color alone (§5): each tone also
+// carries a text label and a leading mark.
+import { presentState } from '../lib/labeling';
+import type { AttributeStatus } from '../lib/types';
+
+interface Props {
+  status: AttributeStatus;
+}
+const { status } = Astro.props;
+const label = presentState(status);
+
+const MARKS: Record<string, string> = {
+  verified: '✓',   // check
+  sourced: '★',    // star — reserved for the sourced ("high confidence") state
+  partial: '•',    // dot
+  unverified: '○', // open circle
+  disputed: '⚠',   // warning
+};
+---
+
+<span class="badge" data-tone={label.tone} data-mark={MARKS[label.tone]}>{label.text}</span>
+<span class="attr-desc">{label.description}</span>

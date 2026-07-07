@@ -1,0 +1,29 @@
+# build output
+dist/
+.output/
+.vercel/
+.netlify/
+
+# deps
+node_modules/
+
+# astro
+.astro/
+
+# env — never commit secrets (§6 privacy). Only .env.example is tracked.
+.env
+.env.*
+!.env.example
+
+# supabase local
+supabase/.branches/
+supabase/.temp/
+
+# playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# os
+.DS_Store

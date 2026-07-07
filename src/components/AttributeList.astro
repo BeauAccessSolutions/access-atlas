@@ -1,0 +1,36 @@
+---
+// A listing's accessibility attributes, each labeled SEPARATELY (§4, §14 — never
+// a single star average). Renders as a plain list; screen-reader friendly.
+import LabelBadge from './LabelBadge.astro';
+import { staleness } from '../lib/labeling';
+import type { AttributeStatus } from '../lib/types';
+
+interface Props {
+  statuses: AttributeStatus[];
+}
+const { statuses } = Astro.props;
+---
+
+{
+  statuses.length === 0 ? (
+    <p class="attr-desc">No accessibility attributes reported yet.</p>
+  ) : (
+    <ul class="attr-list">
+      {statuses.map((status) => {
+        const stale = staleness(status);
+        return (
+          <li class="attr-row">
+            <span class="attr-name">{status.label}</span>
+            <LabelBadge status={status} />
+            {status.lastConfirmedAt && (
+              <span class="attr-desc">
+                Last confirmed: {status.lastConfirmedAt.slice(0, 10)}
+              </span>
+            )}
+            {stale && <span class="stale-note">{stale}</span>}
+          </li>
+        );
+      })}
+    </ul>
+  )
+}

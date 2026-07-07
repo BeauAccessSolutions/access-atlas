@@ -1,0 +1,182 @@
+/* -----------------------------------------------------------------------------
+   Global styles. Semantic-HTML-first (§5): these style plain elements, not a
+   component framework. Design tokens live in :root and are overridable by the
+   user (text size, contrast, reduced motion) — accessibility is customizable by
+   the person using it, not fixed by us (§5).
+
+   Everything here is sized in rem so the browser/user font-size preference is
+   honored. Do not hard-code px font sizes.
+----------------------------------------------------------------------------- */
+
+:root {
+  --font-scale: 1;            /* user-adjustable text size (§5) */
+  --color-bg: #ffffff;
+  --color-fg: #1a1a1a;        /* ~15:1 on white — exceeds WCAG AA */
+  --color-muted: #4a4a4a;     /* ~8.9:1 on white — passes AA for normal text */
+  --color-link: #0b4fb3;      /* ~6.4:1 on white */
+  --color-border: #6a6a6a;
+  --color-surface: #f4f4f5;
+  --color-focus: #0b4fb3;
+
+  /* Validation tones. Chosen to pass contrast AND to never rely on color alone
+     (§5, §77): every badge also carries text. */
+  --tone-verified: #0f5c2e;
+  --tone-sourced: #0b4fb3;
+  --tone-partial: #6a4a00;
+  --tone-unverified: #4a4a4a;
+  --tone-disputed: #a11; /* dark red — paired with the word "Disputed" */
+
+  --radius: 6px;
+  --space: 1rem;
+  --measure: 68ch;
+}
+
+/* High-contrast mode: user opt-in via a class on <html> (wired to a control
+   later). Also respects the OS preference. */
+:root.contrast-high,
+@media (prefers-contrast: more) {
+  :root {
+    --color-fg: #000000;
+    --color-muted: #1a1a1a;
+    --color-link: #003a99;
+    --color-border: #000000;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html {
+  font-size: calc(100% * var(--font-scale));
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  line-height: 1.6;
+}
+
+/* Respect reduced-motion (§5). Motion is opt-in, never forced. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+main { display: block; }
+
+.container {
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding: var(--space);
+}
+
+a { color: var(--color-link); }
+a:hover { text-decoration: none; }
+
+/* Visible focus for keyboard/switch users (§5). Never remove outlines. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Skip link — first focusable thing on the page (§5, keyboard path). */
+.skip-link {
+  position: absolute;
+  left: 0.5rem;
+  top: -3rem;
+  background: var(--color-fg);
+  color: var(--color-bg);
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius);
+  transition: top 0.15s ease;
+  z-index: 100;
+}
+.skip-link:focus { top: 0.5rem; }
+
+header.site {
+  border-bottom: 2px solid var(--color-border);
+}
+header.site nav ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0;
+  margin: 0.5rem 0 0;
+}
+
+h1 { font-size: 1.9rem; line-height: 1.25; }
+h2 { font-size: 1.4rem; }
+
+/* List-first cards (§5). A plain <ul> of listings — no map required. */
+.listing-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 1rem; }
+.listing-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  background: var(--color-surface);
+}
+.listing-card h3 { margin: 0 0 0.25rem; font-size: 1.25rem; }
+.listing-meta { color: var(--color-muted); margin: 0 0 0.5rem; }
+
+.tag {
+  display: inline-block;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.1rem 0.6rem;
+  font-size: 0.85rem;
+  margin-right: 0.25rem;
+}
+
+/* Attribute claim rows — each claim separately labeled (§4, never one score). */
+.attr-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.75rem; }
+.attr-row {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+.attr-row .attr-name { font-weight: 600; }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius);
+  border: 2px solid currentColor;
+  width: fit-content;
+}
+.badge::before { content: attr(data-mark); font-weight: 700; }
+.badge[data-tone="verified"]   { color: var(--tone-verified); }
+.badge[data-tone="sourced"]    { color: var(--tone-sourced); }
+.badge[data-tone="partial"]    { color: var(--tone-partial); }
+.badge[data-tone="unverified"] { color: var(--tone-unverified); }
+.badge[data-tone="disputed"]   { color: var(--tone-disputed); }
+
+.attr-desc { color: var(--color-muted); font-size: 0.95rem; }
+.stale-note { color: var(--tone-disputed); font-size: 0.9rem; font-weight: 600; }
+
+.disclaimer {
+  border-left: 4px solid var(--color-border);
+  background: var(--color-surface);
+  padding: 0.75rem 1rem;
+  margin: 1.5rem 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+footer.site {
+  border-top: 2px solid var(--color-border);
+  margin-top: 3rem;
+  color: var(--color-muted);
+}

@@ -1,0 +1,35 @@
+---
+// One listing in a list. List-first (§5): this is the primary interface, not a
+// map pin. Provider axes (disability-literate vs. disabled-owned/led) are shown
+// as distinct tags because they are independent (§1) — never merged.
+import type { Listing } from '../lib/types';
+
+interface Props {
+  listing: Listing;
+}
+const { listing } = Astro.props;
+const href = `/${listing.kind === 'provider' ? 'providers' : 'places'}/${listing.id}/`;
+const place = [listing.city, listing.region].filter(Boolean).join(', ');
+---
+
+<li class="listing-card">
+  <h3><a href={href}>{listing.name}</a></h3>
+  {place && <p class="listing-meta">{place}</p>}
+  {listing.summary && <p>{listing.summary}</p>}
+
+  {
+    listing.provider && (
+      <p>
+        {listing.provider.disabilityLiterate && (
+          <span class="tag">Disability-literate (self-attested)</span>
+        )}
+        {listing.provider.disabledOwned && (
+          <span class="tag">Disabled-owned (self-attested)</span>
+        )}
+        {listing.provider.disabledLed && (
+          <span class="tag">Disabled-led (self-attested)</span>
+        )}
+      </p>
+    )
+  }
+</li>

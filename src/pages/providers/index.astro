@@ -1,0 +1,32 @@
+---
+import Base from '../../layouts/Base.astro';
+import ListingCard from '../../components/ListingCard.astro';
+import { getListings } from '../../lib/repo';
+
+const providers = await getListings('provider');
+---
+
+<Base
+  title="Providers"
+  description="Disability-competent and disabled-owned or disabled-led providers."
+>
+  <h1>Providers</h1>
+  <p>
+    Two things matter here, tracked separately: whether a provider is
+    <strong>disability-literate</strong> (serves disabled people well) and
+    whether they are <strong>disabled-owned or disabled-led</strong>. A provider
+    may be either, both, or neither — we never merge the two.
+  </p>
+
+  {
+    providers.length === 0 ? (
+      <p>No providers listed yet.</p>
+    ) : (
+      <ul class="listing-list">
+        {providers.map((listing) => (
+          <ListingCard listing={listing} />
+        ))}
+      </ul>
+    )
+  }
+</Base>
