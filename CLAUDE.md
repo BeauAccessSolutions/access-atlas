@@ -183,6 +183,7 @@ lands.
 - ✅ **"Disabled-owned" threshold & wording** → self-attested **≥ 51% ownership**; **"disabled-led"** is a separate **control/leadership** attestation. No proof, ever. (§12)
 - ✅ **Re-verification cadence** → **uniform 12 months** (`reverify_interval_days = 365`) for every attribute. Column stays per-attribute so a future tiered policy is a data change, not a migration.
 - ✅ **Submission flow** → **one shared flow** with a Place/Provider toggle and branching provider fields. (Data model is unified; UI not yet built.)
+- ✅ **Contributor auth mechanism** → the platform **Keycloak** IdP (pseudonymous), not hand-rolled. Public browsing stays account-free; identity gates contribution only. See §15 and `docs/platform-membership.md`. (The broader pseudonymous-contribution UX design is still open.)
 
 **Still open:**
 - **Exact consensus count & reviewer-weighting formula.** Held at the working floor: ≥3 independent agreeing confirmations, ≥1 carrying the attribute's relevant lived-experience tag, any first-person dissent freezes the claim. Encoded in BOTH `supabase/migrations/0001_init.sql` (the `attribute_claim_status` view) and `src/lib/seed.ts` — **change them together.** Revisit once real contributions exist and the tag-weighting can be tuned against data.
@@ -201,3 +202,28 @@ lands.
 - ❌ Do **not** design for nationwide/NYC scale in the MVP — WNY density first.
 - ❌ Do **not** treat automated a11y passing as "accessible" — manual AT testing is required.
 - ❌ Do **not** make trust claims the implementation can't verify.
+
+---
+
+## 15. Platform membership (Beau Access Solutions)
+
+Access Atlas is a member app of the **Beau Access Solutions (BAS)** platform.
+Governance (identity architecture, the five platform invariants, contribution
+boundary) lives in a separate repo and is referenced by URL, never by path:
+<https://github.com/Beaudoin0zach/Beau-Access-Solutions>. Local pointer + the
+invariants fallback: [`docs/platform-membership.md`](docs/platform-membership.md).
+
+Role: **full identity member**, scoped honestly to how this app works —
+
+- **Browsing stays account-free** (§2, §6). The platform never overrides that.
+- **Identity gates contribution only.** When the contributor write flow lands, it
+  authenticates via the platform **Keycloak** IdP (pseudonymous), not hand-rolled auth.
+- **Sensitive tenant, layered sessions.** Access/disability data is health-adjacent
+  (§6); Access Atlas exchanges the identity token for its own revocable Supabase
+  session and applies step-up — the identity token is never a data credential.
+- **Browsing surface stays Astro / near-zero-JS.** Shared design system = a11y tokens +
+  the `packages/auth` PKCE client inside React islands (contributor flows), NOT a React
+  Native rewrite of the static browsing pages. Low-bandwidth + a11y are existential (§5).
+
+If a platform rule ever conflicts with a non-negotiable here, the more conservative
+(more accessible, more private) rule wins and the conflict is raised as a BAS ADR.
