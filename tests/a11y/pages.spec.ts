@@ -12,9 +12,11 @@ const ROUTES = [
   // seeded detail pages (ids from supabase/seed.sql + src/lib/seed.ts)
   '/places/11111111-1111-1111-1111-111111111111/',
   '/providers/33333333-3333-3333-3333-333333333333/',
-  // contribute route (on-demand). With no DB attached in CI it renders the
-  // accessible "needs a connected database" notice — still must pass axe.
+  // contribute routes (on-demand). With no DB attached in CI these render from
+  // seed / the gate notice — still must pass axe.
   '/contribute/confirm/c1111111-1111-1111-1111-111111111111/',
+  '/contribute/submit/?kind=place',
+  '/contribute/submit/?kind=provider',
 ];
 
 for (const route of ROUTES) {
@@ -36,3 +38,12 @@ test('home has skip link, one h1, and a main landmark', async ({ page }) => {
   await expect(page.locator('h1')).toHaveCount(1);
   await expect(page.locator('main#main')).toBeVisible();
 });
+
+// The browsing surface must stay zero-JS even though list/detail pages are now
+// on-demand rendered (low-bandwidth mandate, §5). No <script> on these routes.
+for (const route of ['/', '/places/', '/providers/', '/places/11111111-1111-1111-1111-111111111111/']) {
+  test(`ships zero <script>: ${route}`, async ({ page }) => {
+    await page.goto(route);
+    await expect(page.locator('script')).toHaveCount(0);
+  });
+}

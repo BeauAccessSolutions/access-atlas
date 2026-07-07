@@ -33,6 +33,14 @@ export interface Listing {
   };
 }
 
+// One selectable attribute in the submission form (filtered by listing kind).
+export interface AttributeDefOption {
+  key: string;
+  label: string;
+  category: AttributeCategory;
+  appliesToKind: ListingKind | null;
+}
+
 // A claim plus its attribute's structured question — everything the confirmation
 // form needs to render.
 export interface ClaimForConfirm {

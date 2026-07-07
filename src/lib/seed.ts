@@ -4,10 +4,12 @@
 // it in BOTH the migration view and here.
 import type {
   AttributeCategory,
+  AttributeDefOption,
   AttributeState,
   AttributeStatus,
   ClaimForConfirm,
   Listing,
+  ListingKind,
 } from './types';
 
 interface AttrDef {
@@ -18,6 +20,7 @@ interface AttrDef {
   relevantIdentityTag: string | null;
   questionText: string;
   requiresPhoto: boolean;
+  appliesToKind: ListingKind | null; // null = both places and providers
 }
 
 interface Confirmation {
@@ -44,6 +47,7 @@ const ATTR: Record<string, AttrDef> = {
     relevantIdentityTag: 'wheelchair_user',
     questionText: 'On your visit, could you enter with zero steps (level or ramped)?',
     requiresPhoto: true,
+    appliesToKind: null,
   },
   accessible_restroom: {
     key: 'accessible_restroom',
@@ -53,6 +57,17 @@ const ATTR: Record<string, AttrDef> = {
     relevantIdentityTag: 'wheelchair_user',
     questionText: 'On your visit, was there a wheelchair-accessible restroom you could use?',
     requiresPhoto: true,
+    appliesToKind: null,
+  },
+  accessible_parking: {
+    key: 'accessible_parking',
+    label: 'Accessible parking',
+    category: 'facility_objective',
+    reverifyIntervalDays: 365,
+    relevantIdentityTag: 'wheelchair_user',
+    questionText: 'On your visit, was there designated accessible parking that was usable?',
+    requiresPhoto: true,
+    appliesToKind: 'place',
   },
   height_adjustable_exam_table: {
     key: 'height_adjustable_exam_table',
@@ -63,8 +78,42 @@ const ATTR: Record<string, AttrDef> = {
     questionText:
       'On your visit, did the provider have a height-adjustable / low-transfer exam table?',
     requiresPhoto: true,
+    appliesToKind: 'provider',
+  },
+  communicated_directly: {
+    key: 'communicated_directly',
+    label: 'Communicated directly with me',
+    category: 'provider_behavior',
+    reverifyIntervalDays: 365,
+    relevantIdentityTag: null,
+    questionText: 'On your visit, did staff speak directly to you (not only to a companion)?',
+    requiresPhoto: false,
+    appliesToKind: 'provider',
+  },
+  staff_knew_equipment: {
+    key: 'staff_knew_equipment',
+    label: 'Staff knew how to use accessible equipment',
+    category: 'provider_behavior',
+    reverifyIntervalDays: 365,
+    relevantIdentityTag: 'wheelchair_user',
+    questionText: 'On your visit, did staff know how to use their accessible equipment?',
+    requiresPhoto: false,
+    appliesToKind: 'provider',
   },
 };
+
+// The attribute catalog a submitter can self-report against, filtered by kind
+// (null appliesToKind = both). Mirrors supabase/seed.sql's attribute_definitions.
+export function seedAttributeDefinitions(kind: ListingKind): AttributeDefOption[] {
+  return Object.values(ATTR)
+    .filter((a) => a.appliesToKind === null || a.appliesToKind === kind)
+    .map((a) => ({
+      key: a.key,
+      label: a.label,
+      category: a.category,
+      appliesToKind: a.appliesToKind,
+    }));
+}
 
 export const LISTINGS: Listing[] = [
   {

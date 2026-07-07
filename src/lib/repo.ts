@@ -3,9 +3,20 @@
 // runs with no backend. Pages should import ONLY from here, never touch the
 // supabase client directly — that keeps the fallback honest and the call sites
 // simple (§11: boring, legible code).
-import type { AttributeStatus, ClaimForConfirm, Listing, ListingKind } from './types';
+import type {
+  AttributeDefOption,
+  AttributeStatus,
+  ClaimForConfirm,
+  Listing,
+  ListingKind,
+} from './types';
 import { supabase, isDbConfigured } from './supabase';
-import { LISTINGS, seedStatuses, seedClaimForConfirm } from './seed';
+import {
+  LISTINGS,
+  seedStatuses,
+  seedClaimForConfirm,
+  seedAttributeDefinitions,
+} from './seed';
 
 export async function getListings(kind?: ListingKind): Promise<Listing[]> {
   if (!isDbConfigured || !supabase) {
@@ -54,6 +65,24 @@ export async function getStatusesForListing(
     .eq('listing_id', listingId);
   if (error) throw error;
   return (data ?? []).map(rowToStatus);
+}
+
+// Attributes a submitter can self-report against, for one listing kind. Reads
+// the catalog from the DB when configured, else the seed catalog.
+export async function getAttributeDefinitions(kind: ListingKind): Promise<AttributeDefOption[]> {
+  if (!isDbConfigured || !supabase) return seedAttributeDefinitions(kind);
+  const { data, error } = await supabase
+    .from('attribute_definitions')
+    .select('key, label, category, applies_to_kind')
+    .or(`applies_to_kind.is.null,applies_to_kind.eq.${kind}`)
+    .order('key');
+  if (error) throw error;
+  return (data ?? []).map((r: any) => ({
+    key: r.key,
+    label: r.label,
+    category: r.category,
+    appliesToKind: r.applies_to_kind ?? null,
+  }));
 }
 
 // A claim plus the attribute's structured question — everything the confirmation

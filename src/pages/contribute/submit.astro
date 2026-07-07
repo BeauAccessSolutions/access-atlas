@@ -1,0 +1,117 @@
+---
+// Suggest a new place or provider — the one shared flow (§13). On-demand,
+// zero-JS. The Place/Provider "toggle" is link-driven (?kind=…) because the
+// attribute checklist differs by kind and we ship no JS to swap fields.
+export const prerender = false;
+
+import Base from '../../layouts/Base.astro';
+import { getAttributeDefinitions } from '../../lib/repo';
+import { contributionGateReason } from '../../lib/contributor';
+import type { ListingKind } from '../../lib/types';
+
+const kindParam = Astro.url.searchParams.get('kind');
+const kind: ListingKind = kindParam === 'provider' ? 'provider' : 'place';
+const otherKind: ListingKind = kind === 'place' ? 'provider' : 'place';
+const status = Astro.url.searchParams.get('status');
+const attributes = await getAttributeDefinitions(kind);
+const gateReason = contributionGateReason();
+
+const BANNERS: Record<string, { role: 'status' | 'alert'; text: string }> = {
+  disabled: { role: 'status', text: 'Contributions are not open yet — the community sign-in is still being set up. Your listing was not saved.' },
+  need_name: { role: 'alert', text: 'Please give the place or provider a name.' },
+  error: { role: 'alert', text: 'Something went wrong and your listing was not saved. Please try again.' },
+};
+const banner = status ? BANNERS[status] : null;
+const noun = kind === 'provider' ? 'provider' : 'place';
+---
+
+<Base title={`Suggest a ${noun}`}>
+  {banner && <p class="disclaimer" role={banner.role}>{banner.text}</p>}
+
+  <h1>Suggest a {noun}</h1>
+
+  <p>
+    You're adding a <strong>{noun}</strong>.
+    <a href={`/contribute/submit/?kind=${otherKind}`}>Add a {otherKind} instead</a>.
+  </p>
+
+  <p>
+    New listings start as “self-reported / awaiting verification”. They become
+    community-verified only after independent visits confirm them.
+  </p>
+
+  {gateReason && <p class="disclaimer" role="status">{gateReason} You can still see the form below.</p>}
+
+  <form method="post" action="/api/listings" enctype="multipart/form-data">
+    <input type="hidden" name="kind" value={kind} />
+
+    <p>
+      <label for="name">Name (required)</label><br />
+      <input type="text" id="name" name="name" required maxlength="200" />
+    </p>
+    <p>
+      <label for="summary">Short description (optional)</label><br />
+      <textarea id="summary" name="summary" rows="2" maxlength="1000"></textarea>
+    </p>
+
+    <fieldset>
+      <legend>Where is it? (Buffalo / Erie County first — optional)</legend>
+      <p>
+        <label for="street">Street</label><br />
+        <input type="text" id="street" name="street" autocomplete="off" />
+      </p>
+      <p>
+        <label for="city">City</label><br />
+        <input type="text" id="city" name="city" autocomplete="off" />
+      </p>
+      <p>
+        <label for="region">County / region</label><br />
+        <input type="text" id="region" name="region" autocomplete="off" />
+      </p>
+      <p>
+        <label for="postal_code">ZIP</label><br />
+        <input type="text" id="postal_code" name="postal_code" inputmode="numeric" autocomplete="off" />
+      </p>
+    </fieldset>
+
+    {
+      kind === 'provider' && (
+        <fieldset>
+          <legend>Provider profile (self-attested — no proof required)</legend>
+          <p>
+            <input type="checkbox" id="disability_literate" name="disability_literate" />
+            <label for="disability_literate">Disability-literate — serves disabled people well</label>
+          </p>
+          <p>
+            <input type="checkbox" id="disabled_owned" name="disabled_owned" />
+            <label for="disabled_owned">Disabled-owned — a disabled person owns 51% or more</label>
+          </p>
+          <p>
+            <input type="checkbox" id="disabled_led" name="disabled_led" />
+            <label for="disabled_led">Disabled-led — a disabled person holds primary leadership</label>
+          </p>
+        </fieldset>
+      )
+    }
+
+    <fieldset>
+      <legend>
+        Which accessibility features did you observe? (optional; self-reported —
+        others will confirm from their own visits)
+      </legend>
+      {attributes.map((attr) => (
+        <p>
+          <input type="checkbox" id={`attr-${attr.key}`} name="attributes" value={attr.key} />
+          <label for={`attr-${attr.key}`}>{attr.label}</label>
+        </p>
+      ))}
+    </fieldset>
+
+    <p>
+      <label for="pseudonym">A display name to post under (optional, not your real name)</label><br />
+      <input type="text" id="pseudonym" name="pseudonym" autocomplete="off" />
+    </p>
+
+    <p><button type="submit">Submit this {noun}</button></p>
+  </form>
+</Base>

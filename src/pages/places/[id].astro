@@ -1,39 +1,55 @@
 ---
+// On-demand (prerender=false): a place's page reflects LIVE data — newly
+// submitted listings and freshly confirmed claims appear immediately. Still
+// zero-JS: this is server-rendered HTML, no client scripts.
+export const prerender = false;
+
 import Base from '../../layouts/Base.astro';
 import AttributeList from '../../components/AttributeList.astro';
-import { getListings, getListing, getStatusesForListing } from '../../lib/repo';
-
-// Static output: enumerate one page per place at build time.
-export async function getStaticPaths() {
-  const places = await getListings('place');
-  return places.map((p) => ({ params: { id: p.id } }));
-}
+import { getListing, getStatusesForListing } from '../../lib/repo';
 
 const { id } = Astro.params;
-const listing = await getListing(id!);
-if (!listing) return Astro.redirect('/places/');
-const statuses = await getStatusesForListing(listing.id);
-const place = [listing.city, listing.region].filter(Boolean).join(', ');
+const listing = id ? await getListing(id) : null;
+if (!listing || listing.kind !== 'place') Astro.response.status = 404;
+
+const statuses = listing ? await getStatusesForListing(listing.id) : [];
+const place = listing ? [listing.city, listing.region].filter(Boolean).join(', ') : '';
+const justSubmitted = Astro.url.searchParams.get('submitted') === '1';
 ---
 
-<Base title={listing.name} description={listing.summary ?? undefined}>
-  <p><a href="/places/">← All places</a></p>
-  <h1>{listing.name}</h1>
-  {place && <p class="listing-meta">{place}</p>}
-  {listing.summary && <p>{listing.summary}</p>}
+{
+  !listing || listing.kind !== 'place' ? (
+    <Base title="Place not found">
+      <h1>Place not found</h1>
+      <p>We couldn't find that place. <a href="/places/">Browse all places</a>.</p>
+    </Base>
+  ) : (
+    <Base title={listing.name} description={listing.summary ?? undefined}>
+      {justSubmitted && (
+        <p class="disclaimer" role="status">
+          Thanks — your listing was added. It starts as “self-reported / awaiting
+          verification” until community visits confirm it.
+        </p>
+      )}
+      <p><a href="/places/">← All places</a></p>
+      <h1>{listing.name}</h1>
+      {place && <p class="listing-meta">{place}</p>}
+      {listing.summary && <p>{listing.summary}</p>}
 
-  <h2>Accessibility</h2>
-  <p>
-    Each item below is validated on its own. We never roll accessibility up into
-    a single star rating.
-  </p>
-  <AttributeList statuses={statuses} />
+      <h2>Accessibility</h2>
+      <p>
+        Each item below is validated on its own. We never roll accessibility up
+        into a single star rating.
+      </p>
+      <AttributeList statuses={statuses} />
 
-  <div class="disclaimer">
-    <p>
-      Accessibility facts change — ramps break, elevators fail. Dates show when
-      each claim was last confirmed. Visited recently?
-      <a href="/about/privacy/">Learn how to contribute a confirmation.</a>
-    </p>
-  </div>
-</Base>
+      <div class="disclaimer">
+        <p>
+          Accessibility facts change — ramps break, elevators fail. Dates show
+          when each claim was last confirmed. Visited recently? Use “Report your
+          visit” on any claim above.
+        </p>
+      </div>
+    </Base>
+  )
+}

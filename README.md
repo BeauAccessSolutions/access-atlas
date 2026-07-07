@@ -79,11 +79,21 @@ With no DB attached, the form still renders (from seed) and submitting reports
 re-encoded server-side to strip EXIF/GPS before storage (§6). See
 [`docs/platform-membership.md`](docs/platform-membership.md).
 
+## Rendering: static shell, on-demand data
+
+Home and privacy prerender to static HTML. The **listing list/detail and the
+contribute routes are on-demand** (`prerender = false`, Node adapter) so live
+submissions and confirmations show immediately — a static build would go stale
+the moment someone contributes. On-demand pages are still **zero-JS
+server-rendered HTML** (asserted in the a11y suite), so the low-bandwidth mandate
+(§5) holds; they just need the Node server rather than a pure CDN.
+
 ## What is intentionally NOT here yet
 
 - No map (list-first; add only as progressive enhancement).
-- No **new-listing** submission flow yet (the §13 one-shared-flow decision) — only the *confirmation* flow above. That's the next increment.
 - No real contributor auth — the identity seam is provisional/gated pending platform Keycloak (§6; `docs/platform-membership.md`).
+- No full ADHCE self-attestation set on providers yet — only the disabled-literate/owned/led booleans (§8 affirmations are a follow-up).
+- Submitter self-reported attributes don't require a photo at submission (they're the lowest-trust `self-reported` state); **photos are required to *confirm*** them (§4).
 - No real listings — the seed is tiny and Buffalo/Erie-County-scoped on purpose (§3). Do not seed to NYC/nationwide scale.
 
 ## Open decisions that affect this code

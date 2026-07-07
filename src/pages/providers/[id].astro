@@ -1,59 +1,73 @@
 ---
+// On-demand (prerender=false): reflects live submissions + confirmations.
+// Zero-JS server-rendered HTML.
+export const prerender = false;
+
 import Base from '../../layouts/Base.astro';
 import AttributeList from '../../components/AttributeList.astro';
-import { getListings, getListing, getStatusesForListing } from '../../lib/repo';
-
-export async function getStaticPaths() {
-  const providers = await getListings('provider');
-  return providers.map((p) => ({ params: { id: p.id } }));
-}
+import { getListing, getStatusesForListing } from '../../lib/repo';
 
 const { id } = Astro.params;
-const listing = await getListing(id!);
-if (!listing) return Astro.redirect('/providers/');
-const statuses = await getStatusesForListing(listing.id);
-const place = [listing.city, listing.region].filter(Boolean).join(', ');
-const prov = listing.provider;
+const listing = id ? await getListing(id) : null;
+if (!listing || listing.kind !== 'provider') Astro.response.status = 404;
+
+const statuses = listing ? await getStatusesForListing(listing.id) : [];
+const place = listing ? [listing.city, listing.region].filter(Boolean).join(', ') : '';
+const prov = listing?.provider;
+const justSubmitted = Astro.url.searchParams.get('submitted') === '1';
 ---
 
-<Base title={listing.name} description={listing.summary ?? undefined}>
-  <p><a href="/providers/">← All providers</a></p>
-  <h1>{listing.name}</h1>
-  {place && <p class="listing-meta">{place}</p>}
-  {listing.summary && <p>{listing.summary}</p>}
+{
+  !listing || listing.kind !== 'provider' ? (
+    <Base title="Provider not found">
+      <h1>Provider not found</h1>
+      <p>We couldn't find that provider. <a href="/providers/">Browse all providers</a>.</p>
+    </Base>
+  ) : (
+    <Base title={listing.name} description={listing.summary ?? undefined}>
+      {justSubmitted && (
+        <p class="disclaimer" role="status">
+          Thanks — your listing was added. It starts as “self-reported / awaiting
+          verification” until community visits confirm it.
+        </p>
+      )}
+      <p><a href="/providers/">← All providers</a></p>
+      <h1>{listing.name}</h1>
+      {place && <p class="listing-meta">{place}</p>}
+      {listing.summary && <p>{listing.summary}</p>}
 
-  {
-    prov && (
-      <>
-        <h2>Provider profile</h2>
-        <p>These are <strong>self-attested</strong> by the provider — no medical proof is ever required.</p>
-        <ul>
-          <li>Disability-literate: {prov.disabilityLiterate ? 'Yes (self-attested)' : 'Not attested'}</li>
-          <li>
-            Disabled-owned (a disabled person owns 51% or more):
-            {prov.disabledOwned ? ' Yes (self-attested)' : ' Not attested'}
-          </li>
-          <li>
-            Disabled-led (a disabled person holds primary leadership):
-            {prov.disabledLed ? ' Yes (self-attested)' : ' Not attested'}
-          </li>
-        </ul>
-      </>
-    )
-  }
+      {prov && (
+        <>
+          <h2>Provider profile</h2>
+          <p>These are <strong>self-attested</strong> by the provider — no medical proof is ever required.</p>
+          <ul>
+            <li>Disability-literate: {prov.disabilityLiterate ? 'Yes (self-attested)' : 'Not attested'}</li>
+            <li>
+              Disabled-owned (a disabled person owns 51% or more):
+              {prov.disabledOwned ? ' Yes (self-attested)' : ' Not attested'}
+            </li>
+            <li>
+              Disabled-led (a disabled person holds primary leadership):
+              {prov.disabledLed ? ' Yes (self-attested)' : ' Not attested'}
+            </li>
+          </ul>
+        </>
+      )}
 
-  <h2>Accessibility & competence</h2>
-  <p>
-    Each item is validated separately — facility attributes are photo-backed,
-    and behaviors come from first-person visits. No single overall score.
-  </p>
-  <AttributeList statuses={statuses} />
+      <h2>Accessibility & competence</h2>
+      <p>
+        Each item is validated separately — facility attributes are photo-backed,
+        and behaviors come from first-person visits. No single overall score.
+      </p>
+      <AttributeList statuses={statuses} />
 
-  <div class="disclaimer">
-    <p>
-      Self-attested and community-sourced. We do not individually verify
-      providers at sign-up and can’t guarantee any experience or outcome.
-      <a href="/about/privacy/">How we label trust.</a>
-    </p>
-  </div>
-</Base>
+      <div class="disclaimer">
+        <p>
+          Self-attested and community-sourced. We do not individually verify
+          providers at sign-up and can’t guarantee any experience or outcome.
+          <a href="/about/privacy/">How we label trust.</a>
+        </p>
+      </div>
+    </Base>
+  )
+}

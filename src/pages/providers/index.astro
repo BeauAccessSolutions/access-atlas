@@ -1,4 +1,7 @@
 ---
+// On-demand so newly submitted providers appear immediately. Zero-JS.
+export const prerender = false;
+
 import Base from '../../layouts/Base.astro';
 import ListingCard from '../../components/ListingCard.astro';
 import { getListings } from '../../lib/repo';
@@ -17,10 +20,11 @@ const providers = await getListings('provider');
     whether they are <strong>disabled-owned or disabled-led</strong>. A provider
     may be either, both, or neither — we never merge the two.
   </p>
+  <p><a href="/contribute/submit/?kind=provider">+ Suggest a provider</a></p>
 
   {
     providers.length === 0 ? (
-      <p>No providers listed yet.</p>
+      <p>No providers listed yet. <a href="/contribute/submit/?kind=provider">Be the first to add one.</a></p>
     ) : (
       <ul class="listing-list">
         {providers.map((listing) => (

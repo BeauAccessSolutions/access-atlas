@@ -1,4 +1,7 @@
 ---
+// On-demand so newly submitted places appear immediately. Zero-JS.
+export const prerender = false;
+
 import Base from '../../layouts/Base.astro';
 import ListingCard from '../../components/ListingCard.astro';
 import { getListings } from '../../lib/repo';
@@ -13,10 +16,11 @@ const places = await getListings('place');
     is the primary interface — no map required. (A map may be added later as a
     progressive enhancement over this same list.)
   </p>
+  <p><a href="/contribute/submit/?kind=place">+ Suggest a place</a></p>
 
   {
     places.length === 0 ? (
-      <p>No places listed yet.</p>
+      <p>No places listed yet. <a href="/contribute/submit/?kind=place">Be the first to add one.</a></p>
     ) : (
       <ul class="listing-list">
         {places.map((listing) => (

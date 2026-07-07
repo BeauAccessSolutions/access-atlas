@@ -182,7 +182,7 @@ lands.
 - ✅ **Framework** → **Astro + React islands**, **custom build** (not Next.js, not no-code).
 - ✅ **"Disabled-owned" threshold & wording** → self-attested **≥ 51% ownership**; **"disabled-led"** is a separate **control/leadership** attestation. No proof, ever. (§12)
 - ✅ **Re-verification cadence** → **uniform 12 months** (`reverify_interval_days = 365`) for every attribute. Column stays per-attribute so a future tiered policy is a data change, not a migration.
-- ✅ **Submission flow** → **one shared flow** with a Place/Provider toggle and branching provider fields. (Data model is unified; UI not yet built.)
+- ✅ **Submission flow** → **one shared flow** with a Place/Provider toggle and branching provider fields. Built: `src/pages/contribute/submit.astro` + `src/pages/api/listings.ts`. New listings start `self-reported`; the submitter may self-report attributes (creates claims, not confirmations).
 - ✅ **Contributor auth mechanism** → the platform **Keycloak** IdP (pseudonymous), not hand-rolled. Public browsing stays account-free; identity gates contribution only. See §15 and `docs/platform-membership.md`. (The broader pseudonymous-contribution UX design is still open.)
 
 **Still open:**
