@@ -57,9 +57,27 @@ platform IdP is Phase 0 (not stood up). Current state:
 - [x] Write **hard-gate** — the endpoint refuses unless
   `ALLOW_PROVISIONAL_CONTRIBUTIONS=true` (local/preview only), so an
   unauthenticated write endpoint cannot ship by accident.
+- [x] **CSP / security headers** (invariant #2, "each app owns its own CSP") —
+  single policy in `src/lib/security.ts`, applied as a `<meta>` in
+  `src/layouts/Base.astro` (covers prerendered static pages, host-independent)
+  and as real HTTP headers via `src/middleware.ts` (SSR routes + frame-ancestors).
+  `script-src 'none'` makes the zero-JS non-negotiable self-enforcing (§2/§5).
+- [x] **CODEOWNERS** (invariant #4) — `.github/CODEOWNERS` guards the write path,
+  service-role client, identity seam, security policy, and safety-critical SQL.
+  Still needs "Require review from Code Owners" enabled in branch protection.
 - [ ] Register an OIDC client for Access Atlas on Keycloak (when the IdP exists).
 - [ ] Replace the provisional cookie seam with the Keycloak-verified `sub`.
 - [ ] Token-exchange → own Supabase data-access session + step-up for writes.
+- [x] **Decoupled deletion / export** (invariant #3 + §6 CCPA/CPRA) — the
+  independently-callable, complete workflow exists: `src/lib/data-rights.ts`
+  (`exportContributorData` / `deleteContributorData`, storage-aware, idempotent,
+  unit-tested) driven by the `scripts/data-rights.mjs` ops CLI. Keyed by
+  contributor id today; the Keycloak `sub` resolves to it later with no change to
+  the module.
+  - [ ] Self-service front door (a "download / delete my data" endpoint) — deferred
+    to the same milestone as the authenticated contribute flow, so it isn't an
+    unauthenticated destructive endpoint. The mechanism is ready; only the UI door
+    waits on identity.
 - [ ] Adopt shared a11y design tokens where they don't regress the zero-JS browsing surface.
 
 ## The five platform invariants (fallback copy — canonical version in governance `INVARIANTS.md`)

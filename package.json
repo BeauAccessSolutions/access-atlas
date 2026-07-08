@@ -19,7 +19,9 @@
     "test:a11y": "playwright test",
     "db:start": "npx supabase start",
     "db:reset": "npx supabase db reset",
-    "db:stop": "npx supabase stop"
+    "db:stop": "npx supabase stop",
+    "seed:import": "node scripts/seed-import.mjs",
+    "data-rights": "node scripts/data-rights.mjs"
   },
   "dependencies": {
     "@astrojs/node": "^9.5.5",

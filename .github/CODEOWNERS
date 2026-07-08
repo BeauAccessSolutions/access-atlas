@@ -1,0 +1,39 @@
+# CODEOWNERS — BAS platform invariant #4 (docs/platform-membership.md):
+# "trust boundary = repo boundary; sensitive paths get CODEOWNERS + required
+# review." Access Atlas's sensitive backend lives in this repo, so the paths that
+# can write data, hold the service-role key, define the RLS/consensus SQL, or
+# encode the safety-critical labeling rules require explicit owner review.
+#
+# NOTE: CODEOWNERS only *enforces* review when branch protection on `main` has
+# "Require review from Code Owners" enabled — set that in the repo settings.
+
+# Default owner for everything not matched more specifically below.
+*                                   @Beaudoin0zach
+
+# Write path + trusted server client (service-role key; bypasses RLS) — §6.
+/src/pages/api/                     @Beaudoin0zach
+/src/lib/supabase-server.ts         @Beaudoin0zach
+
+# Contributor-identity seam — the Keycloak/pseudonymity swap point (invariant #1).
+/src/lib/contributor.ts             @Beaudoin0zach
+/src/lib/identity-tags.ts           @Beaudoin0zach
+
+# Contributor data rights — export + irreversible delete (invariant #3, §6).
+/src/lib/data-rights.ts             @Beaudoin0zach
+
+# Ops scripts that write to the database with the service-role key (§6) — the
+# seed importer and the data-rights CLI.
+/scripts/                           @Beaudoin0zach
+
+# Security policy (CSP / headers) — invariant #2.
+/src/lib/security.ts                @Beaudoin0zach
+/src/middleware.ts                  @Beaudoin0zach
+
+# Safety-critical core (§4): labeling vocabulary + consensus formula. The SQL
+# view and the seed mirror MUST change together (§13) — one owner sees both.
+/src/lib/labeling.ts                @Beaudoin0zach
+/src/lib/seed.ts                    @Beaudoin0zach
+/supabase/                          @Beaudoin0zach
+
+# Platform membership + governance pointer.
+/docs/platform-membership.md        @Beaudoin0zach
