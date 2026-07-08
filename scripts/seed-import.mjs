@@ -123,7 +123,7 @@ if (dryRun) {
 
 // ---- apply (idempotent) -----------------------------------------------------
 
-let created = 0, updated = 0, claimsUpserted = 0;
+let listingsUpserted = 0, claimsUpserted = 0;
 
 for (const l of listings) {
   // Upsert the listing on source_ref. onConflict returns the row either way.
@@ -149,14 +149,13 @@ for (const l of listings) {
       },
       { onConflict: 'source_ref' },
     )
-    .select('id, created_at, updated_at')
+    .select('id')
     .single();
   if (lErr) {
     console.error(`Failed to upsert "${l.name}": ${lErr.message}`);
     process.exit(1);
   }
-  // created_at == updated_at (roughly) on first insert; good enough for a count.
-  if (listing.created_at === listing.updated_at) created++; else updated++;
+  listingsUpserted++;
 
   if (l.kind === 'provider') {
     const p = l.provider ?? {};
@@ -190,7 +189,7 @@ for (const l of listings) {
 }
 
 console.log(
-  `\nDone. Listings: ${created} created, ${updated} updated. ` +
+  `\nDone. Listings upserted: ${listingsUpserted}. ` +
     `Attribute claims upserted: ${claimsUpserted} (all self-reported unless explicitly sourced).`,
 );
 console.log('Every imported claim reads "self-reported / awaiting verification" until the community validates it (§4).');

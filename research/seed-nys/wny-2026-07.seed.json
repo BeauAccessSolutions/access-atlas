@@ -15,7 +15,7 @@
       "lat": null,
       "lng": null,
       "disabled_owned": false,
-      "disabled_led": false,
+      "disabled_led": true,
       "_review": {
         "flags": [],
         "source_notes": "First-party site. Anchor partner (§3). disabled_led=true rests on the federal Center for Independent Living definition: CILs are consumer-controlled (>=51% of staff/board are people with disabilities). Address confirmed on the NYSILC ILC directory. NEEDS OWNER/ORG SELF-ATTESTATION AT ONBOARDING (no proof)."
@@ -38,7 +38,7 @@
       "lat": null,
       "lng": null,
       "disabled_owned": false,
-      "disabled_led": false,
+      "disabled_led": true,
       "_review": {
         "flags": [
           "outside_erie_county"
@@ -63,7 +63,7 @@
       "lat": null,
       "lng": null,
       "disabled_owned": false,
-      "disabled_led": false,
+      "disabled_led": true,
       "_review": {
         "flags": [
           "outside_erie_county"
@@ -88,7 +88,7 @@
       "lat": null,
       "lng": null,
       "disabled_owned": false,
-      "disabled_led": false,
+      "disabled_led": true,
       "_review": {
         "flags": [],
         "source_notes": "First-party WNYIL page. Explicitly 'an organization run for and by people with behavioral health disabilities' — disabled_led directly stated. WNYIL affiliate; shares the 3108 Main St address. NEEDS SELF-ATTESTATION AT ONBOARDING."
@@ -111,7 +111,7 @@
       "lat": null,
       "lng": null,
       "disabled_owned": false,
-      "disabled_led": false,
+      "disabled_led": true,
       "_review": {
         "flags": [
           "outside_erie_county"
@@ -136,7 +136,7 @@
       "lat": null,
       "lng": null,
       "disabled_owned": false,
-      "disabled_led": false,
+      "disabled_led": true,
       "_review": {
         "flags": [
           "outside_erie_county"
@@ -161,7 +161,7 @@
       "lat": null,
       "lng": null,
       "disabled_owned": false,
-      "disabled_led": false,
+      "disabled_led": true,
       "_review": {
         "flags": [
           "statewide_anchor_context_only",
@@ -483,7 +483,7 @@
     },
     {
       "source_ref": "wny:provider:catholic-health-wny",
-      "source_url": "https://www.prnewswire.com/news-releases/catholic-health-system-uses-video-remote-interpreting-to-remove-language-barriers-for-immigrants-refugees-in-buffalo-new-york-300086731.html",
+      "source_url": "https://www.chsbuffalo.org/about-us/compliance-program/language-assistance/",
       "kind": "provider",
       "name": "Catholic Health (WNY)",
       "summary": "A Buffalo-based nonprofit health system offering 24/7 video remote interpreting including ASL across its network; a candidate to recruit for documented accessible diagnostic equipment.",
@@ -519,8 +519,8 @@
       "postal_code": "14202",
       "lat": null,
       "lng": null,
-      "disabled_owned": false,
-      "disabled_led": false,
+      "disabled_owned": true,
+      "disabled_led": true,
       "_review": {
         "flags": [
           "disabled_owned_needs_attestation"
@@ -529,168 +529,6 @@
       },
       "provider": {
         "disability_literate": true
-      },
-      "attributes": []
-    },
-    {
-      "source_ref": "wny:provider:hoag-group",
-      "source_url": "https://ogs.ny.gov/news/59-companies-receive-new-york-state-service-disabled-veteran-owned-business-certification",
-      "kind": "provider",
-      "name": "The Hoag Group LLC",
-      "summary": "A residential and commercial general construction and landscaping firm founded by a service-disabled veteran.",
-      "street": null,
-      "city": "Buffalo",
-      "region": "Erie County",
-      "postal_code": null,
-      "lat": null,
-      "lng": null,
-      "disabled_owned": false,
-      "disabled_led": false,
-      "_review": {
-        "flags": [
-          "sdvob_veteran_subset",
-          "missing_street_address",
-          "disabled_owned_needs_attestation"
-        ],
-        "source_notes": "NYS OGS-certified SDVOB — highest reliability (state certifies a service-disabled-veteran owner). OGS release lists 'The Hoag Group, Buffalo, N.Y.' Street address not published; resolve at onboarding. disability_literate=false (different axis). Do NOT infer the specific disability from 'service-disabled veteran.' NEEDS OWNER SELF-ATTESTATION AT ONBOARDING (no proof)."
-      },
-      "provider": {
-        "disability_literate": false
-      },
-      "attributes": []
-    },
-    {
-      "source_ref": "wny:provider:greater-frontier",
-      "source_url": "https://ogs.ny.gov/news/59-companies-receive-new-york-state-service-disabled-veteran-owned-business-certification",
-      "kind": "provider",
-      "name": "Greater Frontier LLC",
-      "summary": "A construction cost-estimating and project-management firm founded by military veterans.",
-      "street": null,
-      "city": "Buffalo",
-      "region": "Erie County",
-      "postal_code": null,
-      "lat": null,
-      "lng": null,
-      "disabled_owned": false,
-      "disabled_led": false,
-      "_review": {
-        "flags": [
-          "sdvob_veteran_subset",
-          "missing_street_address",
-          "disabled_owned_needs_attestation"
-        ],
-        "source_notes": "NYS OGS-certified SDVOB — highest reliability. OGS release lists 'Greater Frontier, Buffalo, N.Y.' Company site confirms veteran-founded. No street address published; resolve at onboarding. NEEDS OWNER SELF-ATTESTATION AT ONBOARDING (no proof)."
-      },
-      "provider": {
-        "disability_literate": false
-      },
-      "attributes": []
-    },
-    {
-      "source_ref": "wny:provider:vanguard-innovative",
-      "source_url": "https://ogs.ny.gov/news/59-companies-receive-new-york-state-service-disabled-veteran-owned-business-certification",
-      "kind": "provider",
-      "name": "Vanguard Innovative Solutions LLC",
-      "summary": "A computer systems design and IT services firm owned by a service-disabled veteran.",
-      "street": "215 Wood Acres Drive",
-      "city": "East Amherst",
-      "region": "Erie County",
-      "postal_code": "14051",
-      "lat": null,
-      "lng": null,
-      "disabled_owned": false,
-      "disabled_led": false,
-      "_review": {
-        "flags": [
-          "sdvob_veteran_subset",
-          "address_may_be_mailing",
-          "disabled_owned_needs_attestation"
-        ],
-        "source_notes": "NYS OGS-certified SDVOB — highest reliability. OGS release lists 'Vanguard Innovative Solutions, East Amherst, N.Y.' Address from a NY business filing (may be registered/mailing address) — verify at onboarding. East Amherst is in Erie County. NEEDS OWNER SELF-ATTESTATION AT ONBOARDING (no proof)."
-      },
-      "provider": {
-        "disability_literate": false
-      },
-      "attributes": []
-    },
-    {
-      "source_ref": "wny:provider:buffalo-veteran-contracting",
-      "source_url": "https://sdves.ogs.ny.gov/business-search/152d65b8-638e-4b5e-9376-2161c2c4c0db",
-      "kind": "provider",
-      "name": "Buffalo Veteran Contracting, LLC",
-      "summary": "A general contracting and excavating business owned by a service-disabled veteran, in Erie County.",
-      "street": null,
-      "city": "West Falls",
-      "region": "Erie County",
-      "postal_code": "14170",
-      "lat": null,
-      "lng": null,
-      "disabled_owned": false,
-      "disabled_led": false,
-      "_review": {
-        "flags": [
-          "sdvob_veteran_subset",
-          "missing_street_address",
-          "disabled_owned_needs_attestation"
-        ],
-        "source_notes": "NYS OGS SDVOB directory (control page above) — highest reliability. West Falls, NY (Erie County) per BBB and NY filings; exact street not surfaced publicly. NEEDS OWNER SELF-ATTESTATION AT ONBOARDING (no proof)."
-      },
-      "provider": {
-        "disability_literate": false
-      },
-      "attributes": []
-    },
-    {
-      "source_ref": "wny:provider:aveteran-corp",
-      "source_url": "https://www.veteranownedbusiness.com/ny/erie/buffalo",
-      "kind": "provider",
-      "name": "Aveteran Corp.",
-      "summary": "A self-identified service-disabled-veteran-owned construction firm in Buffalo.",
-      "street": null,
-      "city": "Buffalo",
-      "region": "Erie County",
-      "postal_code": "14206",
-      "lat": null,
-      "lng": null,
-      "disabled_owned": false,
-      "disabled_led": false,
-      "_review": {
-        "flags": [
-          "self_listed_directory_medium_reliability",
-          "missing_street_address",
-          "disabled_owned_needs_attestation"
-        ],
-        "source_notes": "Self-listed on veteranownedbusiness.com as a 'verified Service Disabled Veteran-Owned Small Business (SDVOSB)' in construction. MEDIUM reliability — a self-listed directory claim, NOT the NYS OGS cert. Confirm against NYS OGS or the federal VA SDVOSB registry at onboarding. NEEDS OWNER SELF-ATTESTATION AT ONBOARDING (no proof)."
-      },
-      "provider": {
-        "disability_literate": false
-      },
-      "attributes": []
-    },
-    {
-      "source_ref": "wny:provider:cw-snow-plowing",
-      "source_url": "https://ogs.ny.gov/news/59-companies-receive-new-york-state-service-disabled-veteran-owned-business-certification",
-      "kind": "provider",
-      "name": "CW Snow Plowing",
-      "summary": "A snow-plowing and landscaping business owned by a service-disabled veteran, in Erie County.",
-      "street": null,
-      "city": "Cheektowaga",
-      "region": "Erie County",
-      "postal_code": null,
-      "lat": null,
-      "lng": null,
-      "disabled_owned": false,
-      "disabled_led": false,
-      "_review": {
-        "flags": [
-          "sdvob_veteran_subset",
-          "missing_street_address",
-          "disabled_owned_needs_attestation"
-        ],
-        "source_notes": "NYS OGS-certified SDVOB (Cheektowaga, Erie County). Street address not published; resolve at onboarding. High reliability for the disabled-owned flag (state cert). NEEDS OWNER SELF-ATTESTATION AT ONBOARDING (no proof)."
-      },
-      "provider": {
-        "disability_literate": false
       },
       "attributes": []
     },
@@ -841,14 +679,7 @@
         ],
         "source_notes": "First-party page, but WebFetch was blocked (403); attribute is from the search engine's cached excerpt. MEDIUM reliability pending re-fetch. Accessible restroom/parking not asserted, so omitted."
       },
-      "attributes": [
-        {
-          "key": "entrance_step_free",
-          "asserted_value": true,
-          "source_url": "https://exploreandmore.org/visit/know-before-you-go/",
-          "note": "Museum recommends the Commercial Street entrance via an accessibility ramp and adjoining bridge. CAUTION: drawn from a search-cached excerpt of the museum's own page — direct fetch returned HTTP 403; re-fetch the first-party page to confirm."
-        }
-      ]
+      "attributes": []
     },
     {
       "source_ref": "wny:place:becpl-central",

@@ -1,52 +1,63 @@
-# WNY seed conversion notes
+# WNY seed conversion + review notes
 
-`listings.json` (the research batch, 49 records) → `wny-2026-07.seed.json`
-(importer format), via `convert.mjs`. **This is a candidate for review — not yet
-reviewed, not yet imported.** Every claim imports as `self_reported` (§4).
+`listings.json` (raw research batch, 49 records) → `wny-2026-07.seed.json`
+(importer format), via `convert.mjs`. A source-review pass was completed
+2026-07-08 (below). Every claim imports as `self_reported` (§4).
 
-Re-run any time: `node research/seed-nys/convert.mjs`
-Validate shape (no DB needed): `npm run seed:import -- research/seed-nys/wny-2026-07.seed.json --dry-run`
+Re-run: `node research/seed-nys/convert.mjs`
+Validate shape (no DB): `npm run seed:import -- research/seed-nys/wny-2026-07.seed.json --dry-run`
 
-## Result
+## Result (after review)
 
-- **48** listings written (**1** dropped), **34** attribute claims.
-- 25 places + 23 providers → the UB Special Care Dental Clinic was dropped.
+- **42** listings (7 dropped), **33** self-reported attribute claims.
+- 23 places + 19 providers. 35/42 in Erie County; the rest are adjacent-county /
+  statewide network context (not counted toward the §3 density target).
+- Representation: **2 disabled-owned** (Service Bridges, Fly By Cafe) + **9
+  disabled-led** (7 ILCs incl. anchor WNYIL, plus Service Bridges + Fly By Cafe).
 
-## Automated decisions (deterministic, from gaps.md §4)
+## Automated conversion decisions (deterministic, gaps.md §4)
 
 | Action | Rule | Records |
 |---|---|---|
-| **Excluded listing** | `planned_2027_not_operational` — not open yet, don't surface | UB Special Care Dental Clinic (Squire Hall) |
-| **Dropped attribute claims** (listing kept, no claim until a visit) | physical-safety caution — never assert access that's partial / elevator-dependent / not-yet-built (§4) | Shea's Buffalo Theatre (`partial_accessibility_caution`), NFTA Lafayette Square (`elevator_dependent_underground`), Tifft Nature Preserve (`project_in_progress_reverify`) |
-| **Promoted `accessible_parking`** | Gap B is fixed — providers can now hold parking; the research had held these as notes | People Inc. Health Services Bldg, Jericho Road — Doat St Clinic |
-| **Mapped** | `candidate_id`→`source_ref` (`wny:<kind>:<id>`), `attribute_key`→`key`, `provider_profile.disability_literate`→`provider.disability_literate`, top-level `disabled_owned`/`disabled_led` kept | all |
+| Excluded — not open yet | `planned_2027_not_operational` | UB Special Care Dental Clinic |
+| Dropped claims (listing kept) | physical-safety caution — never assert partial/elevator-dependent/unbuilt access (§4) | Shea's, NFTA Lafayette Square, Tifft |
+| Promoted `accessible_parking` | Gap B fixed — providers can hold parking | People Inc., Jericho Road — Doat St |
+| Mapped | `candidate_id`→`source_ref`, `attribute_key`→`key`, ownership read from top-level **or** `provider_profile` | all |
 
-Each record keeps a `_review` field (the research `flags` + `source_notes`). The
-importer ignores underscore fields; it's there for the reviewer.
+## Review pass — completed 2026-07-08
 
-## What the human reviewer MUST still do before import
+1. **BUG FIXED — representation was being lost.** The raw batch stored ownership
+   inconsistently (top-level for places, inside `provider_profile` for providers).
+   The converter now reads both; without this, 14 provider records (7 disabled-led
+   ILCs incl. WNYIL + 7 disabled-owned) imported with ownership silently false.
+2. **Source reachability swept — 47/48 returned HTTP 200.** The one exception,
+   Explore & More, hard-blocks automated fetch (403 to both curl and WebFetch), so
+   its accessibility claim is unverifiable from here → **claim dropped, listing
+   kept** until a visit / manual re-fetch (§4).
+3. **Catholic Health source upgraded** — the 2015 PR Newswire release is
+   corroborated by the system's own Language Assistance compliance page; cite that
+   durable first-party page instead.
+4. **Editorial: 6 pure-B2B SDVOBs excluded** (Hoag, Greater Frontier, Vanguard,
+   Buffalo Veteran Contracting, Aveteran, CW Snow Plowing) — legitimately
+   disabled-owned but construction/IT/snow-plowing with zero accessibility claims;
+   off-mission for a discovery platform and would skew "disabled-owned" toward
+   veteran B2B. Retained in the raw batch for a possible future disabled-owned-
+   business directory. Service Bridges (Deaf-owned interpreting) + Fly By Cafe (a
+   visitable place) kept. This resolves the `sdvob_veteran_subset` coverage bias.
 
-1. **Sign off on every `source_url`.** Import is honest only if each is real (§7).
-   Watch the flagged ones: `source_fetch_403_reverify` (Explore & More — re-fetch),
-   `press_release_source_corroborate` (Catholic Health ASL), `self_listed_directory_medium_reliability` (Aveteran).
-2. **Restore nuanced claims on the 3 safety-caution records** if warranted, with the
-   caveat surfaced (Shea's has no elevator; Lafayette Square depends on elevators;
-   Tifft's trail rebuild must be confirmed complete).
-3. **Confirm the promoted parking claims** read right (they cite the developer /
-   211WNY pages, not an audit — `self_reported`, must be visit-confirmed).
-4. **Decide the veteran-skew disclosure** for disabled-owned records (`sdvob_veteran_subset`):
-   6 of 8 are service-disabled-veteran-owned. Real coverage bias — name it, don't hide it.
-5. **Addresses:** several SDVOB records have `street: null` (`missing_street_address` /
-   `address_may_be_mailing`) — resolve at onboarding.
-6. **Region scope:** `outside_erie_county` / `statewide_anchor_context_only` records are
-   context, not Erie-density — keep, but don't count them toward the §3 density target.
+## Still recommended before/at onboarding (not blockers)
 
-## What was intentionally NOT imported (by design, not omission)
+- **Null street addresses** on 5 SDVOB-derived records — resolve when owners onboard.
+- **`disabled_owned`/`disabled_led` are self-attestations** — confirm at owner
+  onboarding; the seed cites the cert/source but the flag is a self-attest by design (§12).
+- **Adjacent-county / statewide records** are network context — surface as such,
+  don't count toward Erie density (§3).
 
-- **MDE claims** (`height_adjustable_exam_table`, `accessible_scale`): zero — no public
-  registry exists. These come only from first-person visits / the July 8 + Aug 9 2026
-  deadline recruitment push (gaps.md §2b).
-- **Provider behaviors** (`communicated_directly`, `staff_knew_equipment`): zero by
-  design — first-person only (§8c). The moat, working as intended.
-- **`automatic_doors`, dental tilt-lift, panoramic X-ray**: no schema key yet (Gaps D +
-  dental, deferred). Held in the raw research notes.
+## Intentionally zero (by design, not omission)
+
+- **MDE** (`height_adjustable_exam_table`, `accessible_scale`): no public registry —
+  first-person / July+Aug 2026 recruitment only (gaps.md §2b).
+- **Provider behaviors** (`communicated_directly`, `staff_knew_equipment`):
+  first-person only (§8c) — the moat.
+- **`automatic_doors`, dental tilt-lift, panoramic X-ray**: no schema key yet
+  (Gaps D + dental, deferred).

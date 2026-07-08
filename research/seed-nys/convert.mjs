@@ -40,6 +40,25 @@ const kindOk = (key, kind) => CATALOG[key] === 'both' || CATALOG[key] === kind;
 
 // Flags that remove the listing entirely (not real/available).
 const DROP_LISTING = new Set(['planned_2027_not_operational']);
+// Editorial exclusions (reviewer decision 2026-07-08): pure-B2B service-disabled-
+// veteran-owned firms (construction / IT / snow plowing) that are legitimately
+// disabled-owned but are NOT accessible places or disability-competent providers
+// and carry zero accessibility claims. They'd make the representation axis (§1)
+// read as veteran-B2B padding. Kept in the raw batch for a possible future
+// disabled-owned-business directory. Service Bridges (Deaf-owned interpreting) and
+// Fly By Cafe (a visitable place) are RETAINED.
+const DROP_CANDIDATE = new Set([
+  'hoag-group',
+  'greater-frontier',
+  'vanguard-innovative',
+  'buffalo-veteran-contracting',
+  'aveteran-corp',
+  'cw-snow-plowing',
+]);
+// Attributes we could not verify from here and won't assert (§4): Explore & More's
+// accessibility page hard-blocks fetching (403 to curl AND WebFetch), so its claim
+// is unconfirmable — drop the claim, keep the listing until a visit / re-fetch.
+const DROP_ATTRS_FOR_CANDIDATE = new Set(['explore-and-more']);
 // Flags where asserting a positive access claim could misrepresent physical
 // safety — drop the claims, keep the listing (§4). Reviewer restores nuance.
 const DROP_ATTRS = new Set([
@@ -48,6 +67,13 @@ const DROP_ATTRS = new Set([
   'elevator_dependent_underground', // access hinges on elevators that can fail
 ]);
 const PROMOTE_PARKING = 'provider_parking_evidence_no_schema_slot';
+// Source upgrades (reviewer 2026-07-08): replace a weak/transient source with a
+// durable first-party one that was corroborated during the review pass.
+const SOURCE_OVERRIDE = {
+  // The 2015 PR Newswire release is corroborated by Catholic Health's own
+  // Language Assistance compliance page — cite that instead.
+  'catholic-health-wny': 'https://www.chsbuffalo.org/about-us/compliance-program/language-assistance/',
+};
 
 const src = JSON.parse(readFileSync(SRC, 'utf8'));
 const records = Array.isArray(src) ? src : src.listings;
@@ -74,10 +100,15 @@ for (const r of records) {
     dropped++;
     continue;
   }
+  if (DROP_CANDIDATE.has(id)) {
+    log.push(`EXCLUDE listing (pure-B2B SDVOB, off-mission — reviewer decision): ${tag}`);
+    dropped++;
+    continue;
+  }
 
   const rec = {
     source_ref: `wny:${r.kind}:${id}`,
-    source_url: r.source_url,
+    source_url: SOURCE_OVERRIDE[id] ?? r.source_url,
     kind: r.kind,
     name: r.name,
     summary: r.summary ?? null,
@@ -87,8 +118,11 @@ for (const r of records) {
     postal_code: r.postal_code ?? null,
     lat: r.lat ?? null,
     lng: r.lng ?? null,
-    disabled_owned: Boolean(r.disabled_owned),
-    disabled_led: Boolean(r.disabled_led),
+    // The research batch stored ownership inconsistently: top-level for places,
+    // but inside provider_profile for providers. Read BOTH so the representation
+    // axis (§1) isn't silently lost for the SDVOB / disabled-led provider records.
+    disabled_owned: Boolean(r.disabled_owned ?? r.provider_profile?.disabled_owned),
+    disabled_led: Boolean(r.disabled_led ?? r.provider_profile?.disabled_led),
     // Review metadata — importer ignores underscore fields; reviewer uses them.
     _review: { flags, source_notes: r.source_notes ?? null },
   };
@@ -98,7 +132,11 @@ for (const r of records) {
 
   // Attributes
   const safetyDrop = flags.filter((f) => DROP_ATTRS.has(f));
-  if (safetyDrop.length && (r.attributes || []).length) {
+  if (DROP_ATTRS_FOR_CANDIDATE.has(id) && (r.attributes || []).length) {
+    log.push(`DROP ${r.attributes.length} attr claim(s) — source unverifiable from here (403): ${tag}`);
+    attrsDropped += r.attributes.length;
+    rec.attributes = [];
+  } else if (safetyDrop.length && (r.attributes || []).length) {
     log.push(
       `DROP ${r.attributes.length} attr claim(s) — physical-safety caution (${safetyDrop.join(',')}): ${tag}`,
     );
