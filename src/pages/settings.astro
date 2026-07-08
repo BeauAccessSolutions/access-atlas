@@ -38,12 +38,12 @@ const FONT_LABELS: Record<(typeof FONT_CHOICES)[number], string> = {
 >
   {
     status === 'saved' && (
-      <p class="disclaimer" role="status">Your accessibility settings were saved. They’re applied below.</p>
+      <p class="disclaimer" role="status" aria-atomic="true">Your accessibility settings were saved. They’re applied below.</p>
     )
   }
   {
     status === 'reset' && (
-      <p class="disclaimer" role="status">Your accessibility settings were reset to the defaults.</p>
+      <p class="disclaimer" role="status" aria-atomic="true">Your accessibility settings were reset to the defaults.</p>
     )
   }
 

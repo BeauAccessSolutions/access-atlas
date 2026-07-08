@@ -28,7 +28,7 @@ const noun = kind === 'provider' ? 'provider' : 'place';
 ---
 
 <Base title={`Suggest a ${noun}`}>
-  {banner && <p class="disclaimer" role={banner.role}>{banner.text}</p>}
+  {banner && <p class="disclaimer" role={banner.role} aria-atomic="true">{banner.text}</p>}
 
   <h1>Suggest a {noun}</h1>
 
@@ -42,7 +42,7 @@ const noun = kind === 'provider' ? 'provider' : 'place';
     community-verified only after independent visits confirm them.
   </p>
 
-  {gateReason && <p class="disclaimer" role="status">{gateReason} You can still see the form below.</p>}
+  {gateReason && <p class="disclaimer" role="status" aria-atomic="true">{gateReason} You can still see the form below.</p>}
 
   <form method="post" action="/api/listings" enctype="multipart/form-data">
     <input type="hidden" name="kind" value={kind} />

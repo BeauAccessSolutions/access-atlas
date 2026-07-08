@@ -37,7 +37,7 @@ const listingHref = claim
 
 <Base title={claim ? `Report your visit — ${claim.attributeLabel}` : 'Report your visit'}>
   {banner && (
-    <p class="disclaimer" role={banner.role}>{banner.text}</p>
+    <p class="disclaimer" role={banner.role} aria-atomic="true">{banner.text}</p>
   )}
 
   {
@@ -45,7 +45,7 @@ const listingHref = claim
       !isDbConfigured ? (
         <>
           <h1>Report your visit</h1>
-          <p class="disclaimer" role="status">
+          <p class="disclaimer" role="status" aria-atomic="true">
             Contributions need a connected database. This is a static preview with
             no backend attached, so there's nothing to report against yet.
           </p>
@@ -67,7 +67,7 @@ const listingHref = claim
         </p>
 
         {gateReason && (
-          <p class="disclaimer" role="status">{gateReason} You can still see the form below.</p>
+          <p class="disclaimer" role="status" aria-atomic="true">{gateReason} You can still see the form below.</p>
         )}
 
         <form method="post" action="/api/confirmations" enctype="multipart/form-data">

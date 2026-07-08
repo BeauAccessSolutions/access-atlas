@@ -460,6 +460,9 @@ form input[type="text"],
 form input[type="date"],
 form select,
 form textarea {
+  /* `font: inherit` keeps controls at the body's 1rem (>=16px, since the min
+     text-size setting is 100%). That >=16px matters: iOS Safari zooms the page
+     when a focused field's font is under 16px. Do not shrink these below 1rem. */
   font: inherit;
   padding: 0.5rem 0.6rem;
   margin-top: 0.15rem;
@@ -548,3 +551,40 @@ footer.site {
   font-size: 0.95rem;
 }
 footer.site .footer-links { margin-bottom: 0; }
+
+/* -------- Print ----------------------------------------------------------
+   People print or save-as-PDF a listing to carry to a visit (§5: works on
+   paper too). Drop interactive chrome and ink-heavy surfaces, force plain
+   black-on-white, and keep each listing/claim whole across a page break so a
+   safety-relevant attribute never splits mid-row. */
+@media print {
+  :root {
+    --color-bg: #fff;
+    --color-surface: #fff;
+    --color-surface-2: #fff;
+    --color-fg: #000;
+    --color-muted: #1a1a1a;
+    --color-border: #999;
+  }
+  body { background: #fff; color: #000; }
+  /* Nav, skip link, and footer link-row aren't useful on paper (the site name
+     stays, so the printout says where it came from). */
+  header.site nav,
+  .skip-link,
+  footer.site .footer-links { display: none; }
+  /* Flatten decoration that wastes ink or muddies text. */
+  .hero,
+  .listing-card,
+  .attr-row,
+  .disclaimer,
+  form fieldset,
+  .badge {
+    box-shadow: none !important;
+    background: #fff !important;
+  }
+  a { color: #000; text-decoration: underline; }
+  /* Don't split a listing card or an attribute claim across pages. */
+  .listing-card,
+  .attr-row { break-inside: avoid; page-break-inside: avoid; }
+  main.container { padding-block: 0; }
+}

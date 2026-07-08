@@ -20,7 +20,17 @@ const places = await getListings('place');
 
   {
     places.length === 0 ? (
-      <p>No places listed yet. <a href="/contribute/submit/?kind=place">Be the first to add one.</a></p>
+      <div class="disclaimer">
+        <p>
+          <strong>No places here yet.</strong> Access Atlas is starting in
+          Buffalo / Erie County, and this directory grows from real first-person
+          visits — so it's sparse on purpose until the community fills it in.
+        </p>
+        <p>
+          <a href="/contribute/submit/?kind=place">Suggest an accessible place</a>,
+          or browse <a href="/providers/">providers</a> instead.
+        </p>
+      </div>
     ) : (
       <ul class="listing-list">
         {places.map((listing) => (

@@ -28,7 +28,7 @@ const justSubmitted = Astro.url.searchParams.get('submitted') === '1';
   ) : (
     <Base title={listing.name} description={listing.summary ?? undefined}>
       {justSubmitted && (
-        <p class="disclaimer" role="status">
+        <p class="disclaimer" role="status" aria-atomic="true">
           Thanks — your listing was added. It starts as “self-reported / awaiting
           verification” until community visits confirm it.
         </p>
