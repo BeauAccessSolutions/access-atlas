@@ -438,6 +438,29 @@ strong { font-weight: 650; }
 
 .attr-desc { color: var(--color-muted); font-size: 0.95rem; }
 .report-link { font-size: 0.95rem; width: fit-content; font-weight: 600; }
+
+/* Evidence photos under a claim (§4: photos are the evidence base). Thumbnails
+   only — the full photo is a plain link (§5 low-bandwidth). max-width keeps a
+   legacy full-size fallback (no thumb) from blowing up the layout. */
+.evidence-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.25rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.evidence-photo { margin: 0; }
+.evidence-photo img {
+  display: block;
+  max-width: 10rem;
+  max-height: 10rem;
+  width: auto;
+  height: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+.evidence-photo figcaption { max-width: 10rem; margin-top: 0.2rem; }
 .stale-note {
   color: var(--tone-disputed);
   font-size: 0.9rem;

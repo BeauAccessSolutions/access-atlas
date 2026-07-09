@@ -117,7 +117,7 @@ export async function deleteContributorData(
 
   const { data: confs, error: fErr } = await admin
     .from('confirmations')
-    .select('id, claim_id, photo_url')
+    .select('id, claim_id, photo_url, photo_thumb_url')
     .eq('contributor_id', contributorId);
   if (fErr) throw new Error(fErr.message);
 
@@ -144,8 +144,12 @@ export async function deleteContributorData(
   }
 
   // 2. Remove evidence photos from storage FIRST (not covered by FK cascade).
+  //    Both objects per photo: the full image AND its thumbnail (0007).
   const paths = confirmations
-    .map((c) => storagePathFromPublicUrl(c.photo_url as string | null))
+    .flatMap((c) => [
+      storagePathFromPublicUrl(c.photo_url as string | null),
+      storagePathFromPublicUrl(c.photo_thumb_url as string | null),
+    ])
     .filter((p): p is string => p !== null);
   let deletedPhotos = 0;
   if (paths.length > 0) {

@@ -21,6 +21,7 @@ export const prerender = false;
 
 const MAX_PHOTO_BYTES = 10 * 1024 * 1024; // 10 MB before re-encode
 const MAX_NOTE_LEN = 2000;
+const MAX_ALT_LEN = 300;
 
 // Every exit redirects back to the confirm page with an honest status the page
 // renders in a role="status" banner. Zero-JS: the server tells the user what
@@ -65,6 +66,14 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       return back(claimId, 'photo_too_big');
     }
 
+    // Alt text is part of the evidence (§5; a11y audit Tier 3): a photo a blind
+    // or low-vision user can't read isn't evidence for them. Required with a
+    // photo, meaningless without one.
+    const photoAlt = ((form.get('photo_alt') as string | null) ?? '').trim().slice(0, MAX_ALT_LEN);
+    if (hasPhoto && !photoAlt) {
+      return back(claimId, 'alt_required');
+    }
+
     const observedNote = (form.get('observed_note') as string | null)?.slice(0, MAX_NOTE_LEN) || null;
     const visitedOn = normalizeDate(form.get('visited_on'));
     const tags = sanitizeTags(form.getAll('identity_tags').map(String));
@@ -75,21 +84,38 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const contributor = resolved.contributor;
 
     // Strip EXIF + normalize BEFORE storing (§6). sharp drops metadata by
-    // default on re-encode; rotate() bakes in orientation so we can.
+    // default on re-encode; rotate() bakes in orientation so we can. Two
+    // outputs from one pass: the full evidence photo and a small thumbnail so
+    // listing pages can show evidence within the low-bandwidth budget (§5) —
+    // the full photo stays one click away.
     let photoUrl: string | null = null;
+    let photoThumbUrl: string | null = null;
     if (hasPhoto) {
       const input = Buffer.from(await (photo as File).arrayBuffer());
-      const cleaned = await sharp(input)
-        .rotate()
-        .resize({ width: 1600, height: 1600, fit: 'inside', withoutEnlargement: true })
-        .jpeg({ quality: 80 })
-        .toBuffer();
-      const path = `${claimId}/${crypto.randomUUID()}.jpg`;
-      const up = await supabaseAdmin.storage
-        .from('evidence')
-        .upload(path, cleaned, { contentType: 'image/jpeg', upsert: false });
-      if (up.error) return back(claimId, 'error');
-      photoUrl = supabaseAdmin.storage.from('evidence').getPublicUrl(path).data.publicUrl;
+      const base = sharp(input).rotate();
+      const [cleaned, thumb] = await Promise.all([
+        base
+          .clone()
+          .resize({ width: 1600, height: 1600, fit: 'inside', withoutEnlargement: true })
+          .jpeg({ quality: 80 })
+          .toBuffer(),
+        base
+          .clone()
+          .resize({ width: 320, height: 320, fit: 'inside', withoutEnlargement: true })
+          .jpeg({ quality: 70 })
+          .toBuffer(),
+      ]);
+      const id = crypto.randomUUID();
+      const path = `${claimId}/${id}.jpg`;
+      const thumbPath = `${claimId}/${id}.thumb.jpg`;
+      const store = supabaseAdmin.storage.from('evidence');
+      const [up, upThumb] = await Promise.all([
+        store.upload(path, cleaned, { contentType: 'image/jpeg', upsert: false }),
+        store.upload(thumbPath, thumb, { contentType: 'image/jpeg', upsert: false }),
+      ]);
+      if (up.error || upThumb.error) return back(claimId, 'error');
+      photoUrl = store.getPublicUrl(path).data.publicUrl;
+      photoThumbUrl = store.getPublicUrl(thumbPath).data.publicUrl;
     }
 
     const { error } = await supabaseAdmin.from('confirmations').insert({
@@ -98,6 +124,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       agrees,
       observed_note: observedNote,
       photo_url: photoUrl,
+      photo_thumb_url: photoThumbUrl,
+      photo_alt: hasPhoto ? photoAlt : null,
       reviewer_identity_tags: tags,
       visited_on: visitedOn,
     });

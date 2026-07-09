@@ -7,6 +7,7 @@ import type {
   AttributeDefOption,
   AttributeStatus,
   ClaimForConfirm,
+  EvidencePhoto,
   Listing,
   ListingKind,
 } from './types';
@@ -65,6 +66,40 @@ export async function getStatusesForListing(
     .eq('listing_id', listingId);
   if (error) throw error;
   return (data ?? []).map(rowToStatus);
+}
+
+// Public evidence photos for one listing, grouped by claim, newest first (§4:
+// the photos ARE the evidence base — this is how pages find them). Reads the
+// evidence_photos view (migration 0007), which exposes only photo fields —
+// never notes/tags/contributor ids (§6). The seed ships no photos, so the
+// no-DB fallback is honestly empty.
+export async function getEvidenceForListing(
+  listingId: string,
+): Promise<Map<string, EvidencePhoto[]>> {
+  const byClaim = new Map<string, EvidencePhoto[]>();
+  if (!isDbConfigured || !supabase) return byClaim;
+
+  const { data, error } = await supabase
+    .from('evidence_photos')
+    .select('claim_id, photo_url, photo_thumb_url, photo_alt, agrees, observed_on')
+    .eq('listing_id', listingId)
+    .order('observed_on', { ascending: false });
+  if (error) throw error;
+
+  for (const row of data ?? []) {
+    const photo: EvidencePhoto = {
+      claimId: row.claim_id,
+      photoUrl: row.photo_url,
+      photoThumbUrl: row.photo_thumb_url ?? null,
+      photoAlt: row.photo_alt ?? null,
+      agrees: !!row.agrees,
+      observedOn: row.observed_on,
+    };
+    const list = byClaim.get(photo.claimId);
+    if (list) list.push(photo);
+    else byClaim.set(photo.claimId, [photo]);
+  }
+  return byClaim;
 }
 
 // Attributes a submitter can self-report against, for one listing kind. Reads

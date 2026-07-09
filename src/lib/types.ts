@@ -60,6 +60,22 @@ export interface ClaimForConfirm {
   relevantIdentityTag: string | null;
 }
 
+// One public evidence photo (the evidence_photos view, migration 0007). This is
+// the ONLY shape photo evidence reaches pages in — photo fields plus a coarse
+// date and the agree/dissent flag, never notes/tags/contributor ids (§6).
+export interface EvidencePhoto {
+  claimId: string;
+  photoUrl: string;
+  photoThumbUrl: string | null;
+  // Contributor-written description — required at upload, so only legacy/null
+  // rows can miss it. Render as the img alt.
+  photoAlt: string | null;
+  // false = this photo documents a PROBLEM (dissent) — label it honestly (§4).
+  agrees: boolean;
+  // yyyy-mm-dd (date, not timestamp — §6).
+  observedOn: string;
+}
+
 // One row of attribute_claim_status — a single, separately-labeled claim (§4).
 export interface AttributeStatus {
   claimId: string;

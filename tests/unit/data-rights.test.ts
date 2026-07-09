@@ -15,7 +15,13 @@ import {
 
 interface Rows {
   contributors: { id: string }[];
-  confirmations: { id: string; claim_id: string; photo_url: string | null; contributor_id: string }[];
+  confirmations: {
+    id: string;
+    claim_id: string;
+    photo_url: string | null;
+    photo_thumb_url?: string | null;
+    contributor_id: string;
+  }[];
   listings: { id: string; submitted_by: string | null }[];
 }
 
@@ -81,9 +87,13 @@ function seedRows(): Rows {
         claim_id: 'claim-A',
         contributor_id: CONTRIB,
         photo_url: 'https://x.supabase.co/storage/v1/object/public/evidence/claim-A/aaa.jpg',
+        // Photos uploaded since 0007 carry a thumbnail — BOTH objects must go.
+        photo_thumb_url:
+          'https://x.supabase.co/storage/v1/object/public/evidence/claim-A/aaa.thumb.jpg',
       },
       { id: 'f2', claim_id: 'claim-B', contributor_id: CONTRIB, photo_url: null },
       // Two confirmations on the same claim -> claim id must be de-duplicated.
+      // Pre-0007 shape (no thumbnail) — deletion must still handle it.
       {
         id: 'f3',
         claim_id: 'claim-A',
@@ -117,9 +127,14 @@ describe('deleteContributorData', () => {
 
     expect(result.existed).toBe(true);
     expect(result.deletedConfirmations).toBe(3);
-    // Both photo'd confirmations' objects are removed; the null-photo one isn't.
-    expect(removedPaths.sort()).toEqual(['claim-A/aaa.jpg', 'claim-A/bbb.jpg']);
-    expect(result.deletedPhotos).toBe(2);
+    // Every stored object goes: full photos AND thumbnails (when present);
+    // the null-photo confirmation contributes nothing.
+    expect(removedPaths.sort()).toEqual([
+      'claim-A/aaa.jpg',
+      'claim-A/aaa.thumb.jpg',
+      'claim-A/bbb.jpg',
+    ]);
+    expect(result.deletedPhotos).toBe(3);
     // The contributor row is deleted (FK cascades confirmations); listings are NOT.
     expect(deletes).toContainEqual({ table: 'contributors', ids: [CONTRIB] });
     expect(deletes.find((d) => d.table === 'listings')).toBeUndefined();

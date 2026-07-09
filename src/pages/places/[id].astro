@@ -8,13 +8,15 @@ import Base from '../../layouts/Base.astro';
 import AttributeList from '../../components/AttributeList.astro';
 import CategoryIcon from '../../components/CategoryIcon.astro';
 import { categoryLabel, isCategory } from '../../lib/categories';
-import { getListing, getStatusesForListing } from '../../lib/repo';
+import { getEvidenceForListing, getListing, getStatusesForListing } from '../../lib/repo';
 
 const { id } = Astro.params;
 const listing = id ? await getListing(id) : null;
 if (!listing || listing.kind !== 'place') Astro.response.status = 404;
 
-const statuses = listing ? await getStatusesForListing(listing.id) : [];
+const [statuses, evidence] = listing
+  ? await Promise.all([getStatusesForListing(listing.id), getEvidenceForListing(listing.id)])
+  : [[], new Map()];
 const place = listing ? [listing.city, listing.region].filter(Boolean).join(', ') : '';
 const justSubmitted = Astro.url.searchParams.get('submitted') === '1';
 ---
@@ -60,7 +62,7 @@ const justSubmitted = Astro.url.searchParams.get('submitted') === '1';
         Each item below is validated on its own. We never roll accessibility up
         into a single star rating.
       </p>
-      <AttributeList statuses={statuses} />
+      <AttributeList statuses={statuses} evidence={evidence} />
 
       <div class="disclaimer">
         <p>

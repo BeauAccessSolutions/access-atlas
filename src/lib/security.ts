@@ -23,11 +23,25 @@
 // inlined placeholder. style 'unsafe-inline' is required because Astro inlines
 // small stylesheets (astro.config.mjs `inlineStylesheets: 'auto'`); it permits
 // inline STYLE only, never script.
+// LOCAL DEV ONLY: `https:` doesn't cover a local Supabase (http://127.0.0.1),
+// so evidence photos would be CSP-blocked in dev. When the configured storage
+// origin is non-https we allow exactly that origin. In production Supabase is
+// https and this adds nothing — the shipped policy is unchanged.
+const devStorageOrigin = (() => {
+  const url = import.meta.env.PUBLIC_SUPABASE_URL;
+  if (!url || url.startsWith('https://')) return null;
+  try {
+    return new URL(url).origin;
+  } catch {
+    return null;
+  }
+})();
+
 export const CONTENT_SECURITY_POLICY = [
   "default-src 'none'",
   "script-src 'none'",
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' https: data:",
+  `img-src 'self' https: data:${devStorageOrigin ? ` ${devStorageOrigin}` : ''}`,
   "font-src 'self'",
   "form-action 'self'",
   "base-uri 'none'",

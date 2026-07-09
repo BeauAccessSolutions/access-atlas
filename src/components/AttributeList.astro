@@ -1,14 +1,23 @@
 ---
 // A listing's accessibility attributes, each labeled SEPARATELY (§4, §14 — never
 // a single star average). Renders as a plain list; screen-reader friendly.
+// When evidence photos exist for a claim they render under it (§4: photos are
+// the evidence base — visible evidence is what makes the labels trustworthy).
 import LabelBadge from './LabelBadge.astro';
 import { staleness } from '../lib/labeling';
-import type { AttributeStatus } from '../lib/types';
+import type { AttributeStatus, EvidencePhoto } from '../lib/types';
 
 interface Props {
   statuses: AttributeStatus[];
+  /** Evidence photos per claimId (repo.getEvidenceForListing). Optional so
+      contexts without evidence (seed fallback, tests) need no changes. */
+  evidence?: Map<string, EvidencePhoto[]>;
 }
-const { statuses } = Astro.props;
+const { statuses, evidence } = Astro.props;
+
+// Low-bandwidth budget (§5): show at most this many photos per claim, newest
+// first, and say honestly how many more exist rather than hiding the cap.
+const MAX_PHOTOS_PER_CLAIM = 4;
 ---
 
 {
@@ -18,6 +27,9 @@ const { statuses } = Astro.props;
     <ul class="attr-list">
       {statuses.map((status) => {
         const stale = staleness(status);
+        const photos = evidence?.get(status.claimId) ?? [];
+        const shown = photos.slice(0, MAX_PHOTOS_PER_CLAIM);
+        const hidden = photos.length - shown.length;
         return (
           <li class="attr-row">
             <span class="attr-name">{status.label}</span>
@@ -28,6 +40,37 @@ const { statuses } = Astro.props;
               </span>
             )}
             {stale && <span class="stale-note">{stale}</span>}
+            {shown.length > 0 && (
+              <ul class="evidence-list" aria-label={`Photo evidence for “${status.label}”`}>
+                {shown.map((photo) => (
+                  <li>
+                    <figure class="evidence-photo">
+                      {/* Thumbnail inline (§5 low-bandwidth); full photo is a
+                          plain link. Legacy photos without a thumb or alt fall
+                          back honestly. */}
+                      <a href={photo.photoUrl}>
+                        <img
+                          src={photo.photoThumbUrl ?? photo.photoUrl}
+                          alt={photo.photoAlt ?? 'Evidence photo (no description was provided)'}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </a>
+                      <figcaption class="attr-desc">
+                        {photo.agrees ? 'Photo' : 'Problem reported — photo'} from{' '}
+                        {photo.observedOn}. <a href={photo.photoUrl}>Full size</a>
+                      </figcaption>
+                    </figure>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {hidden > 0 && (
+              <span class="attr-desc">
+                {hidden} more photo{hidden === 1 ? '' : 's'} exist{hidden === 1 ? 's' : ''} for
+                this claim — showing the {MAX_PHOTOS_PER_CLAIM} most recent.
+              </span>
+            )}
             <a class="report-link" href={`/contribute/confirm/${status.claimId}/`}>
               Report your visit for “{status.label}”
             </a>

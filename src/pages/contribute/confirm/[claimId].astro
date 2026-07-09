@@ -26,6 +26,7 @@ const BANNERS: Record<string, { role: 'status' | 'alert'; text: string }> = {
   need_answer: { role: 'alert', text: 'Please choose whether your visit confirmed the claim or not.' },
   photo_required: { role: 'alert', text: 'A photo is required to confirm this attribute. (You can dissent without one.)' },
   photo_too_big: { role: 'alert', text: 'That photo is too large — please use one under 10 MB.' },
+  alt_required: { role: 'alert', text: 'Please describe what your photo shows — the description is what makes it evidence for blind and low-vision users.' },
   notfound: { role: 'alert', text: 'That claim could not be found.' },
   disabled: { role: 'status', text: 'Contributions are not open yet — the community sign-in is still being set up. Your report was not saved.' },
   need_signin: { role: 'alert', text: 'Please sign in to contribute — your report was not saved.' },
@@ -124,6 +125,25 @@ const listingHref = claim
             />
             <span id="photo-help" class="attr-desc">
               Location and device data are removed from your photo before it is stored.
+            </span>
+          </p>
+
+          <p>
+            <label for="photo_alt">
+              Describe what your photo shows — required if you attach a photo
+            </label><br />
+            <input
+              type="text"
+              id="photo_alt"
+              name="photo_alt"
+              maxlength="300"
+              autocomplete="off"
+              aria-describedby="photo-alt-help"
+            />
+            <span id="photo-alt-help" class="attr-desc">
+              For example: “the front entrance, one step up, no ramp.” Your
+              description is read aloud to blind and low-vision users — it's
+              part of the evidence.
             </span>
           </p>
 
