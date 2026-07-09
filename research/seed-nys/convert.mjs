@@ -67,6 +67,9 @@ const DROP_CANDIDATE = new Map([
   // Batch 2 (2026-07-09): SDVOB-certified but no operating storefront could be
   // confirmed (no OCM retail license in open data). §4: omit rather than guess.
   ['combat-vet-cannabis-tonawanda', 'operating storefront unconfirmed — batch-2 review decision'],
+  // Batch 3 (2026-07-10): the SDVOSB-certified entity's own site shows only B2B
+  // distribution; whether it operates the retail gas station is unconfirmed.
+  ['es-and-es-enterprises-49-express-pit-stop', 'certified entity vs storefront link unconfirmed — batch-3 review decision'],
 ]);
 // Attributes we could not verify from here and won't assert (§4): Explore & More's
 // accessibility page hard-blocks fetching (403 to curl AND WebFetch), so its claim

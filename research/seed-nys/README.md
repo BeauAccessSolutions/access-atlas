@@ -56,5 +56,13 @@ seed data is a starting point, never a substitute for first-person confirmation.
 - `CONVERSION-NOTES-2.md` — automated decisions + the human-review checklist.
 - Convert: `node research/seed-nys/convert.mjs research/seed-nys/listings-2.json research/seed-nys/wny-2026-07b.seed.json "WNY seed research batch 2 2026-07-09 (Erie County beachhead, §3)"`
 
+**Batch 3 (2026-07-10 — owner lead-list slices by value × defensibility + the certified disabled-veteran sweep):**
+- `listings-3.json` / `listings-3.csv` / `attributes-3.csv` — 56 candidate records.
+- `wny-2026-07c.seed.json` — the **candidate** import file. 55 listings, 6 self-reported
+  claims, 5 certified disabled-veteran-owned businesses. **Not reviewed, not imported.**
+- `CONVERSION-NOTES-3.md` — sources + gaps + conversion decisions + review checklist
+  (single consolidated doc from this batch on).
+- Convert: `node research/seed-nys/convert.mjs research/seed-nys/listings-3.json research/seed-nys/wny-2026-07c.seed.json "WNY seed research batch 3 2026-07-10 (Erie County beachhead, §3)"`
+
 **Template:**
 - `EXAMPLE.seed.json` — placeholder entities/fake sources. Shows the shape; do not import.
