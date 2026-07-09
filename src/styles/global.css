@@ -608,7 +608,14 @@ details p:last-child { margin-bottom: 0; }
   flex-wrap: wrap;
   margin-bottom: 0.35rem;
 }
-.filter-result-count { margin-top: 0; }
+/* The results-region heading (§5): a real <h2> for outline + rotor, but sized
+   as a quiet status line — a count is not a section title. */
+.results-heading {
+  margin: 0 0 1rem;
+  font-size: 1.05rem;
+  font-weight: 650;
+  color: var(--color-fg);
+}
 
 /* -------- Callouts ------------------------------------------------------- */
 .disclaimer {

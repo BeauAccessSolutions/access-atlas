@@ -36,14 +36,16 @@ const shown = active ? applyListingFilters(places, filters) : places;
     action="/places/"
   />
 
-  {
-    active && (
-      <p class="filter-result-count">
-        <strong>{shown.length}</strong> of {places.length}{' '}
-        {places.length === 1 ? 'place matches' : 'places match'} your filters.
-      </p>
-    )
-  }
+  {/* A real <h2> introduces the results region so the heading outline is
+      h1 → h2 → h3 (not h1 → h3), and screen-reader users can jump straight to
+      the result count via headings navigation after a filter reload. Visible
+      and carrying the count when filtering; present-but-sr-only otherwise so
+      the default view stays clean (§5). */}
+  <h2 class:list={['results-heading', { 'sr-only': !active }]}>
+    {active
+      ? `${shown.length} of ${places.length} ${places.length === 1 ? 'place matches' : 'places match'} your filters`
+      : `All ${places.length} ${places.length === 1 ? 'place' : 'places'}`}
+  </h2>
 
   {
     shown.length === 0 ? (
