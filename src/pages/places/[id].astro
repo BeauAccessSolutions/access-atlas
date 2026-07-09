@@ -6,6 +6,8 @@ export const prerender = false;
 
 import Base from '../../layouts/Base.astro';
 import AttributeList from '../../components/AttributeList.astro';
+import CategoryIcon from '../../components/CategoryIcon.astro';
+import { categoryLabel, isCategory } from '../../lib/categories';
 import { getListing, getStatusesForListing } from '../../lib/repo';
 
 const { id } = Astro.params;
@@ -26,15 +28,32 @@ const justSubmitted = Astro.url.searchParams.get('submitted') === '1';
   ) : (
     <Base title={listing.name} description={listing.summary ?? undefined}>
       {justSubmitted && (
-        <p class="disclaimer" role="status">
+        <p class="disclaimer" role="status" aria-atomic="true">
           Thanks — your listing was added. It starts as “self-reported / awaiting
           verification” until community visits confirm it.
         </p>
       )}
       <p><a href="/places/">← All places</a></p>
       <h1>{listing.name}</h1>
+      {isCategory(listing.category) && (
+        <p class="category-tag">
+          <CategoryIcon category={listing.category} />
+          <span>{categoryLabel(listing.category)}</span>
+        </p>
+      )}
       {place && <p class="listing-meta">{place}</p>}
       {listing.summary && <p>{listing.summary}</p>}
+
+      {(listing.disabledOwned || listing.disabledLed) && (
+        <>
+          <h2>Ownership &amp; leadership</h2>
+          <p>Self-attested — no proof required.</p>
+          <ul>
+            {listing.disabledOwned && <li>Disabled-owned (a disabled person owns 51% or more)</li>}
+            {listing.disabledLed && <li>Disabled-led (a disabled person holds primary leadership)</li>}
+          </ul>
+        </>
+      )}
 
       <h2>Accessibility</h2>
       <p>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Access Atlas">
+  <!-- Compass/atlas motif — inclusive of all disabilities (deliberately NOT the
+       wheelchair symbol, which reads as wheelchair-only). Ties to "Atlas". -->
+  <rect width="32" height="32" rx="7" fill="#0d5257"/>
+  <circle cx="16" cy="16" r="11.5" fill="none" stroke="#ffffff" stroke-opacity="0.45" stroke-width="1.5"/>
+  <path d="M16 4 L18.8 13.2 L28 16 L18.8 18.8 L16 28 L13.2 18.8 L4 16 L13.2 13.2 Z" fill="#ffffff"/>
+</svg>

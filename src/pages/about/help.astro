@@ -1,0 +1,143 @@
+---
+// Plain-language help + glossary (audit Tier 3; cognitive access, §5). Short
+// sentences, plain words, no jargon — this page is the cognitive-access-friendly
+// explanation of everything else. The §12 glossary existed only internally in
+// CLAUDE.md; this is its honest public, plain-language form.
+//
+// The FAQ uses native <details>/<summary> — a zero-JS disclosure that gives
+// keyboard operability and aria-expanded for free. It also lands the exact
+// pattern Tier 3 flags for filter panels, so that work has a proven example.
+// On-demand so saved accessibility settings apply here too.
+export const prerender = false;
+
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Help & plain words"
+  description="What the words on this site mean, how to read a listing, and how to help — in plain language."
+>
+  <h1>Help &amp; plain words</h1>
+
+  <p class="lead">
+    This page explains how Access Atlas works, in plain language. Short
+    sentences. No jargon. If a word on the site is unclear, it is probably
+    explained here.
+  </p>
+
+  <h2>What this site is</h2>
+  <p>Access Atlas is a directory of two things:</p>
+  <ul>
+    <li><strong>Places</strong> — businesses and spaces, and how accessible they are.</li>
+    <li>
+      <strong>Providers</strong> — services and health providers who serve
+      disabled people well, or who are run by disabled people.
+    </li>
+  </ul>
+  <p>Real people who visit add what they found. You can browse with no account.</p>
+
+  <h2>Words we use</h2>
+  <dl>
+    <dt><strong>Accessible place</strong></dt>
+    <dd>A business or space, with facts about how a person can get in and use it.</dd>
+
+    <dt><strong>Provider</strong></dt>
+    <dd>A service or health provider — for example, a clinic or a support service.</dd>
+
+    <dt><strong>Disabled-owned</strong></dt>
+    <dd>A disabled person owns at least half of the business.</dd>
+
+    <dt><strong>Disabled-led</strong></dt>
+    <dd>A disabled person is in charge of the main decisions.</dd>
+
+    <dt><strong>Disability-literate</strong></dt>
+    <dd>The provider knows how to serve disabled people well.</dd>
+
+    <dt><strong>Self-reported / awaiting verification</strong></dt>
+    <dd>Someone said this, but no one has checked it yet. Do not rely on it.</dd>
+
+    <dt><strong>Community confirmations</strong></dt>
+    <dd>How many people have checked a fact from their own visit.</dd>
+
+    <dt><strong>Community-verified</strong></dt>
+    <dd>At least three people confirmed it from their own visits. More trustworthy.</dd>
+
+    <dt><strong>Sourced</strong></dt>
+    <dd>Backed by an official check, like a certificate or an audit.</dd>
+
+    <dt><strong>Disputed — under re-review</strong></dt>
+    <dd>Someone said this is NOT accessible. We freeze the fact until it is re-checked.</dd>
+
+    <dt><strong>First-person confirmation</strong></dt>
+    <dd>A report from someone about their own visit — not something they heard.</dd>
+  </dl>
+
+  <h2>How to read a listing</h2>
+  <ol>
+    <li>Each accessibility fact is listed on its own — like “step-free entrance”.</li>
+    <li>Each fact has a label that says how sure we are.</li>
+    <li>A fact can get old. We show when it was last confirmed.</li>
+    <li>We never turn accessibility into one star rating. Each fact stands on its own.</li>
+  </ol>
+
+  <h2>How you can help</h2>
+  <ul>
+    <li><a href="/contribute/submit/">Suggest a place or provider</a> we are missing.</li>
+    <li>Confirm a fact from your own visit, so others can trust it.</li>
+  </ul>
+
+  <h2>Common questions</h2>
+
+  <details>
+    <summary>Do I need an account to look around?</summary>
+    <p>No. Browsing is free and needs no account. You only sign in to contribute.</p>
+  </details>
+
+  <details>
+    <summary>Do you ask for my disability?</summary>
+    <p>
+      No. We never ask for or store your specific disability or diagnosis. See
+      <a href="/about/privacy/">our privacy policy</a>.
+    </p>
+  </details>
+
+  <details>
+    <summary>Can I trust what I read here?</summary>
+    <p>
+      Trust the labels. A fact marked “self-reported” is not checked yet. A fact
+      marked “community-verified” was confirmed by at least three people from
+      their own visits. When in doubt, call ahead.
+    </p>
+  </details>
+
+  <details>
+    <summary>Something here is wrong. What do I do?</summary>
+    <p>
+      If you visit and a fact is wrong — for example, a “step-free entrance” that
+      has a step — report it from your visit. One credible report freezes the
+      fact until it is re-checked. We treat safety carefully.
+    </p>
+  </details>
+
+  <details>
+    <summary>Can I make the text bigger or change the font?</summary>
+    <p>
+      Yes. Open <a href="/settings/">Accessibility settings</a> to change text
+      size, spacing, contrast, motion, and font — including OpenDyslexic.
+    </p>
+  </details>
+
+  <details>
+    <summary>What do you know about me, and can I delete it?</summary>
+    <p>
+      If you only browse: nothing at all. If you have contributed, go to
+      <a href="/account/">Your data</a> to see everything we hold, download it,
+      or delete it — right away, with no form to fill out and no waiting.
+    </p>
+  </details>
+
+  <p>
+    Still stuck? The <a href="/about/accessibility/">accessibility statement</a>
+    and <a href="/about/privacy/">privacy policy</a> go into more detail.
+  </p>
+</Base>

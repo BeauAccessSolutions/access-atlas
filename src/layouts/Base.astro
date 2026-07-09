@@ -2,6 +2,8 @@
 // Base layout. Semantic landmarks (header/nav/main/footer), a skip link, a
 // lang attribute, and a sensible <title> — the floor every page stands on (§5).
 import '../styles/global.css';
+import { CONTENT_SECURITY_POLICY } from '../lib/security';
+import { SETTINGS_COOKIE, parseSettings, settingsToRootAttrs } from '../lib/settings';
 
 interface Props {
   title: string;
@@ -9,13 +11,31 @@ interface Props {
 }
 const { title, description } = Astro.props;
 const siteName = 'Access Atlas';
+
+// Apply the visitor's saved accessibility settings SERVER-SIDE (§5). The browsing
+// pages are on-demand, so this reads the functional cookie on every request and
+// stamps the class + CSS vars onto <html> below — zero client JS. On a
+// prerendered page (build time) there is no request cookie, so this is just the
+// defaults; that's why the pages that should honor settings set prerender=false.
+const rootAttrs = settingsToRootAttrs(parseSettings(Astro.cookies.get(SETTINGS_COOKIE)?.value));
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class={rootAttrs.class || undefined} style={rootAttrs.style}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--
+      Content-Security-Policy baked into the page so it protects prerendered
+      static pages regardless of host (hosting is still open, §13). SSR routes
+      ALSO get it as a real HTTP header via src/middleware.ts. `script-src 'none'`
+      keeps the zero-JS non-negotiable self-enforcing (§2/§5). One source of
+      truth: src/lib/security.ts. (frame-ancestors is header-only; browsers
+      ignore it here and honor it from the middleware header.)
+    -->
+    <meta http-equiv="Content-Security-Policy" content={CONTENT_SECURITY_POLICY} />
+    <!-- Self-hosted SVG favicon (CSP img-src 'self'); no external request. -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{title} — {siteName}</title>
     {description && <meta name="description" content={description} />}
     <!-- No third-party trackers, ever (§6, §14). No analytics phone-home. -->
@@ -26,12 +46,23 @@ const siteName = 'Access Atlas';
 
     <header class="site">
       <div class="container">
-        <a href="/" aria-label={`${siteName} — home`}><strong>{siteName}</strong></a>
+        <a href="/" aria-label={`${siteName} — home`}>
+          {/* Brand mark — decorative (the wordmark names the site), so hidden
+              from assistive tech. currentColor => white on the teal header. An
+              inclusive compass/atlas motif, NOT the wheelchair symbol (§3). */}
+          <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+            <circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-opacity="0.5" stroke-width="2" />
+            <path d="M16 4 L18.8 13.2 L28 16 L18.8 18.8 L16 28 L13.2 18.8 L4 16 L13.2 13.2 Z" fill="currentColor" />
+          </svg>
+          <strong>{siteName}</strong>
+        </a>
         <nav aria-label="Primary">
           <ul>
             <li><a href="/places/">Places</a></li>
             <li><a href="/providers/">Providers</a></li>
             <li><a href="/contribute/submit/">Suggest a listing</a></li>
+            <li><a href="/about/help/">Help</a></li>
+            <li><a href="/settings/">Accessibility</a></li>
             <li><a href="/about/privacy/">Privacy</a></li>
           </ul>
         </nav>
@@ -48,6 +79,12 @@ const siteName = 'Access Atlas';
           Accessibility tools built <em>with</em> the community, not sold
           <em>to</em> it. Listings are self-reported and community-sourced —
           see <a href="/about/privacy/">how we label trust</a>.
+        </p>
+        <p class="footer-links">
+          <a href="/about/help/">Help &amp; plain words</a> ·
+          <a href="/settings/">Accessibility settings</a> ·
+          <a href="/about/accessibility/">Accessibility statement</a> ·
+          <a href="/account/">Your data</a>
         </p>
       </div>
     </footer>

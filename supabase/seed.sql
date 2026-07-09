@@ -16,26 +16,33 @@ insert into attribute_definitions (key, label, category, applies_to_kind, questi
    'On your visit, could you enter with zero steps (level or ramped)?', true, 365, 'wheelchair_user'),
   ('accessible_restroom', 'Accessible restroom present', 'facility_objective', null,
    'On your visit, was there a wheelchair-accessible restroom you could use?', true, 365, 'wheelchair_user'),
-  ('accessible_parking', 'Accessible parking', 'facility_objective', 'place',
+  -- accessible_parking applies to BOTH kinds (null): §8b lists accessible parking
+  -- as an objective PROVIDER facility attribute too, not just for places (Gap B).
+  ('accessible_parking', 'Accessible parking', 'facility_objective', null,
    'On your visit, was there designated accessible parking that was usable?', true, 365, 'wheelchair_user'),
   ('height_adjustable_exam_table', 'Height-adjustable exam table', 'facility_objective', 'provider',
    'On your visit, did the provider have a height-adjustable / low-transfer exam table?', true, 365, 'wheelchair_user'),
+  -- accessible_scale: core ADA MDE attribute (§8). Zero seed claims exist anywhere
+  -- (no public registry) — it is a first-person/recruitment target (Gap C).
+  ('accessible_scale', 'Wheelchair-accessible scale', 'facility_objective', 'provider',
+   'On your visit, was there a weight scale you could use as a wheelchair user (roll-on / seated)?', true, 365, 'wheelchair_user'),
   ('communicated_directly', 'Communicated directly with me', 'provider_behavior', 'provider',
    'On your visit, did staff speak directly to you (not only to a companion)?', false, 365, null),
   ('staff_knew_equipment', 'Staff knew how to use accessible equipment', 'provider_behavior', 'provider',
    'On your visit, did staff know how to use their accessible equipment?', false, 365, 'wheelchair_user');
 
--- Listings — a handful in Erie County (§3) -----------------------------------
-insert into listings (id, kind, name, summary, city, region, postal_code) values
+-- Listings — a handful in Erie County (§3). disabled_owned / disabled_led live
+-- here now (both kinds, §12); disability_literate stays on provider_profiles.
+insert into listings (id, kind, name, summary, city, region, postal_code, category, disabled_owned, disabled_led) values
   ('11111111-1111-1111-1111-111111111111', 'place', 'Elmwood Village Cafe',
-   'Neighborhood cafe on Elmwood Ave.', 'Buffalo', 'Erie County', '14222'),
+   'Neighborhood cafe on Elmwood Ave.', 'Buffalo', 'Erie County', '14222', 'business', false, false),
   ('22222222-2222-2222-2222-222222222222', 'place', 'Central Library — Downtown',
-   'Public library, main branch.', 'Buffalo', 'Erie County', '14203'),
+   'Public library, main branch.', 'Buffalo', 'Erie County', '14203', 'library', false, false),
   ('33333333-3333-3333-3333-333333333333', 'provider', 'Lakeshore Family Medicine',
-   'Primary care practice.', 'Buffalo', 'Erie County', '14201');
+   'Primary care practice.', 'Buffalo', 'Erie County', '14201', 'healthcare', false, true);
 
-insert into provider_profiles (listing_id, disability_literate, disabled_owned, disabled_led) values
-  ('33333333-3333-3333-3333-333333333333', true, false, true);
+insert into provider_profiles (listing_id, disability_literate) values
+  ('33333333-3333-3333-3333-333333333333', true);
 
 -- Claims + confirmations, hand-tuned to show every labeling state ------------
 -- (§4). Contributors are pseudonymous placeholders.

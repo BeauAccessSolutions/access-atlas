@@ -67,7 +67,8 @@ const ATTR: Record<string, AttrDef> = {
     relevantIdentityTag: 'wheelchair_user',
     questionText: 'On your visit, was there designated accessible parking that was usable?',
     requiresPhoto: true,
-    appliesToKind: 'place',
+    // Both kinds (§8b lists provider parking as objective too — Gap B).
+    appliesToKind: null,
   },
   height_adjustable_exam_table: {
     key: 'height_adjustable_exam_table',
@@ -78,6 +79,19 @@ const ATTR: Record<string, AttrDef> = {
     questionText:
       'On your visit, did the provider have a height-adjustable / low-transfer exam table?',
     requiresPhoto: true,
+    appliesToKind: 'provider',
+  },
+  accessible_scale: {
+    key: 'accessible_scale',
+    label: 'Wheelchair-accessible scale',
+    category: 'facility_objective',
+    reverifyIntervalDays: 365,
+    relevantIdentityTag: 'wheelchair_user',
+    questionText:
+      'On your visit, was there a weight scale you could use as a wheelchair user (roll-on / seated)?',
+    requiresPhoto: true,
+    // Core ADA MDE attribute (§8). No public registry -> zero seed claims by
+    // design; a recruitment/first-person target (Gap C).
     appliesToKind: 'provider',
   },
   communicated_directly: {
@@ -124,6 +138,9 @@ export const LISTINGS: Listing[] = [
     city: 'Buffalo',
     region: 'Erie County',
     postalCode: '14222',
+    category: 'business',
+    disabledOwned: false,
+    disabledLed: false,
   },
   {
     id: '22222222-2222-2222-2222-222222222222',
@@ -133,6 +150,9 @@ export const LISTINGS: Listing[] = [
     city: 'Buffalo',
     region: 'Erie County',
     postalCode: '14203',
+    category: 'library',
+    disabledOwned: false,
+    disabledLed: false,
   },
   {
     id: '33333333-3333-3333-3333-333333333333',
@@ -142,7 +162,10 @@ export const LISTINGS: Listing[] = [
     city: 'Buffalo',
     region: 'Erie County',
     postalCode: '14201',
-    provider: { disabilityLiterate: true, disabledOwned: false, disabledLed: true },
+    category: 'healthcare',
+    disabledOwned: false,
+    disabledLed: true,
+    provider: { disabilityLiterate: true },
   },
 ];
 

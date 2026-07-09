@@ -1,7 +1,8 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"],
+  "//": "Native (Capacitor) tooling is excluded from the Astro web typecheck — it uses @capacitor/* types that live in the native build, not the web app. See docs/ios-testflight.md.",
+  "exclude": ["dist", "capacitor.config.ts", "mobile"],
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "react",

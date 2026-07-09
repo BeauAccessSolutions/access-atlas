@@ -8,10 +8,7 @@
 import type { APIRoute } from 'astro';
 import { supabaseAdmin } from '../../lib/supabase-server';
 import { getAttributeDefinitions } from '../../lib/repo';
-import {
-  getOrCreateContributor,
-  provisionalContributionsAllowed,
-} from '../../lib/contributor';
+import { resolveContributor } from '../../lib/contributor';
 
 export const prerender = false;
 
@@ -32,16 +29,16 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   const kind = kindRaw === 'provider' ? 'provider' : kindRaw === 'place' ? 'place' : null;
   if (!form || !kind) return new Response('Bad request', { status: 400 });
 
-  if (!provisionalContributionsAllowed() || !supabaseAdmin) {
-    return backToForm(kind, 'disabled');
-  }
+  if (!supabaseAdmin) return backToForm(kind, 'disabled');
 
   const name = (form.get('name') as string | null)?.trim();
   if (!name) return backToForm(kind, 'need_name');
 
   try {
     const pseudonym = (form.get('pseudonym') as string | null) ?? null;
-    const contributor = await getOrCreateContributor(cookies, supabaseAdmin, pseudonym);
+    const resolved = await resolveContributor(cookies, supabaseAdmin, { pseudonym });
+    if ('gate' in resolved) return backToForm(kind, resolved.gate);
+    const contributor = resolved.contributor;
 
     const str = (k: string, max: number) =>
       (form.get(k) as string | null)?.trim().slice(0, max) || null;
@@ -56,6 +53,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         city: str('city', MAX_NAME),
         region: str('region', MAX_NAME),
         postal_code: str('postal_code', 20),
+        // Representation (§12) applies to both kinds — it lives on the listing.
+        disabled_owned: form.get('disabled_owned') != null,
+        disabled_led: form.get('disabled_led') != null,
         submitted_by: contributor.id,
       })
       .select('id')
@@ -63,11 +63,10 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     if (listingErr || !listing) return backToForm(kind, 'error');
 
     if (kind === 'provider') {
+      // provider_profiles carries only provider-specific competence now (§8).
       const { error } = await supabaseAdmin.from('provider_profiles').insert({
         listing_id: listing.id,
         disability_literate: form.get('disability_literate') != null,
-        disabled_owned: form.get('disabled_owned') != null,
-        disabled_led: form.get('disabled_led') != null,
       });
       if (error) return backToForm(kind, 'error');
     }

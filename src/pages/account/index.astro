@@ -1,0 +1,139 @@
+---
+// Your data — the self-service front door for the §6 CCPA/CPRA rights (BAS
+// invariant #3): see what we hold, download it, or delete it. On-demand and
+// pure semantic HTML — no JS ships here (§5). Browsing never needs this page;
+// it only matters once you've contributed.
+export const prerender = false;
+
+import Base from '../../layouts/Base.astro';
+import { contributionAccess, getAccountContributor } from '../../lib/contributor';
+import { supabaseAdmin } from '../../lib/supabase-server';
+import { isDbConfigured } from '../../lib/supabase';
+
+const status = Astro.url.searchParams.get('status');
+const access = await contributionAccess(Astro.cookies, supabaseAdmin);
+const who = supabaseAdmin ? await getAccountContributor(Astro.cookies, supabaseAdmin) : null;
+const loginHref = `/api/auth/login?return_to=${encodeURIComponent('/account/')}`;
+
+// Honest, plain-language status banners (same pattern as the confirm page).
+const BANNERS: Record<string, { role: 'status' | 'alert'; text: string }> = {
+  deleted: { role: 'status', text: 'Your data has been deleted. Listings you suggested stay in the directory, with your name detached.' },
+  nothing: { role: 'status', text: 'We hold no data for this browser, so there was nothing to download or delete.' },
+  need_signin: { role: 'alert', text: 'Please sign in first — managing your data requires being signed in as you.' },
+  disabled: { role: 'status', text: 'This site is not connected to a database right now, so nothing could be done.' },
+  error: { role: 'alert', text: 'Something went wrong and nothing was changed. Please try again.' },
+};
+const banner = status ? BANNERS[status] : null;
+
+// What we hold, counted honestly. Null = the count could not be read.
+let confirmationCount: number | null = null;
+let listingCount: number | null = null;
+if (who && supabaseAdmin) {
+  const [confs, listings] = await Promise.all([
+    supabaseAdmin
+      .from('confirmations')
+      .select('id', { count: 'exact', head: true })
+      .eq('contributor_id', who.id),
+    supabaseAdmin
+      .from('listings')
+      .select('id', { count: 'exact', head: true })
+      .eq('submitted_by', who.id),
+  ]);
+  confirmationCount = confs.error ? null : (confs.count ?? 0);
+  listingCount = listings.error ? null : (listings.count ?? 0);
+}
+---
+
+<Base
+  title="Your data"
+  description="See what Access Atlas holds about you, download it, or delete it — no request form, no waiting period."
+>
+  {banner && <p class="disclaimer" role={banner.role} aria-atomic="true">{banner.text}</p>}
+
+  <h1>Your data</h1>
+  <p>
+    Browsing Access Atlas never needs an account, so for most visitors we hold
+    nothing at all. If you've contributed — reported a visit or suggested a
+    listing — this page shows exactly what we hold, and lets you download or
+    delete it yourself. No request form, no waiting period.
+  </p>
+
+  {
+    !isDbConfigured || !supabaseAdmin ? (
+      <p class="disclaimer" role="status" aria-atomic="true">
+        This is a static preview with no database attached, so there is no
+        contributor data to manage here.
+      </p>
+    ) : who ? (
+      <>
+        <h2>What we hold about you</h2>
+        <ul>
+          <li>
+            Display name: <strong>{who.pseudonym ?? 'none (you post without one)'}</strong>
+          </li>
+          <li>
+            Visit reports (confirmations):{' '}
+            <strong>{confirmationCount ?? 'could not be counted right now'}</strong>
+            {' '}— including any notes, evidence photos, visit dates, and the
+            optional coarse access tags you chose.
+          </li>
+          <li>
+            Listings you suggested:{' '}
+            <strong>{listingCount ?? 'could not be counted right now'}</strong>
+            {' '}— these describe a place or provider, not you. They stay in the
+            directory even if you delete your data; only the link to you is removed.
+          </li>
+        </ul>
+        <p class="attr-desc">
+          That's the whole list. We never hold your specific disability or
+          diagnosis — we never ask for it.
+        </p>
+
+        <h2>Download your data</h2>
+        <p>
+          Get everything above as one JSON file, immediately.
+        </p>
+        <form method="post" action="/api/account/export">
+          <p><button type="submit">Download my data (JSON)</button></p>
+        </form>
+
+        <h2>Delete your data</h2>
+        <p>
+          Permanently remove your visit reports, evidence photos, display name,
+          and account. This cannot be undone, so it asks you to confirm on the
+          next page first.
+        </p>
+        <p><a href="/account/delete/">Delete my data…</a></p>
+
+        {access.mode === 'keycloak' && access.signedIn && (
+          <>
+            <h2>Sign out</h2>
+            <p>
+              Signing out ends this session everywhere it's used — a signed-out
+              session stops working immediately.
+            </p>
+            <form method="post" action="/api/auth/logout">
+              <p><button type="submit">Sign out</button></p>
+            </form>
+          </>
+        )}
+      </>
+    ) : access.mode === 'keycloak' ? (
+      <p class="disclaimer" role="status" aria-atomic="true">
+        To manage your data, please <a href={loginHref}>sign in</a> — we can only
+        show your data to you. Browsing stays account-free.
+      </p>
+    ) : access.mode === 'provisional' ? (
+      <p class="disclaimer" role="status" aria-atomic="true">
+        We hold no data for this browser. If you contribute a visit report or
+        suggest a listing, it will show up here.
+      </p>
+    ) : (
+      <p class="disclaimer" role="status" aria-atomic="true">
+        Contributions are not open yet — the community sign-in is still being set
+        up — so there is no contributor data to manage. Once contributing opens,
+        this page is where you download or delete yours.
+      </p>
+    )
+  }
+</Base>

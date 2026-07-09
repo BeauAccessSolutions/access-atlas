@@ -25,5 +25,9 @@ playwright-report/
 blob-report/
 playwright/.cache/
 
+# native (Capacitor) — the ios/ Xcode project is generated on a Mac via
+# `npx cap add ios` and is regenerable; don't commit it (see docs/ios-testflight.md).
+/ios/
+
 # os
 .DS_Store

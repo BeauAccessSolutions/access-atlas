@@ -1,0 +1,74 @@
+---
+// A category glyph, matching the compass brand mark: filled currentColor, 32
+// viewBox, geometric. Decorative (aria-hidden) — every use pairs it with the
+// text label from categories.ts, so screen-reader users get the category by
+// name, never icon/colour alone (§5). Holes use fill-rule="evenodd" so they show
+// the background through and stay correct in light AND dark themes.
+import type { Category } from '../lib/categories';
+
+interface Props {
+  category: Category;
+  class?: string;
+}
+const { category, class: className } = Astro.props;
+---
+
+<svg
+  class:list={['cat-icon', className]}
+  viewBox="0 0 32 32"
+  aria-hidden="true"
+  focusable="false"
+  fill="currentColor"
+>
+  {category === 'healthcare' && (
+    <path d="M13 4h6v9h9v6h-9v9h-6v-9H4v-6h9z" />
+  )}
+
+  {category === 'disability_services' && (
+    <>
+      <circle cx="11.5" cy="12" r="4" />
+      <circle cx="22" cy="12.8" r="3.3" />
+      <path d="M3.5 27c0-5 3.6-8 8-8s8 3 8 8z" />
+      <path d="M18.2 27c0-3.6 1.4-6.4 4.6-6.4s4.6 2.8 4.6 6.4z" />
+    </>
+  )}
+
+  {category === 'business' && (
+    <>
+      <path d="M8.5 11h15l-1.1 16.2a1.6 1.6 0 0 1-1.6 1.5H11.2a1.6 1.6 0 0 1-1.6-1.5z" />
+      <path d="M12 12V9.4a4 4 0 0 1 8 0V12" fill="none" stroke="currentColor" stroke-width="2.2" />
+    </>
+  )}
+
+  {category === 'library' && (
+    <>
+      <path d="M15 8.7c-3-1.8-7.3-1.8-10.7 0v15.8c3.4-1.8 7.7-1.8 10.7 0z" />
+      <path d="M17 8.7c3-1.8 7.3-1.8 10.7 0v15.8c-3.4-1.8-7.7-1.8-10.7 0z" />
+    </>
+  )}
+
+  {category === 'arts_culture' && (
+    <>
+      <path d="M16 4l12 6.6H4z" />
+      <rect x="6.2" y="12.4" width="3.2" height="10.8" />
+      <rect x="14.4" y="12.4" width="3.2" height="10.8" />
+      <rect x="22.6" y="12.4" width="3.2" height="10.8" />
+      <rect x="4" y="24.6" width="24" height="3.2" rx="1" />
+    </>
+  )}
+
+  {category === 'parks_recreation' && (
+    <path d="M25.5 6.5C13.6 6.5 6.5 13.6 6.5 25.5c11.9 0 19-7.1 19-19z" />
+  )}
+
+  {category === 'transit' && (
+    <>
+      <path
+        fill-rule="evenodd"
+        d="M8 6h16a3 3 0 0 1 3 3v11a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3zm1.5 4.5v5h13v-5z"
+      />
+      <circle cx="11" cy="25.5" r="2.4" />
+      <circle cx="21" cy="25.5" r="2.4" />
+    </>
+  )}
+</svg>

@@ -9,10 +9,13 @@ import node from '@astrojs/node';
 // client-rendered React — that would blow the low-bandwidth / screen-reader
 // budget the project treats as existential (§2, §5).
 export default defineConfig({
-  // Static output by default: the whole browsing surface prerenders to pure HTML.
-  // Only the contributor routes opt into on-demand rendering (`prerender = false`)
-  // — they need a per-request server to accept a form POST and write to Postgres.
-  // The Node adapter serves those; it does NOT make the browsing pages ship JS.
+  // Static-capable by default; pages opt into on-demand rendering with
+  // `prerender = false`. Most browsing pages do, for two reasons: (1) they show
+  // LIVE data (new submissions, fresh confirmations), and (2) they honor the
+  // visitor's saved accessibility settings, which Base.astro reads from a cookie
+  // per request (src/lib/settings.ts). On-demand here means server-rendered HTML
+  // — it does NOT ship any JS; the zero-JS / low-bandwidth budget is unchanged.
+  // The Node adapter serves those routes and the form POST endpoints.
   output: 'static',
   adapter: node({ mode: 'standalone' }),
   integrations: [react()],

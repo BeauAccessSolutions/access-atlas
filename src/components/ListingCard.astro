@@ -3,6 +3,8 @@
 // map pin. Provider axes (disability-literate vs. disabled-owned/led) are shown
 // as distinct tags because they are independent (§1) — never merged.
 import type { Listing } from '../lib/types';
+import { categoryLabel, isCategory } from '../lib/categories';
+import CategoryIcon from './CategoryIcon.astro';
 
 interface Props {
   listing: Listing;
@@ -10,25 +12,30 @@ interface Props {
 const { listing } = Astro.props;
 const href = `/${listing.kind === 'provider' ? 'providers' : 'places'}/${listing.id}/`;
 const place = [listing.city, listing.region].filter(Boolean).join(', ');
+const catLabel = categoryLabel(listing.category);
 ---
 
 <li class="listing-card">
+  {catLabel && isCategory(listing.category) && (
+    <p class="category-tag">
+      <CategoryIcon category={listing.category} />
+      <span>{catLabel}</span>
+    </p>
+  )}
   <h3><a href={href}>{listing.name}</a></h3>
   {place && <p class="listing-meta">{place}</p>}
   {listing.summary && <p>{listing.summary}</p>}
 
   {
-    listing.provider && (
+    (listing.disabledOwned || listing.disabledLed || listing.provider?.disabilityLiterate) && (
       <p>
-        {listing.provider.disabilityLiterate && (
+        {/* Provider competence (provider-only) and the representation axis
+            (both kinds) are independent (§1) — shown as distinct tags. */}
+        {listing.provider?.disabilityLiterate && (
           <span class="tag">Disability-literate (self-attested)</span>
         )}
-        {listing.provider.disabledOwned && (
-          <span class="tag">Disabled-owned (self-attested)</span>
-        )}
-        {listing.provider.disabledLed && (
-          <span class="tag">Disabled-led (self-attested)</span>
-        )}
+        {listing.disabledOwned && <span class="tag">Disabled-owned (self-attested)</span>}
+        {listing.disabledLed && <span class="tag">Disabled-led (self-attested)</span>}
       </p>
     )
   }

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Access Atlas — offline</title>
+    <!--
+      OFFLINE FALLBACK ONLY. This is the tiny bundled page Capacitor shows when
+      the hosted site (capacitor.config.ts `server.url`) can't be reached. The
+      real app is the web app; this is just a graceful, accessible "no
+      connection" state. Styles are inlined because this file loads with no
+      network. Colors mirror src/styles/global.css and honor dark mode.
+    -->
+    <style>
+      :root {
+        --bg: #fbfbf9; --fg: #191d1c; --muted: #48534f; --brand: #0d5257;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root { --bg: #0f1513; --fg: #e9ece9; --muted: #aeb6b3; --brand: #0e6b70; }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0; min-height: 100vh; display: grid; place-content: center;
+        gap: 0.75rem; padding: 2rem; text-align: center;
+        background: var(--bg); color: var(--fg);
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        line-height: 1.6;
+      }
+      h1 { font-size: 1.5rem; margin: 0; color: var(--brand); }
+      p { margin: 0; color: var(--muted); max-width: 40ch; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>You're offline</h1>
+      <p>
+        Access Atlas needs a connection to show places and providers. Check your
+        network and try again.
+      </p>
+    </main>
+  </body>
+</html>

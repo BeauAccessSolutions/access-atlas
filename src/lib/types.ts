@@ -25,11 +25,17 @@ export interface Listing {
   city: string | null;
   region: string | null;
   postalCode: string | null;
-  // Provider-only, self-attested (§6, §12). Absent for places.
+  // Coarse scannability category (src/lib/categories.ts). Not part of validation
+  // (§4). May be null.
+  category: string | null;
+  // Representation axis (§1, §12), self-attested. Lives on the listing because a
+  // business's ownership/leadership is independent of place-vs-provider — a
+  // disabled-owned cafe is a place. Applies to BOTH kinds.
+  disabledOwned: boolean;
+  disabledLed: boolean;
+  // Provider-only competence (§8), self-attested. Absent for places.
   provider?: {
     disabilityLiterate: boolean;
-    disabledOwned: boolean;
-    disabledLed: boolean;
   };
 }
 

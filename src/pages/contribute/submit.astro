@@ -6,7 +6,8 @@ export const prerender = false;
 
 import Base from '../../layouts/Base.astro';
 import { getAttributeDefinitions } from '../../lib/repo';
-import { contributionGateReason } from '../../lib/contributor';
+import { contributionAccess } from '../../lib/contributor';
+import { supabaseAdmin } from '../../lib/supabase-server';
 import type { ListingKind } from '../../lib/types';
 
 const kindParam = Astro.url.searchParams.get('kind');
@@ -14,19 +15,25 @@ const kind: ListingKind = kindParam === 'provider' ? 'provider' : 'place';
 const otherKind: ListingKind = kind === 'place' ? 'provider' : 'place';
 const status = Astro.url.searchParams.get('status');
 const attributes = await getAttributeDefinitions(kind);
-const gateReason = contributionGateReason();
+// Whether writes are open, and via which mechanism — drives the sign-in UI below.
+const access = await contributionAccess(Astro.cookies, supabaseAdmin);
+const loginHref = `/api/auth/login?return_to=${encodeURIComponent(`/contribute/submit/?kind=${kind}`)}`;
 
 const BANNERS: Record<string, { role: 'status' | 'alert'; text: string }> = {
   disabled: { role: 'status', text: 'Contributions are not open yet — the community sign-in is still being set up. Your listing was not saved.' },
-  need_name: { role: 'alert', text: 'Please give the place or provider a name.' },
+  need_signin: { role: 'alert', text: 'Please sign in to contribute — your listing was not saved.' },
+  auth_error: { role: 'alert', text: 'Sign-in did not complete. Please try again.' },
   error: { role: 'alert', text: 'Something went wrong and your listing was not saved. Please try again.' },
 };
 const banner = status ? BANNERS[status] : null;
+// A missing name is shown INLINE on the field (aria-invalid + aria-describedby),
+// not just as a top banner — the error sits where the fix is made (§5).
+const nameError = status === 'need_name';
 const noun = kind === 'provider' ? 'provider' : 'place';
 ---
 
 <Base title={`Suggest a ${noun}`}>
-  {banner && <p class="disclaimer" role={banner.role}>{banner.text}</p>}
+  {banner && <p class="disclaimer" role={banner.role} aria-atomic="true">{banner.text}</p>}
 
   <h1>Suggest a {noun}</h1>
 
@@ -40,14 +47,40 @@ const noun = kind === 'provider' ? 'provider' : 'place';
     community-verified only after independent visits confirm them.
   </p>
 
-  {gateReason && <p class="disclaimer" role="status">{gateReason} You can still see the form below.</p>}
+  {access.mode === 'closed' && (
+    <p class="disclaimer" role="status" aria-atomic="true">{access.gateReason} You can still see the form below.</p>
+  )}
+  {access.mode === 'keycloak' && !access.signedIn && (
+    <p class="disclaimer" role="status" aria-atomic="true">
+      To add a listing, please <a href={loginHref}>sign in to contribute</a>. Browsing stays account-free.
+    </p>
+  )}
+  {access.mode === 'keycloak' && access.signedIn && (
+    <p class="disclaimer" role="status" aria-atomic="true">
+      You're signed in and contributing pseudonymously.{' '}
+      <form method="post" action="/api/auth/logout" style="display:inline">
+        <button type="submit" class="linklike">Sign out</button>
+      </form>
+    </p>
+  )}
 
   <form method="post" action="/api/listings" enctype="multipart/form-data">
     <input type="hidden" name="kind" value={kind} />
 
     <p>
-      <label for="name">Name (required)</label><br />
-      <input type="text" id="name" name="name" required maxlength="200" />
+      <label for="name">Name <span class="req" aria-hidden="true">*</span><span class="sr-only"> (required)</span></label><br />
+      <input
+        type="text"
+        id="name"
+        name="name"
+        required
+        aria-required="true"
+        maxlength="200"
+        aria-invalid={nameError ? 'true' : undefined}
+        aria-describedby={nameError ? 'name-error' : undefined}
+        autofocus={nameError}
+      />
+      {nameError && <span class="field-error" id="name-error">Please give the place or provider a name.</span>}
     </p>
     <p>
       <label for="summary">Short description (optional)</label><br />
@@ -74,21 +107,25 @@ const noun = kind === 'provider' ? 'provider' : 'place';
       </p>
     </fieldset>
 
+    <fieldset>
+      <legend>Ownership &amp; leadership (self-attested — no proof required)</legend>
+      <p>
+        <input type="checkbox" id="disabled_owned" name="disabled_owned" />
+        <label for="disabled_owned">Disabled-owned — a disabled person owns 51% or more</label>
+      </p>
+      <p>
+        <input type="checkbox" id="disabled_led" name="disabled_led" />
+        <label for="disabled_led">Disabled-led — a disabled person holds primary leadership</label>
+      </p>
+    </fieldset>
+
     {
       kind === 'provider' && (
         <fieldset>
-          <legend>Provider profile (self-attested — no proof required)</legend>
+          <legend>Provider competence (self-attested — no proof required)</legend>
           <p>
             <input type="checkbox" id="disability_literate" name="disability_literate" />
             <label for="disability_literate">Disability-literate — serves disabled people well</label>
-          </p>
-          <p>
-            <input type="checkbox" id="disabled_owned" name="disabled_owned" />
-            <label for="disabled_owned">Disabled-owned — a disabled person owns 51% or more</label>
-          </p>
-          <p>
-            <input type="checkbox" id="disabled_led" name="disabled_led" />
-            <label for="disabled_led">Disabled-led — a disabled person holds primary leadership</label>
           </p>
         </fieldset>
       )

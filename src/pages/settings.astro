@@ -1,0 +1,158 @@
+---
+// Accessibility settings — the flagship §5 control panel. Zero-JS: a plain
+// <form> POSTs to /api/settings, which sets a functional cookie; Base.astro
+// reads that cookie on every request and applies it to <html>. Because this
+// page is itself on-demand, saving and returning here shows the change live.
+export const prerender = false;
+
+import Base from '../layouts/Base.astro';
+import { SETTINGS_COOKIE, TEXT_SIZES, FONT_CHOICES, parseSettings } from '../lib/settings';
+
+const current = parseSettings(Astro.cookies.get(SETTINGS_COOKIE)?.value);
+const status = Astro.url.searchParams.get('status');
+
+// Human-facing labels for the text-size options (keys are the % values).
+const TEXT_SIZE_LABELS: Record<keyof typeof TEXT_SIZES, string> = {
+  '100': 'Default (100%)',
+  '110': 'Large (110%)',
+  '125': 'Larger (125%)',
+  '150': 'Extra large (150%)',
+  '175': 'Huge (175%)',
+  '200': 'Maximum (200%)',
+};
+const LINE_SPACING_LABELS: Record<string, string> = {
+  normal: 'Normal',
+  roomy: 'Roomy',
+  loose: 'Loose',
+};
+const FONT_LABELS: Record<(typeof FONT_CHOICES)[number], string> = {
+  system: 'Default',
+  readable: 'Readable (wider, more legible — no download)',
+  dyslexic: 'OpenDyslexic (downloads a font designed for dyslexia)',
+};
+---
+
+<Base
+  title="Accessibility settings"
+  description="Adjust text size, contrast, motion, spacing, and target size. Saved on this device only, with no account and no tracking."
+>
+  {
+    status === 'saved' && (
+      <p class="disclaimer" role="status" aria-atomic="true">Your accessibility settings were saved. They’re applied below.</p>
+    )
+  }
+  {
+    status === 'reset' && (
+      <p class="disclaimer" role="status" aria-atomic="true">Your accessibility settings were reset to the defaults.</p>
+    )
+  }
+
+  <h1>Accessibility settings</h1>
+
+  <p class="lead">
+    Adjust how Access Atlas looks and behaves for you. Changes apply across the
+    whole site the moment you save.
+  </p>
+
+  <div class="disclaimer">
+    <p>
+      These settings are stored in a single functional cookie <strong>on this
+      device only</strong>. No account, no tracking, and nothing is sent to
+      anyone else (see <a href="/about/privacy/">our privacy policy</a>). Clear
+      your browser cookies and they return to the defaults.
+    </p>
+  </div>
+
+  <form method="post" action="/api/settings">
+    <fieldset>
+      <legend>Text</legend>
+
+      <p>
+        <label for="textSize">Text size</label><br />
+        <select id="textSize" name="textSize">
+          {
+            (Object.keys(TEXT_SIZES) as (keyof typeof TEXT_SIZES)[]).map((size) => (
+              <option value={size} selected={current.textSize === size}>
+                {TEXT_SIZE_LABELS[size]}
+              </option>
+            ))
+          }
+        </select>
+      </p>
+
+      <p>
+        <label for="lineSpacing">Line spacing</label><br />
+        <select id="lineSpacing" name="lineSpacing">
+          {
+            Object.keys(LINE_SPACING_LABELS).map((key) => (
+              <option value={key} selected={current.lineSpacing === key}>
+                {LINE_SPACING_LABELS[key]}
+              </option>
+            ))
+          }
+        </select>
+      </p>
+
+      <p>
+        <label for="font">Font</label><br />
+        <select id="font" name="font" aria-describedby="font-hint">
+          {
+            FONT_CHOICES.map((choice) => (
+              <option value={choice} selected={current.font === choice}>
+                {FONT_LABELS[choice]}
+              </option>
+            ))
+          }
+        </select>
+        <span class="field-hint" id="font-hint">
+          “Readable” uses a font already on your device. “OpenDyslexic”
+          downloads a small font file the first time you use it.
+        </span>
+      </p>
+    </fieldset>
+
+    <fieldset>
+      <legend>Colour &amp; motion</legend>
+
+      <p>
+        <input type="checkbox" id="contrast" name="contrast" checked={current.contrast} />
+        <label for="contrast">
+          High contrast
+          <span class="field-hint">— stronger text and border contrast</span>
+        </label>
+      </p>
+
+      <p>
+        <input type="checkbox" id="motion" name="motion" checked={current.motion} />
+        <label for="motion">
+          Reduce motion
+          <span class="field-hint">— turn off transitions and animated movement</span>
+        </label>
+      </p>
+    </fieldset>
+
+    <fieldset>
+      <legend>Pointer &amp; touch</legend>
+
+      <p>
+        <input type="checkbox" id="largeTargets" name="largeTargets" checked={current.largeTargets} />
+        <label for="largeTargets">
+          Larger click and tap targets
+          <span class="field-hint">— give links and buttons at least a 44&nbsp;pixel hit area</span>
+        </label>
+      </p>
+    </fieldset>
+
+    <p class="settings-actions">
+      <button type="submit">Save settings</button>
+      <button type="submit" name="reset" value="1" class="btn-secondary" formnovalidate>
+        Reset to defaults
+      </button>
+    </p>
+  </form>
+
+  <p>
+    Want to know what we do to make the whole site accessible? Read our
+    <a href="/about/accessibility/">accessibility statement</a>.
+  </p>
+</Base>

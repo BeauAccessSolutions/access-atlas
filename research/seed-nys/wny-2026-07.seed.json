@@ -1,0 +1,1245 @@
+{
+  "_note": "CANDIDATE WNY seed batch, converted from listings.json by convert.mjs. NOT reviewed, NOT imported. Every record needs source sign-off and the _review flags resolved before import (see CONVERSION-NOTES.md). All claims import as self_reported (§4).",
+  "source": "WNY seed research batch 2026-07-08 (Erie County beachhead, §3)",
+  "listings": [
+    {
+      "source_ref": "wny:provider:wnyil-buffalo",
+      "source_url": "https://www.wnyil.org/",
+      "kind": "provider",
+      "name": "Western New York Independent Living, Inc. (WNYIL)",
+      "summary": "The anchor Center for Independent Living for the Buffalo/Erie area and lead of a family of disability-run agencies serving Western New York.",
+      "street": "3108 Main Street",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14214",
+      "lat": null,
+      "lng": null,
+      "category": "disability_services",
+      "disabled_owned": false,
+      "disabled_led": true,
+      "_review": {
+        "flags": [],
+        "source_notes": "First-party site. Anchor partner (§3). disabled_led=true rests on the federal Center for Independent Living definition: CILs are consumer-controlled (>=51% of staff/board are people with disabilities). Address confirmed on the NYSILC ILC directory. NEEDS OWNER/ORG SELF-ATTESTATION AT ONBOARDING (no proof)."
+      },
+      "provider": {
+        "disability_literate": true
+      },
+      "attributes": []
+    },
+    {
+      "source_ref": "wny:provider:iln-niagara",
+      "source_url": "https://www.wnyil.org/agencies/independent-living-of-niagara-county/",
+      "kind": "provider",
+      "name": "Independent Living of Niagara County (ILNC)",
+      "summary": "A peer-run independent living center serving people with disabilities across Niagara County.",
+      "street": "746 Portage Road",
+      "city": "Niagara Falls",
+      "region": "Niagara County",
+      "postal_code": "14301",
+      "lat": null,
+      "lng": null,
+      "category": "disability_services",
+      "disabled_owned": false,
+      "disabled_led": true,
+      "_review": {
+        "flags": [
+          "outside_erie_county"
+        ],
+        "source_notes": "First-party WNYIL family-of-agencies page. Peer-run ILC; disabled_led per CIL consumer-control federal requirement. Niagara County (adjacent to the Erie beachhead). NEEDS SELF-ATTESTATION AT ONBOARDING."
+      },
+      "provider": {
+        "disability_literate": true
+      },
+      "attributes": []
+    },
+    {
+      "source_ref": "wny:provider:ilgr-batavia",
+      "source_url": "https://www.wnyil.org/agencies/independent-living-of-the-genesee-region/",
+      "kind": "provider",
+      "name": "Independent Living of the Genesee Region (ILGR)",
+      "summary": "A peer-directed disability civil-rights organization serving Genesee, Wyoming, and Orleans Counties (also has an Albion office at 243 South Main Street, Albion 14411).",
+      "street": "319 West Main Street",
+      "city": "Batavia",
+      "region": "Genesee County",
+      "postal_code": "14020",
+      "lat": null,
+      "lng": null,
+      "category": "disability_services",
+      "disabled_owned": false,
+      "disabled_led": true,
+      "_review": {
+        "flags": [
+          "outside_erie_county"
+        ],
+        "source_notes": "First-party WNYIL page. Self-describes as 'a grassroots, peer directed, multi-cultural civil rights organization for/of people with disabilities.' disabled_led per CIL consumer-control. NEEDS SELF-ATTESTATION AT ONBOARDING."
+      },
+      "provider": {
+        "disability_literate": true
+      },
+      "attributes": []
+    },
+    {
+      "source_ref": "wny:provider:mhpc-buffalo",
+      "source_url": "https://www.wnyil.org/agencies/mental-health-peer-connection/",
+      "kind": "provider",
+      "name": "Mental Health Peer Connection (MHPC)",
+      "summary": "A peer-run behavioral-health organization providing advocacy, peer counseling, and independent-living support, run for and by people with behavioral health disabilities.",
+      "street": "3108 Main Street",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14214",
+      "lat": null,
+      "lng": null,
+      "category": "disability_services",
+      "disabled_owned": false,
+      "disabled_led": true,
+      "_review": {
+        "flags": [],
+        "source_notes": "First-party WNYIL page. Explicitly 'an organization run for and by people with behavioral health disabilities' — disabled_led directly stated. WNYIL affiliate; shares the 3108 Main St address. NEEDS SELF-ATTESTATION AT ONBOARDING."
+      },
+      "provider": {
+        "disability_literate": true
+      },
+      "attributes": []
+    },
+    {
+      "source_ref": "wny:provider:silc-jamestown",
+      "source_url": "https://nysilc.org/resources/ilc-directory",
+      "kind": "provider",
+      "name": "Southwestern Independent Living Center, Inc. (SILC)",
+      "summary": "A nonresidential nonprofit Center for Independent Living serving people with disabilities throughout Chautauqua County.",
+      "street": "843 North Main Street",
+      "city": "Jamestown",
+      "region": "Chautauqua County",
+      "postal_code": "14701",
+      "lat": null,
+      "lng": null,
+      "category": "disability_services",
+      "disabled_owned": false,
+      "disabled_led": true,
+      "_review": {
+        "flags": [
+          "outside_erie_county"
+        ],
+        "source_notes": "NYSILC official ILC directory + first-party site (silcchq.org). Designated NYS CIL, consumer-controlled per federal definition. NEEDS SELF-ATTESTATION AT ONBOARDING."
+      },
+      "provider": {
+        "disability_literate": true
+      },
+      "attributes": []
+    },
+    {
+      "source_ref": "wny:provider:dil-olean",
+      "source_url": "https://www.oleanilc.org/contact.html",
+      "kind": "provider",
+      "name": "Directions in Independent Living (DIL)",
+      "summary": "A Center for Independent Living serving Cattaraugus and Allegany Counties, with a satellite office in Wellsville (55 E. Fassett Lane, Wellsville 14895).",
+      "street": "512 West State Street",
+      "city": "Olean",
+      "region": "Cattaraugus County",
+      "postal_code": "14760",
+      "lat": null,
+      "lng": null,
+      "category": "disability_services",
+      "disabled_owned": false,
+      "disabled_led": true,
+      "_review": {
+        "flags": [
+          "outside_erie_county"
+        ],
+        "source_notes": "First-party site + NYSILC ILC directory. Designated NYS CIL, consumer-controlled per federal definition. NEEDS SELF-ATTESTATION AT ONBOARDING."
+      },
+      "provider": {
+        "disability_literate": true
+      },
+      "attributes": []
+    },
+    {
+      "source_ref": "wny:provider:nyail-albany",
+      "source_url": "https://ilny.us/about",
+      "kind": "provider",
+      "name": "New York Association on Independent Living (NYAIL)",
+      "summary": "The statewide membership association of New York's Independent Living Centers, advocating for the independent living and rights of New Yorkers with disabilities.",
+      "street": "155 Washington Avenue, Suite 208",
+      "city": "Albany",
+      "region": "Albany County",
+      "postal_code": "12210",
+      "lat": null,
+      "lng": null,
+      "category": "disability_services",
+      "disabled_owned": false,
+      "disabled_led": true,
+      "_review": {
+        "flags": [
+          "statewide_anchor_context_only",
+          "disabled_led_needs_confirmation"
+        ],
+        "source_notes": "First-party site. STATEWIDE ANCHOR — reference/context only, not WNY-local; do not seed deep. disabled_led leans on its CIL-membership structure; the About page does not itself assert a disability-majority board — CONFIRM before publishing that flag."
+      },
+      "provider": {
+        "disability_literate": true
+      },
+      "attributes": []
+    },
+    {
+      "source_ref": "wny:provider:peopleinc-health-services",
+      "source_url": "https://uniland.com/health-services-building/",
+      "kind": "provider",
+      "name": "People Inc. Health Services Building (with ECMC Center for Dental Care)",
+      "summary": "A health and dental center in North Buffalo built around serving people with developmental disabilities, with a dental wheelchair-tilt lift and abundant accessible parking.",
+      "street": "800 Hertel Avenue",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14207",
+      "lat": null,
+      "lng": null,
+      "category": "healthcare",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "dental_tilt_lift_no_schema_key",
+          "provider_parking_evidence_no_schema_slot"
+        ],
+        "source_notes": "Developer (Uniland) page + People Inc. corroboration. Accessible-parking evidence exists ('abundant patient parking and a designated drop-off under a porte-cochere') BUT the schema's accessible_parking attribute is place-only (applies_to_kind='place'), so it cannot attach to this provider record — recorded here as a note pending the schema fix in gaps.md (make accessible_parking apply to both kinds). Co-located ECMC dental clinic serves people with developmental disabilities and has a wheelchair-tilt lift (dental positioning, NOT a medical exam table — no key). Secondary source; recruit for MDE photo-verification."
+      },
+      "provider": {
+        "disability_literate": true
+      },
+      "attributes": [
+        {
+          "key": "accessible_parking",
+          "asserted_value": true,
+          "source_url": "https://uniland.com/health-services-building/",
+          "note": "Provider accessible-parking evidence promoted after the Gap B fix (accessible_parking now applies to providers). Source: Developer (Uniland) page + People Inc. corroboration. Accessible-parking evidence exists ('abundant patient parking and a designated drop-off under a porte-cochere') BUT the schema's accessible_parking attribute is place-only (applies_to_kind='place'), so it cannot attach to this provider record — recorded here as a note pending the schema fix in gaps.md (make accessible_parking apply to both kinds). Co-located ECMC dental clinic serves people with developmental disabilities and has a wheelchair-tilt lift (dental positioning, NOT a medical exam table — no key). Secondary source; recruit for MDE photo-verification.. Re-confirm on a visit."
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:provider:ecmc-special-needs-dentistry",
+      "source_url": "https://www.ecmc.edu/health-services/outpatient-services/center-for-dental-care/special-needs-dentistry/",
+      "kind": "provider",
+      "name": "ECMC Center for Dental Care — Special Needs Dentistry",
+      "summary": "Erie County Medical Center's special-needs dental program serving people with intellectual/developmental disabilities, stroke/TBI, and dementia, in-clinic or under general anesthesia.",
+      "street": "800 Hertel Avenue",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14207",
+      "lat": null,
+      "lng": null,
+      "category": "healthcare",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [],
+        "source_notes": "ECMC (public hospital) program page states it welcomes individuals with intellectual/developmental disabilities, stroke/TBI history, and dementia, and offers full-mouth rehab under general anesthesia. Disability-competent care explicitly stated; no MDE/exam-table claim — assert none."
+      },
+      "provider": {
+        "disability_literate": true
+      },
+      "attributes": []
+    },
+    {
+      "source_ref": "wny:provider:jericho-road-doat",
+      "source_url": "https://www.211wny.org/provider/11258/",
+      "kind": "provider",
+      "name": "Jericho Road Community Health Center — Doat Street Clinic",
+      "summary": "A Buffalo FQHC clinic location listed as handicap accessible with accessible entrance, restrooms, and parking.",
+      "street": "21 Doat Street",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14211",
+      "lat": null,
+      "lng": null,
+      "category": "healthcare",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "fqhc_mde_deadline_recruit",
+          "provider_parking_evidence_no_schema_slot"
+        ],
+        "source_notes": "211WNY (United Way) directory: 'Accessible entrance, restrooms, and parking spaces.' FQHC — HHS-funded, relevant to the July 8 2026 MDE deadline. NOTE: the source also states accessible PARKING, but the schema's accessible_parking attribute is place-only (applies_to_kind='place') and cannot attach to a provider — held as a note pending the schema fix in gaps.md. Physical-access fields are directory-reported, not disability-specific care; disability_literate left false. Strong recruit; verify MDE (exam table, scale) via photo."
+      },
+      "provider": {
+        "disability_literate": false
+      },
+      "attributes": [
+        {
+          "key": "entrance_step_free",
+          "asserted_value": true,
+          "source_url": "https://www.211wny.org/provider/11258/",
+          "note": "211WNY directory: 'Accessible entrance, restrooms, and parking spaces.'"
+        },
+        {
+          "key": "accessible_restroom",
+          "asserted_value": true,
+          "source_url": "https://www.211wny.org/provider/11258/",
+          "note": "211WNY directory: 'Accessible entrance, restrooms, and parking spaces.'"
+        },
+        {
+          "key": "accessible_parking",
+          "asserted_value": true,
+          "source_url": "https://www.211wny.org/provider/11258/",
+          "note": "Provider accessible-parking evidence promoted after the Gap B fix (accessible_parking now applies to providers). Source: 211WNY (United Way) directory: 'Accessible entrance, restrooms, and parking spaces.' FQHC — HHS-funded, relevant to the July 8 2026 MDE deadline. NOTE: the source also states accessible PARKING, but the schema's accessible_parking attribute is place-only (applies_to_kind='place') and cannot attach to a provider — held as a note pending the schema fix in gaps.md. Physical-access fields are directory-reported, not disability-specific care; disability_literate left false. Strong recruit; verify MDE (exam table, scale) via photo.. Re-confirm on a visit."
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:provider:nhc-northwest",
+      "source_url": "https://www.211wny.org/provider/3951/",
+      "kind": "provider",
+      "name": "Neighborhood Health Center — Northwest",
+      "summary": "A Buffalo FQHC offering primary, dental, and specialty care, listed as handicap accessible.",
+      "street": "155 Lawn Avenue",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14207",
+      "lat": null,
+      "lng": null,
+      "category": "healthcare",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "fqhc_mde_deadline_recruit",
+          "general_accessible_flag_only"
+        ],
+        "source_notes": "211WNY directory. FQHC (HHS-funded — July 8 2026 MDE deadline). Only a general 'Handicap Accessible? Yes' flag published. disability_literate false; recruit for MDE verification."
+      },
+      "provider": {
+        "disability_literate": false
+      },
+      "attributes": [
+        {
+          "key": "entrance_step_free",
+          "asserted_value": true,
+          "source_url": "https://www.211wny.org/provider/3951/",
+          "note": "211WNY directory: 'Handicap Accessible? Yes.' A GENERAL flag, not an entrance-specific claim — mapped conservatively; re-verify the entrance specifically."
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:provider:nhc-blasdell",
+      "source_url": "https://www.211wny.org/provider/9624/",
+      "kind": "provider",
+      "name": "Neighborhood Health Center — Blasdell",
+      "summary": "A suburban Erie County FQHC location listed as handicap accessible.",
+      "street": "4233 Lake Avenue",
+      "city": "Blasdell",
+      "region": "Erie County",
+      "postal_code": "14219",
+      "lat": null,
+      "lng": null,
+      "category": "healthcare",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "fqhc_mde_deadline_recruit",
+          "general_accessible_flag_only"
+        ],
+        "source_notes": "211WNY directory. FQHC (HHS-funded — MDE deadline). General handicap-accessible flag only; mapped conservatively. disability_literate false; recruit for MDE verification."
+      },
+      "provider": {
+        "disability_literate": false
+      },
+      "attributes": [
+        {
+          "key": "entrance_step_free",
+          "asserted_value": true,
+          "source_url": "https://www.211wny.org/provider/9624/",
+          "note": "211WNY directory: 'Handicap Accessible? Yes.' General flag only — re-verify the entrance specifically."
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:provider:aspire-wny-clinic",
+      "source_url": "https://www.211wny.org/provider/6210/",
+      "kind": "provider",
+      "name": "Aspire of WNY — Health Care Services (Article 28 Clinic)",
+      "summary": "An Article 28 medical clinic within a longstanding developmental-disability agency, offering general medical, PT, speech, and seating/positioning services and listed as handicap accessible.",
+      "street": "7 Community Drive",
+      "city": "Cheektowaga",
+      "region": "Erie County",
+      "postal_code": "14225",
+      "lat": null,
+      "lng": null,
+      "category": "healthcare",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "general_accessible_flag_only"
+        ],
+        "source_notes": "211WNY directory + Aspire site. Aspire (formerly Cerebral Palsy Association of WNY) serves people with developmental disabilities; clinic lists seating/positioning aids, mobility training, AAC, and general medical care — supports disability_literate. Only a general accessible flag; MDE needs photo verification. Address returns as Buffalo 14225 in one field, Cheektowaga in another (14225 is the Cheektowaga ZIP)."
+      },
+      "provider": {
+        "disability_literate": true
+      },
+      "attributes": [
+        {
+          "key": "entrance_step_free",
+          "asserted_value": true,
+          "source_url": "https://www.211wny.org/provider/6210/",
+          "note": "211WNY directory: handicap accessible = 'Yes.' General flag — re-verify the entrance specifically."
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:provider:evergreen-health",
+      "source_url": "https://www.evergreenhs.org/accessibility-and-non-discrimination/",
+      "kind": "provider",
+      "name": "Evergreen Health",
+      "summary": "A Buffalo FQHC providing primary, behavioral, and supportive care with a stated non-discrimination policy and disability accommodations including sign-language interpreters.",
+      "street": "206 South Elmwood Avenue",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14201",
+      "lat": null,
+      "lng": null,
+      "category": "healthcare",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "fqhc_mde_deadline_recruit"
+        ],
+        "source_notes": "Evergreen's own accessibility/non-discrimination page provides qualified sign-language interpreters and non-discrimination on the basis of disability. disability_literate grounded in communication-access accommodation, NOT any physical-MDE claim (page states no exam-table/scale/entrance detail). FQHC (HHS-funded — MDE deadline). Recruit for physical MDE verification."
+      },
+      "provider": {
+        "disability_literate": true
+      },
+      "attributes": []
+    },
+    {
+      "source_ref": "wny:provider:via-low-vision",
+      "source_url": "https://www.211wny.org/provider/4000/",
+      "kind": "provider",
+      "name": "VIA — Visually Impaired Advancement (Low Vision Clinic)",
+      "summary": "A Buffalo agency and low-vision clinic providing vision rehabilitation and clinical services for people who are blind or visually impaired; listed as handicap accessible.",
+      "street": "1170 Main Street",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14209",
+      "lat": null,
+      "lng": null,
+      "category": "disability_services",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "general_accessible_flag_only"
+        ],
+        "source_notes": "211WNY directory. VIA serves people who are legally blind or visually impaired with low-vision rehabilitation — supports disability_literate (sensory-disability competence). Only a general accessible flag; physical MDE not addressed."
+      },
+      "provider": {
+        "disability_literate": true
+      },
+      "attributes": [
+        {
+          "key": "entrance_step_free",
+          "asserted_value": true,
+          "source_url": "https://www.211wny.org/provider/4000/",
+          "note": "211WNY directory: organization is handicap accessible. General flag — re-verify the entrance specifically."
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:provider:ecmc-main-campus",
+      "source_url": "https://www.ecmc.edu/",
+      "kind": "provider",
+      "name": "Erie County Medical Center (ECMC) — Main Campus",
+      "summary": "Erie County's public hospital and Level 1 trauma center, recognized for safe patient handling and mobility; a candidate to recruit for documented accessible diagnostic equipment.",
+      "street": "462 Grider Street",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14215",
+      "lat": null,
+      "lng": null,
+      "category": "healthcare",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "mde_deadline_recruit_title_ii"
+        ],
+        "source_notes": "Public hospital. Recognized by the Association of Safe Patient Handling Professionals (secondary mention) and hosts the special-needs dental program (separate record). No published disability-specific-care or MDE statement on general pages, so disability_literate=false — a recruit tied to the ADA Title II state/local MDE deadline (Aug 9 2026). Verify all attributes before asserting."
+      },
+      "provider": {
+        "disability_literate": false
+      },
+      "attributes": []
+    },
+    {
+      "source_ref": "wny:provider:ub-arc-glow-smiles",
+      "source_url": "https://www.buffalo.edu/ubnow/stories/2021/06/dental-care-disabilities.html",
+      "kind": "provider",
+      "name": "University at Buffalo / Arc GLOW — S-Miles To Go Mobile Dental Program",
+      "summary": "A UB-partnered mobile dental clinic serving WNY patients with disabilities from a wheelchair-lift-equipped van, with overflow care at UB's Squire Hall clinic in Erie County.",
+      "street": "Arc of Genesee Orleans Community Center, 38 Woodrow Road",
+      "city": "Batavia",
+      "region": "Genesee County",
+      "postal_code": "14020",
+      "lat": null,
+      "lng": null,
+      "category": "healthcare",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "outside_erie_county",
+          "mobile_program"
+        ],
+        "source_notes": "UB News. A 42-foot, three-chair dental van with digital X-ray, sterilization center, and wheelchair lift; UB partnered with Arc of Genesee Orleans to serve patients with disabilities. GEOGRAPHY: home base is Batavia (Genesee County), NOT Erie — included as a WNY disability-dental program that also delivers care at UB's Erie County clinic. Van wheelchair lift is a transport lift, not a facility MDE attribute (note only)."
+      },
+      "provider": {
+        "disability_literate": true
+      },
+      "attributes": []
+    },
+    {
+      "source_ref": "wny:provider:catholic-health-wny",
+      "source_url": "https://www.chsbuffalo.org/about-us/compliance-program/language-assistance/",
+      "kind": "provider",
+      "name": "Catholic Health (WNY)",
+      "summary": "A Buffalo-based nonprofit health system offering 24/7 video remote interpreting including ASL across its network; a candidate to recruit for documented accessible diagnostic equipment.",
+      "street": "144 Genesee Street",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14203",
+      "lat": null,
+      "lng": null,
+      "category": "healthcare",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "press_release_source_corroborate",
+          "mde_deadline_recruit_title_ii"
+        ],
+        "source_notes": "PR Newswire (system press release). Uses InDemand video remote interpreting including American Sign Language — supports disability_literate on the Deaf/HoH communication-access dimension only. No physical-MDE statement; recruit for exam-table/scale/entrance verification (Aug 9 2026 deadline). PRESS-RELEASE source — corroborate on Catholic Health's own site before elevating."
+      },
+      "provider": {
+        "disability_literate": true
+      },
+      "attributes": []
+    },
+    {
+      "source_ref": "wny:provider:service-bridges",
+      "source_url": "https://www.servicebridges.com/about",
+      "kind": "provider",
+      "name": "Service Bridges, Inc.",
+      "summary": "A Deaf-owned ASL and sign-language interpreting agency serving the Deaf, DeafBlind, and hard-of-hearing community.",
+      "street": "560 Delaware Avenue, Suite 101",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14202",
+      "lat": null,
+      "lng": null,
+      "category": "disability_services",
+      "disabled_owned": true,
+      "disabled_led": true,
+      "_review": {
+        "flags": [
+          "disabled_owned_needs_attestation"
+        ],
+        "source_notes": "Business's own About page states it was founded to be an agency 'run by the Deaf'; founder/CEO described as a Deaf man. Also appears in Gallaudet University's Apple Maps 'Deaf-Owned Businesses in Western NY' guide. High reliability for the disabled-owned/led claim (first-party + third-party curated list). disability_literate true (interpreting for the Deaf community is the core service). NEEDS OWNER SELF-ATTESTATION AT ONBOARDING (no proof)."
+      },
+      "provider": {
+        "disability_literate": true
+      },
+      "attributes": []
+    },
+    {
+      "source_ref": "wny:place:buffalo-akg",
+      "source_url": "https://buffaloakg.org/visit/accessibility",
+      "kind": "place",
+      "name": "Buffalo AKG Art Museum",
+      "summary": "Art museum with power-assist accessible entrances, accessible restrooms across both buildings, and first-come accessible parking.",
+      "street": "1285 Elmwood Avenue",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14222",
+      "lat": null,
+      "lng": null,
+      "category": "arts_culture",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [],
+        "source_notes": "First-party museum accessibility page. High reliability."
+      },
+      "attributes": [
+        {
+          "key": "entrance_step_free",
+          "asserted_value": true,
+          "source_url": "https://buffaloakg.org/visit/accessibility",
+          "note": "'Accessible entrances, with power assist doors, are located on both sides of the Knox Building and on the ground and parking level of the Gundlach Building.'"
+        },
+        {
+          "key": "accessible_restroom",
+          "asserted_value": true,
+          "source_url": "https://buffaloakg.org/visit/accessibility",
+          "note": "'Accessible/single-user restrooms are located on the entry level of the Knox Building and on the Parking Level Lobby and Floors 1-3 of the Gundlach Building.'"
+        },
+        {
+          "key": "accessible_parking",
+          "asserted_value": true,
+          "source_url": "https://buffaloakg.org/visit/accessibility",
+          "note": "'Accessible parking is available at the loop entrance by the Knox Building... first-come, first-served.'"
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:place:buffalo-history-museum",
+      "source_url": "https://buffalohistory.org/accessibility/",
+      "kind": "place",
+      "name": "The Buffalo History Museum",
+      "summary": "History museum with a wheelchair-accessible side entrance (with an approach incline), accessible restrooms on two levels, and free accessible parking.",
+      "street": "1 Museum Court",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14216",
+      "lat": null,
+      "lng": null,
+      "category": "arts_culture",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [],
+        "source_notes": "First-party museum accessibility page. High reliability."
+      },
+      "attributes": [
+        {
+          "key": "entrance_step_free",
+          "asserted_value": true,
+          "source_url": "https://buffalohistory.org/accessibility/",
+          "note": "'Our wheelchair-accessible entrance is located beyond the marble retaining wall, on the right side of the Museum.' CAUTION: source notes an incline to approach this side entrance; an elevator serves all three levels."
+        },
+        {
+          "key": "accessible_restroom",
+          "asserted_value": true,
+          "source_url": "https://buffalohistory.org/accessibility/",
+          "note": "'There are wheelchair-accessible restrooms located on the main level and on the ground level.'"
+        },
+        {
+          "key": "accessible_parking",
+          "asserted_value": true,
+          "source_url": "https://buffalohistory.org/accessibility/",
+          "note": "'The Buffalo History Museum offers free and accessible parking in the Museum's adjacent lot.'"
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:place:buffalo-science-museum",
+      "source_url": "https://www.sciencebuff.org/accessibility/",
+      "kind": "place",
+      "name": "Buffalo Museum of Science",
+      "summary": "Science museum with accessible parking near the entrance and gender-neutral bathrooms with changing tables on multiple floors.",
+      "street": "1020 Humboldt Parkway",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14211",
+      "lat": null,
+      "lng": null,
+      "category": "arts_culture",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [],
+        "source_notes": "First-party accessibility page. High reliability. Step-free entrance and accessible restroom NOT explicitly asserted by the source, so omitted (page mentions free wheelchairs and gender-neutral bathrooms but not an explicitly accessible restroom or step-free entrance)."
+      },
+      "attributes": [
+        {
+          "key": "accessible_parking",
+          "asserted_value": true,
+          "source_url": "https://www.sciencebuff.org/accessibility/",
+          "note": "'Museum parking is located on the side of the building facing Humboldt Parkway with accessible parking spaces available closer to the entrance.'"
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:place:sheas-buffalo",
+      "source_url": "https://www.sheas.org/plan-your-visit-buffalo/",
+      "kind": "place",
+      "name": "Shea's Buffalo Theatre (Shea's Performing Arts Center)",
+      "summary": "Historic theater whose main level is wheelchair accessible via the Main Street entrances; as a National Historic Site it has no elevator or balcony access and is not fully ADA compliant.",
+      "street": "650 Main Street",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14202",
+      "lat": null,
+      "lng": null,
+      "category": "arts_culture",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "partial_accessibility_caution"
+        ],
+        "source_notes": "First-party plan-your-visit page. High reliability, but venue self-describes as not fully ADA compliant (no elevator, main level only). Accessible restroom and parking NOT asserted, so omitted."
+      },
+      "attributes": []
+    },
+    {
+      "source_ref": "wny:place:explore-and-more",
+      "source_url": "https://exploreandmore.org/visit/know-before-you-go/",
+      "kind": "place",
+      "name": "Explore & More — The Ralph C. Wilson, Jr. Children's Museum",
+      "summary": "Children's museum at Canalside with a recommended step-free entrance via an accessibility ramp and adjoining bridge.",
+      "street": "130 Main Street",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14202",
+      "lat": null,
+      "lng": null,
+      "category": "arts_culture",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "source_fetch_403_reverify"
+        ],
+        "source_notes": "First-party page, but WebFetch was blocked (403); attribute is from the search engine's cached excerpt. MEDIUM reliability pending re-fetch. Accessible restroom/parking not asserted, so omitted."
+      },
+      "attributes": []
+    },
+    {
+      "source_ref": "wny:place:becpl-central",
+      "source_url": "https://www.buffalolib.org/locations-hours/directions-central-library",
+      "kind": "place",
+      "name": "Buffalo & Erie County Public Library — Central Library",
+      "summary": "Downtown central library with barrier-free entrances, cut-away curbs, automatic doors, and accessible parking meters.",
+      "street": "1 Lafayette Square",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14203",
+      "lat": null,
+      "lng": null,
+      "category": "library",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "automatic_doors_no_schema_key"
+        ],
+        "source_notes": "First-party library directions/accessibility page. High reliability. Automatic doors noted in the entrance evidence (no dedicated schema key). Accessible restroom not mentioned, so omitted."
+      },
+      "attributes": [
+        {
+          "key": "entrance_step_free",
+          "asserted_value": true,
+          "source_url": "https://www.buffalolib.org/locations-hours/directions-central-library",
+          "note": "'All library entrances (Washington, Ellicott and Oak St.) are barrier free... All feature cut-away curbs for wheelchair access; automatic doors with controls less than 48\" high.'"
+        },
+        {
+          "key": "accessible_parking",
+          "asserted_value": true,
+          "source_url": "https://www.buffalolib.org/locations-hours/directions-central-library",
+          "note": "'There are three handicapped parking meters located around the Central Library building' (Oak, William, and Clinton Streets)."
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:place:becpl-merriweather",
+      "source_url": "https://www.buffalolib.org/locations-hours/frank-e-merriweather-jr-branch",
+      "kind": "place",
+      "name": "Frank E. Merriweather, Jr. Branch Library",
+      "summary": "Neighborhood library branch that is wheelchair accessible with a 35-space on-site parking lot.",
+      "street": "1324 Jefferson Avenue",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14208",
+      "lat": null,
+      "lng": null,
+      "category": "library",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "general_accessible_flag_only"
+        ],
+        "source_notes": "First-party branch page. High reliability but low detail. Entrance/restroom attributes omitted as not separately asserted."
+      },
+      "attributes": [
+        {
+          "key": "accessible_parking",
+          "asserted_value": true,
+          "source_url": "https://www.buffalolib.org/locations-hours/frank-e-merriweather-jr-branch",
+          "note": "'The Library is Wheelchair accessible and has 35 parking spaces.' CAUTION: 'wheelchair accessible' is a general claim; source does not separately specify designated accessible spaces or a step-free entrance."
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:place:becpl-dudley",
+      "source_url": "https://www.buffalolib.org/locations-hours/dudley-branch",
+      "kind": "place",
+      "name": "Dudley Branch Library",
+      "summary": "South Buffalo library branch listed as wheelchair accessible with a parking lot.",
+      "street": "2010 South Park Avenue",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14220",
+      "lat": null,
+      "lng": null,
+      "category": "library",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "general_accessible_flag_only"
+        ],
+        "source_notes": "First-party branch page. High reliability, low detail. Entrance/restroom attributes omitted."
+      },
+      "attributes": [
+        {
+          "key": "accessible_parking",
+          "asserted_value": true,
+          "source_url": "https://www.buffalolib.org/locations-hours/dudley-branch",
+          "note": "'Wheelchair accessible, parking lot available.' CAUTION: general claim; no designated accessible spaces or step-free entrance specified."
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:place:becpl-coles",
+      "source_url": "https://www.buffalolib.org/locations-hours/leroy-r-coles-jr-branch-library",
+      "kind": "place",
+      "name": "Leroy R. Coles, Jr. Branch Library",
+      "summary": "East Buffalo library branch listed as wheelchair accessible with a parking lot.",
+      "street": "1187 East Delavan Avenue",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14215",
+      "lat": null,
+      "lng": null,
+      "category": "library",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "general_accessible_flag_only"
+        ],
+        "source_notes": "First-party branch page. High reliability, low detail. Entrance/restroom attributes omitted."
+      },
+      "attributes": [
+        {
+          "key": "accessible_parking",
+          "asserted_value": true,
+          "source_url": "https://www.buffalolib.org/locations-hours/leroy-r-coles-jr-branch-library",
+          "note": "'Wheelchair accessible' and 'Parking lot available.' CAUTION: general claim; no designated accessible-space or step-free-entrance detail."
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:place:becpl-east-clinton",
+      "source_url": "https://www.buffalolib.org/locations-hours/east-clinton-branch",
+      "kind": "place",
+      "name": "East Clinton Branch Library",
+      "summary": "East Side library branch listed as wheelchair accessible; on-site parking is available but limited.",
+      "street": "1929 Clinton Street",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14206",
+      "lat": null,
+      "lng": null,
+      "category": "library",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "general_accessible_flag_only"
+        ],
+        "source_notes": "First-party branch page. High reliability, low detail. Entrance/restroom attributes omitted."
+      },
+      "attributes": [
+        {
+          "key": "accessible_parking",
+          "asserted_value": true,
+          "source_url": "https://www.buffalolib.org/locations-hours/east-clinton-branch",
+          "note": "'Wheelchair accessible' and 'Parking lot available, but parking is limited.' CAUTION: general claim; no designated accessible-space or step-free-entrance detail."
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:place:becpl-kenilworth",
+      "source_url": "https://www.buffalolib.org/locations-hours/kenilworth-branch",
+      "kind": "place",
+      "name": "Kenilworth Branch Library",
+      "summary": "Kenmore-area library branch listed as wheelchair accessible with a parking lot.",
+      "street": "318 Montrose Avenue",
+      "city": "Kenmore",
+      "region": "Erie County",
+      "postal_code": "14223",
+      "lat": null,
+      "lng": null,
+      "category": "library",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "general_accessible_flag_only"
+        ],
+        "source_notes": "First-party branch page. High reliability, low detail. In the Village of Kenmore, Erie County. Entrance/restroom attributes omitted."
+      },
+      "attributes": [
+        {
+          "key": "accessible_parking",
+          "asserted_value": true,
+          "source_url": "https://www.buffalolib.org/locations-hours/kenilworth-branch",
+          "note": "'Wheelchair accessible.' 'Parking lot available.' CAUTION: general claim; no designated accessible-space or step-free-entrance detail."
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:place:becpl-clearfield",
+      "source_url": "https://www.buffalolib.org/locations-hours/clearfield-branch-library",
+      "kind": "place",
+      "name": "Clearfield Branch Library",
+      "summary": "Williamsville-area library branch with an automated-door back entrance for accessible entry and ample free parking.",
+      "street": "770 Hopkins Road",
+      "city": "Williamsville",
+      "region": "Erie County",
+      "postal_code": "14221",
+      "lat": null,
+      "lng": null,
+      "category": "library",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "automatic_doors_no_schema_key"
+        ],
+        "source_notes": "First-party branch page. High reliability. In Williamsville (Amherst area, Erie County). Automatic door noted (no schema key). Accessible restroom not mentioned, so omitted."
+      },
+      "attributes": [
+        {
+          "key": "entrance_step_free",
+          "asserted_value": true,
+          "source_url": "https://www.buffalolib.org/locations-hours/clearfield-branch-library",
+          "note": "'Wheelchair accessible. The back entrance has an automated door, making it best for accessible entry.'"
+        },
+        {
+          "key": "accessible_parking",
+          "asserted_value": true,
+          "source_url": "https://www.buffalolib.org/locations-hours/clearfield-branch-library",
+          "note": "'Plenty of free parking is available' at both entrances. CAUTION: source does not specify designated accessible spaces."
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:place:becpl-williamsville",
+      "source_url": "https://www.buffalolib.org/locations-hours/williamsville-branch",
+      "kind": "place",
+      "name": "Williamsville Branch Library",
+      "summary": "Village of Williamsville library branch that is wheelchair accessible via a side entrance, with parking behind the building.",
+      "street": "5571 Main Street",
+      "city": "Williamsville",
+      "region": "Erie County",
+      "postal_code": "14221",
+      "lat": null,
+      "lng": null,
+      "category": "library",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [],
+        "source_notes": "First-party branch page. High reliability. In the Village of Williamsville, Erie County. Accessible restroom not mentioned, so omitted."
+      },
+      "attributes": [
+        {
+          "key": "entrance_step_free",
+          "asserted_value": true,
+          "source_url": "https://www.buffalolib.org/locations-hours/williamsville-branch",
+          "note": "'Wheelchair accessible (side entrance).' Accessible entry is via the side entrance."
+        },
+        {
+          "key": "accessible_parking",
+          "asserted_value": true,
+          "source_url": "https://www.buffalolib.org/locations-hours/williamsville-branch",
+          "note": "'There is parking behind the Library, accessible through Cayuga Drive...' CAUTION: source does not specify designated accessible spaces."
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:place:becpl-chisholm",
+      "source_url": "https://www.buffalolib.org/locations-hours/audubon-branch",
+      "kind": "place",
+      "name": "Honorable Shirley Chisholm Library (formerly Audubon Branch)",
+      "summary": "Amherst library branch listed as wheelchair accessible with plenty of free parking.",
+      "street": "350 John James Audubon Parkway",
+      "city": "Amherst",
+      "region": "Erie County",
+      "postal_code": "14228",
+      "lat": null,
+      "lng": null,
+      "category": "library",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "general_accessible_flag_only"
+        ],
+        "source_notes": "First-party branch page. High reliability, low detail. In Amherst, Erie County. Renamed from Audubon Branch. Entrance/restroom attributes omitted."
+      },
+      "attributes": [
+        {
+          "key": "accessible_parking",
+          "asserted_value": true,
+          "source_url": "https://www.buffalolib.org/locations-hours/audubon-branch",
+          "note": "'Wheelchair accessible.' 'Plenty of free parking is available.' CAUTION: general claim; no designated accessible-space or step-free-entrance detail."
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:place:nfta-university-station",
+      "source_url": "https://metro.nfta.com/special-services/accessibility",
+      "kind": "place",
+      "name": "NFTA Metro Rail — University Station",
+      "summary": "Above-ground northern terminus of Metro Rail with an elevated platform and handrails for accessible boarding.",
+      "street": "Main Street at UB South Campus",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14214",
+      "lat": null,
+      "lng": null,
+      "category": "transit",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "system_wide_claim_not_per_station"
+        ],
+        "source_notes": "First-party NFTA-Metro accessibility page (system-wide statement covering all stations). High reliability for the system-wide claim; per-station specifics not individually detailed. Restroom/parking omitted."
+      },
+      "attributes": [
+        {
+          "key": "entrance_step_free",
+          "asserted_value": true,
+          "source_url": "https://metro.nfta.com/special-services/accessibility",
+          "note": "'All Metro Rail trains and stations are accessible to riders with disabilities.' Elevated platforms with handrails at each above-ground station. CAUTION: wheelchair riders must board the frontmost door of the front car — a system-wide claim, not a per-station physical audit."
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:place:nfta-canalside-station",
+      "source_url": "https://metro.nfta.com/special-services/accessibility",
+      "kind": "place",
+      "name": "NFTA Metro Rail — Canalside Station",
+      "summary": "Above-ground downtown terminus of Metro Rail with an elevated platform and handrails for accessible boarding.",
+      "street": "Main Street at Marine Drive",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14202",
+      "lat": null,
+      "lng": null,
+      "category": "transit",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "system_wide_claim_not_per_station"
+        ],
+        "source_notes": "First-party NFTA-Metro accessibility page (system-wide statement). High reliability for the system-wide claim; per-station specifics not detailed. Restroom/parking omitted."
+      },
+      "attributes": [
+        {
+          "key": "entrance_step_free",
+          "asserted_value": true,
+          "source_url": "https://metro.nfta.com/special-services/accessibility",
+          "note": "'All Metro Rail trains and stations are accessible to riders with disabilities.' Elevated platforms with handrails at each above-ground station. CAUTION: board the frontmost car; system-wide claim."
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:place:nfta-fountain-plaza-station",
+      "source_url": "https://metro.nfta.com/special-services/accessibility",
+      "kind": "place",
+      "name": "NFTA Metro Rail — Fountain Plaza Station",
+      "summary": "Downtown at-grade Metro Rail station covered by NFTA's system-wide accessibility commitment.",
+      "street": "Main Street at Fountain Plaza",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14202",
+      "lat": null,
+      "lng": null,
+      "category": "transit",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "system_wide_claim_not_per_station"
+        ],
+        "source_notes": "First-party NFTA-Metro accessibility page (system-wide statement). High reliability for the system-wide claim only. Restroom/parking omitted."
+      },
+      "attributes": [
+        {
+          "key": "entrance_step_free",
+          "asserted_value": true,
+          "source_url": "https://metro.nfta.com/special-services/accessibility",
+          "note": "'All Metro Rail trains and stations are accessible to riders with disabilities.' CAUTION: board the frontmost door of the front car; system-wide claim, not a per-station audit."
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:place:nfta-lafayette-square-station",
+      "source_url": "https://metro.nfta.com/special-services/accessibility",
+      "kind": "place",
+      "name": "NFTA Metro Rail — Lafayette Square Station",
+      "summary": "Downtown underground Metro Rail station served by elevators under NFTA's system-wide accessibility commitment.",
+      "street": "Main Street at Lafayette Square",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14203",
+      "lat": null,
+      "lng": null,
+      "category": "transit",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "system_wide_claim_not_per_station",
+          "elevator_dependent_underground"
+        ],
+        "source_notes": "First-party NFTA-Metro accessibility page (system-wide statement). High reliability for the claim; per-station elevator status not live-verified. Restroom/parking omitted."
+      },
+      "attributes": []
+    },
+    {
+      "source_ref": "wny:place:tifft-nature-preserve",
+      "source_url": "https://www.tifft.org/about-us/accessible-trail/",
+      "kind": "place",
+      "name": "Tifft Nature Preserve",
+      "summary": "Nature preserve on the Outer Harbor with a project to make its trail loop wheelchair/walker/stroller friendly; free visitor parking.",
+      "street": "1200 Fuhrmann Boulevard",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14203",
+      "lat": null,
+      "lng": null,
+      "category": "parks_recreation",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "project_in_progress_reverify"
+        ],
+        "source_notes": "First-party preserve page, but content describes a project in progress rather than completed access facts. MEDIUM reliability — re-verify trail/boardwalk completion before asserting step-free entrance. Only parking asserted."
+      },
+      "attributes": []
+    },
+    {
+      "source_ref": "wny:place:chestnut-ridge-park",
+      "source_url": "https://www3.erie.gov/parks/accessibility-inclusion",
+      "kind": "place",
+      "name": "Chestnut Ridge Park",
+      "summary": "Large Erie County park with a fully-accessible playground, accessible fishing pier, ADA-repaved casino lot, and a family restroom with an adult-size changing table.",
+      "street": "6121 Chestnut Ridge Road",
+      "city": "Orchard Park",
+      "region": "Erie County",
+      "postal_code": "14127",
+      "lat": null,
+      "lng": null,
+      "category": "parks_recreation",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [],
+        "source_notes": "First-party Erie County Parks accessibility-and-inclusion page. High reliability. Step-free entrance not asserted for a specific building (park is largely outdoor grounds), so omitted."
+      },
+      "attributes": [
+        {
+          "key": "accessible_parking",
+          "asserted_value": true,
+          "source_url": "https://www3.erie.gov/parks/accessibility-inclusion",
+          "note": "Erie County Parks page: the casino parking lot was repaved and 'upgraded to be ADA compliant.'"
+        },
+        {
+          "key": "accessible_restroom",
+          "asserted_value": true,
+          "source_url": "https://www3.erie.gov/parks/accessibility-inclusion",
+          "note": "'an adult-size changing table in our Family Restroom' at the Chestnut Ridge Casino."
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:place:ellicott-creek-park",
+      "source_url": "https://www3.erie.gov/parks/accessibility-inclusion",
+      "kind": "place",
+      "name": "Ellicott Creek Park",
+      "summary": "Erie County Heritage Park with an accessible playground and, park-wide, universal picnic tables that accommodate wheelchairs.",
+      "street": "1 Ellicott Creek Drive",
+      "city": "Tonawanda",
+      "region": "Erie County",
+      "postal_code": "14150",
+      "lat": null,
+      "lng": null,
+      "category": "parks_recreation",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "parking_claim_conservative"
+        ],
+        "source_notes": "First-party Erie County Parks page. Medium-high reliability — accessible-playground and universal-picnic-table facts are explicit; a designated accessible-parking claim for this specific park is not individually stated. Restroom/entrance omitted."
+      },
+      "attributes": [
+        {
+          "key": "accessible_parking",
+          "asserted_value": true,
+          "source_url": "https://www3.erie.gov/parks/accessibility-inclusion",
+          "note": "Accessible playground completed (Summer 2023) and park-wide universal picnic tables. CAUTION: 'accessible parking' here is a general park-access claim; the page does not separately enumerate designated accessible spaces at this specific park — treat conservatively."
+        }
+      ]
+    },
+    {
+      "source_ref": "wny:place:emery-park",
+      "source_url": "https://www3.erie.gov/parks/accessibility-inclusion",
+      "kind": "place",
+      "name": "Emery Park",
+      "summary": "Erie County Heritage Park with an accessible playground completed as part of the county's five-park accessibility initiative.",
+      "street": "2084 Emery Road",
+      "city": "South Wales",
+      "region": "Erie County",
+      "postal_code": "14139",
+      "lat": null,
+      "lng": null,
+      "category": "parks_recreation",
+      "disabled_owned": false,
+      "disabled_led": false,
+      "_review": {
+        "flags": [
+          "coverage_only_no_attributes"
+        ],
+        "source_notes": "First-party Erie County Parks page names Emery Park among the five Heritage Parks that received accessible playgrounds by Summer 2023. Listed for coverage; no specific step-free-entrance / accessible-restroom / accessible-parking attribute is individually asserted for this park, so attributes are intentionally empty rather than fabricated."
+      },
+      "attributes": []
+    },
+    {
+      "source_ref": "wny:place:fly-by-cafe",
+      "source_url": "https://sdves.ogs.ny.gov/business-search/7b315bf3-61e0-4515-8aa0-44f598241b3a",
+      "kind": "place",
+      "name": "Fly By Cafe LLC",
+      "summary": "A breakfast cafe and bed-and-breakfast run by a service-disabled veteran.",
+      "street": "2028 Lockport Road",
+      "city": "Niagara Falls",
+      "region": "Niagara County",
+      "postal_code": "14304",
+      "lat": null,
+      "lng": null,
+      "category": "business",
+      "disabled_owned": true,
+      "disabled_led": true,
+      "_review": {
+        "flags": [
+          "schema_gap_place_ownership",
+          "sdvob_veteran_subset",
+          "outside_erie_county",
+          "disabled_owned_needs_attestation"
+        ],
+        "source_notes": "NYS OGS-certified SDVOB — highest reliability (state certifies a service-disabled-veteran owner). SCHEMA GAP: this is a 'place' (cafe/B&B) but provider_profiles.disabled_owned/led attaches only to 'provider' listings — so the disabled_owned/led flags are recorded at TOP LEVEL here with no home in the current schema (see gaps.md). Do NOT infer the specific disability from 'service-disabled veteran.' Niagara County (adjacent to the Erie beachhead). NEEDS OWNER SELF-ATTESTATION AT ONBOARDING (no proof)."
+      },
+      "attributes": []
+    }
+  ]
+}

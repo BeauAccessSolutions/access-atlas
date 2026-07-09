@@ -9,6 +9,9 @@ const ROUTES = [
   '/places/',
   '/providers/',
   '/about/privacy/',
+  '/about/accessibility/',
+  '/about/help/',
+  '/settings/',
   // seeded detail pages (ids from supabase/seed.sql + src/lib/seed.ts)
   '/places/11111111-1111-1111-1111-111111111111/',
   '/providers/33333333-3333-3333-3333-333333333333/',
@@ -17,6 +20,9 @@ const ROUTES = [
   '/contribute/confirm/c1111111-1111-1111-1111-111111111111/',
   '/contribute/submit/?kind=place',
   '/contribute/submit/?kind=provider',
+  // self-service data rights (on-demand; renders the no-DB notice in CI)
+  '/account/',
+  '/account/delete/',
 ];
 
 for (const route of ROUTES) {
@@ -41,7 +47,7 @@ test('home has skip link, one h1, and a main landmark', async ({ page }) => {
 
 // The browsing surface must stay zero-JS even though list/detail pages are now
 // on-demand rendered (low-bandwidth mandate, §5). No <script> on these routes.
-for (const route of ['/', '/places/', '/providers/', '/places/11111111-1111-1111-1111-111111111111/']) {
+for (const route of ['/', '/places/', '/providers/', '/settings/', '/about/accessibility/', '/about/help/', '/places/11111111-1111-1111-1111-111111111111/', '/account/', '/account/delete/']) {
   test(`ships zero <script>: ${route}`, async ({ page }) => {
     await page.goto(route);
     await expect(page.locator('script')).toHaveCount(0);

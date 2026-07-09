@@ -5,42 +5,109 @@
    the person using it, not fixed by us (§5).
 
    Everything here is sized in rem so the browser/user font-size preference is
-   honored. Do not hard-code px font sizes.
+   honored. Do not hard-code px font sizes. No external assets (fonts, images):
+   the CSP forbids them and low-bandwidth is existential (§5) — this is all
+   system fonts + CSS.
 ----------------------------------------------------------------------------- */
 
 :root {
   --font-scale: 1;            /* user-adjustable text size (§5) */
-  --color-bg: #ffffff;
-  --color-fg: #1a1a1a;        /* ~15:1 on white — exceeds WCAG AA */
-  --color-muted: #4a4a4a;     /* ~8.9:1 on white — passes AA for normal text */
-  --color-link: #0b4fb3;      /* ~6.4:1 on white */
-  --color-border: #6a6a6a;
-  --color-surface: #f4f4f5;
-  --color-focus: #0b4fb3;
+  --line-scale: 1;            /* user-adjustable line spacing (§5) */
 
-  /* Validation tones. Chosen to pass contrast AND to never rely on color alone
-     (§5, §77): every badge also carries text. */
+  /* Warm, calm neutrals + a trustworthy teal brand. All text pairings below
+     meet or exceed WCAG 2.2 AA (4.5:1 body / 3:1 large + UI). */
+  --color-bg: #fbfbf9;        /* warm off-white canvas */
+  --color-surface: #ffffff;   /* cards sit above the canvas */
+  --color-surface-2: #f1f3f1; /* quiet panels (disclaimers, code) */
+  --color-fg: #191d1c;        /* ~15:1 on canvas */
+  --color-muted: #48534f;     /* ~7.6:1 on canvas — passes AA for normal text */
+  --color-link: #0b4fb3;      /* ~6.2:1 on canvas */
+  --color-link-hover: #0a3f8f;
+
+  --brand: #0d5257;           /* deep teal — header, primary button (white text ~11:1) */
+  --brand-strong: #0a4145;    /* pressed/hover */
+  --brand-ink: #0b4a4f;       /* teal used as text on light (~7.9:1) */
+  --brand-wash: #e7f1f1;      /* faint teal tint for accents */
+
+  --color-border: #e0e2de;    /* DECORATIVE hairlines (cards, dividers) */
+  --field-border: #6a6a6a;    /* INTERACTIVE borders — WCAG 1.4.11 needs >=3:1 */
+  --color-focus: #0d5257;
+
+  /* Validation tones (§4). Never color alone (§5, §7): every badge also carries
+     a text label and a leading mark glyph. */
   --tone-verified: #0f5c2e;
   --tone-sourced: #0b4fb3;
   --tone-partial: #6a4a00;
-  --tone-unverified: #4a4a4a;
-  --tone-disputed: #a11; /* dark red — paired with the word "Disputed" */
+  --tone-unverified: #48534f;
+  --tone-disputed: #a11;
 
-  --radius: 6px;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-pill: 999px;
   --space: 1rem;
-  --measure: 68ch;
+  --measure: 70ch;
+
+  --shadow-sm: 0 1px 2px rgba(18, 32, 30, 0.06);
+  --shadow: 0 2px 6px rgba(18, 32, 30, 0.06), 0 8px 24px rgba(18, 32, 30, 0.06);
+  --shadow-hover: 0 4px 10px rgba(18, 32, 30, 0.08), 0 14px 34px rgba(18, 32, 30, 0.1);
+  --header-focus: #ffffff;    /* focus ring color that shows on the teal header */
 }
 
-/* High-contrast mode: user opt-in via a class on <html> (wired to a control
-   later). Also respects the OS preference. */
-:root.contrast-high,
+/* Dark theme — respects the OS preference (§5: user-customizable). Tokens are
+   re-pointed; every downstream rule keeps working unchanged. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #0f1513;
+    --color-surface: #161d1b;
+    --color-surface-2: #1c2422;
+    --color-fg: #e9ece9;
+    --color-muted: #aeb6b3;   /* ~8:1 on the dark canvas */
+    --color-link: #77b6f2;    /* ~7:1 on the dark canvas */
+    --color-link-hover: #9cccff;
+
+    --brand: #0e6b70;         /* a touch brighter so the header reads as teal */
+    --brand-strong: #0b585c;
+    --brand-ink: #7fd7dc;
+    --brand-wash: #12312f;
+
+    --color-border: #2b3330;
+    --field-border: #8c9591;  /* >=3:1 on the dark surface */
+    --color-focus: #7fd7dc;
+
+    --tone-verified: #74d69a;
+    --tone-sourced: #8dbcff;
+    --tone-partial: #e2bd6b;
+    --tone-unverified: #c2ccc8;
+    --tone-disputed: #ff9090;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow: 0 2px 6px rgba(0, 0, 0, 0.4), 0 10px 28px rgba(0, 0, 0, 0.45);
+    --shadow-hover: 0 4px 10px rgba(0, 0, 0, 0.45), 0 16px 40px rgba(0, 0, 0, 0.5);
+  }
+  /* Dark + high-contrast: push foreground/borders to pure white. */
+  @media (prefers-contrast: more) {
+    :root { --color-fg: #ffffff; --color-border: #ffffff; --field-border: #ffffff; }
+  }
+}
+
+/* High-contrast (light): OS preference OR the manual .contrast-high toggle.
+   NOTE: these must be separate rules — a selector and an @media can't be
+   comma-joined (that was silently dropping the whole block). */
 @media (prefers-contrast: more) {
   :root {
     --color-fg: #000000;
     --color-muted: #1a1a1a;
     --color-link: #003a99;
     --color-border: #000000;
+    --field-border: #000000;
   }
+}
+:root.contrast-high {
+  --color-fg: #000000;
+  --color-muted: #1a1a1a;
+  --color-link: #003a99;
+  --color-border: #000000;
+  --field-border: #000000;
 }
 
 * { box-sizing: border-box; }
@@ -54,8 +121,12 @@ body {
   margin: 0;
   background: var(--color-bg);
   color: var(--color-fg);
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  line-height: 1.6;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* Base 1.6, scaled by the user's line-spacing setting (§5). */
+  line-height: calc(1.6 * var(--line-scale, 1));
+  /* Kinder rendering of the system font at large sizes. */
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 /* Respect reduced-motion (§5). Motion is opt-in, never forced. */
@@ -67,8 +138,102 @@ body {
     scroll-behavior: auto !important;
   }
 }
+/* The manual "Reduce motion" setting forces the same, regardless of OS pref
+   (§5: the user can choose even when their OS doesn't). Separate rule — a
+   selector and an @media block can't be comma-joined. */
+:root.reduce-motion *,
+:root.reduce-motion *::before,
+:root.reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Visually-hidden but available to assistive tech (§5). The standard clip
+   pattern — for screen-reader-only context, never to hide real content. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- User setting: font choice ------------------------------------------
+   Two non-default options (§5 user-customizable, §4 honest labels).
+
+   "readable" — a wide, high-legibility SYSTEM stack + spacing. No network
+   request, works offline; the zero-cost choice for low-bandwidth users. */
+:root.readable-font body {
+  font-family: Verdana, Tahoma, "Segoe UI", system-ui, sans-serif;
+  letter-spacing: 0.02em;
+  word-spacing: 0.08em;
+}
+
+/* "dyslexic" — self-hosted OpenDyslexic (SIL OFL; files + licence in
+   public/fonts/). Self-hosted so it satisfies the CSP `font-src 'self'` (audit
+   §D). CRUCIALLY, the @font-face below is INERT until .dyslexic-font is on
+   <html>: browsers don't fetch a webfont until a rendered glyph uses its
+   family, so only visitors who choose this pay the ~115KB — everyone else
+   downloads nothing (§5 low-bandwidth stays intact). swap => text shows
+   immediately in the fallback, then re-renders when the font arrives. */
+@font-face {
+  font-family: "OpenDyslexic";
+  src: url("/fonts/opendyslexic-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "OpenDyslexic";
+  src: url("/fonts/opendyslexic-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+:root.dyslexic-font body {
+  font-family: "OpenDyslexic", Verdana, Tahoma, system-ui, sans-serif;
+  letter-spacing: 0.02em;
+  word-spacing: 0.08em;
+}
+
+/* ---- Target size (WCAG 2.2 §2.5.8, AA) ----------------------------------
+   Baseline: give the small UI controls a >=24px hit area. Inline links inside
+   running prose are exempt, so we scope to the nav and to standalone action
+   links — not to every <a>. */
+header.site nav a,
+.report-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
+
+/* User setting: larger targets bumps the standalone controls to >=44px and
+   enlarges form controls — comfortable for tremor, low-vision, and touch (§5). */
+:root.large-targets header.site nav a,
+:root.large-targets .report-link,
+:root.large-targets .btn,
+:root.large-targets button[type="submit"],
+:root.large-targets .btn-secondary {
+  min-height: 44px;
+}
+:root.large-targets input[type="checkbox"] {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+:root.large-targets select,
+:root.large-targets input[type="text"],
+:root.large-targets input[type="date"] {
+  min-height: 44px;
+}
 
 main { display: block; }
+main.container { padding-block: 2rem 3rem; }
 
 .container {
   max-width: var(--measure);
@@ -76,86 +241,193 @@ main { display: block; }
   padding: var(--space);
 }
 
-a { color: var(--color-link); }
-a:hover { text-decoration: none; }
+a { color: var(--color-link); text-underline-offset: 0.15em; }
+a:hover { color: var(--color-link-hover); text-decoration: none; }
 
 /* Visible focus for keyboard/switch users (§5). Never remove outlines. */
-:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
   outline: 3px solid var(--color-focus);
   outline-offset: 2px;
-  border-radius: 2px;
+  border-radius: 3px;
 }
 
 /* Skip link — first focusable thing on the page (§5, keyboard path). */
 .skip-link {
   position: absolute;
   left: 0.5rem;
-  top: -3rem;
+  top: -3.5rem;
   background: var(--color-fg);
   color: var(--color-bg);
-  padding: 0.5rem 0.75rem;
-  border-radius: var(--radius);
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
   transition: top 0.15s ease;
   z-index: 100;
 }
 .skip-link:focus { top: 0.5rem; }
 
+/* -------- Header: a branded teal bar ------------------------------------- */
 header.site {
-  border-bottom: 2px solid var(--color-border);
+  background: var(--brand);
+  color: #fff;
+  box-shadow: var(--shadow-sm);
 }
+header.site .container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  padding-block: 0.85rem;
+}
+header.site a { color: #fff; }
+header.site a:hover { color: #fff; }
+header.site > .container > a:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+.brand-mark {
+  width: 1.6rem;
+  height: 1.6rem;
+  flex: none;      /* never squish the mark when the header wraps */
+}
+header.site > .container > a strong { font-weight: 700; }
 header.site nav ul {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.35rem 1.25rem;
   padding: 0;
-  margin: 0.5rem 0 0;
+  margin: 0;
 }
+header.site nav a {
+  text-decoration: none;
+  padding: 0.2rem 0;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.15s ease;
+}
+header.site nav a:hover { border-bottom-color: rgba(255, 255, 255, 0.85); }
+/* Focus must be visible against teal — use a white ring here. */
+header.site a:focus-visible { outline-color: var(--header-focus); }
 
-h1 { font-size: 1.9rem; line-height: 1.25; }
-h2 { font-size: 1.4rem; }
+/* -------- Typography ----------------------------------------------------- */
+h1 { font-size: 2.1rem; line-height: 1.15; letter-spacing: -0.02em; margin-block: 0 0.6rem; }
+h2 { font-size: 1.45rem; line-height: 1.25; letter-spacing: -0.01em; margin-block: 2rem 0.6rem; }
+h3 { line-height: 1.3; }
+p { margin-block: 0 1rem; }
+strong { font-weight: 650; }
 
-/* List-first cards (§5). A plain <ul> of listings — no map required. */
+/* -------- Home hero ------------------------------------------------------ */
+.hero {
+  padding: 1.75rem 1.5rem 2rem;
+  margin-bottom: 1.5rem;
+  background:
+    radial-gradient(120% 140% at 100% 0%, var(--brand-wash) 0%, transparent 60%),
+    var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.hero h1 { max-width: 20ch; }
+.lead { font-size: 1.12rem; color: var(--color-muted); max-width: 60ch; }
+
+/* -------- Buttons -------------------------------------------------------- */
+.cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.25rem; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0.6rem 1.15rem;
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--brand);
+  color: var(--brand-ink);
+  background: var(--color-surface);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+.btn:hover { color: var(--brand-ink); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+.btn-primary { background: var(--brand); color: #fff; }
+.btn-primary:hover { background: var(--brand-strong); color: #fff; }
+
+/* -------- List-first cards (§5) ------------------------------------------ */
 .listing-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 1rem; }
 .listing-card {
+  position: relative;
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
-  padding: 1rem;
+  padding: 1.15rem 1.25rem;
   background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
 }
-.listing-card h3 { margin: 0 0 0.25rem; font-size: 1.25rem; }
-.listing-meta { color: var(--color-muted); margin: 0 0 0.5rem; }
+.listing-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--brand) 35%, var(--color-border));
+}
+/* Category chip: an icon + its text label (never icon alone, §5). */
+.category-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 650;
+  color: var(--brand-ink);
+}
+.cat-icon { width: 1.05rem; height: 1.05rem; flex: none; }
 
+.listing-card h3 { margin: 0 0 0.2rem; font-size: 1.2rem; letter-spacing: -0.01em; }
+.listing-card h3 a { text-decoration: none; }
+.listing-card h3 a:hover { text-decoration: underline; }
+.listing-meta { color: var(--color-muted); margin: 0 0 0.5rem; font-size: 0.95rem; }
+
+/* Representation / competence tags (§1) — quiet teal-tinted pills. */
 .tag {
   display: inline-block;
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  padding: 0.1rem 0.6rem;
-  font-size: 0.85rem;
-  margin-right: 0.25rem;
+  border: 1px solid color-mix(in srgb, var(--brand) 30%, var(--color-border));
+  background: var(--brand-wash);
+  color: var(--brand-ink);
+  border-radius: var(--radius-pill);
+  padding: 0.12rem 0.7rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin: 0 0.3rem 0.3rem 0;
 }
 
-/* Attribute claim rows — each claim separately labeled (§4, never one score). */
-.attr-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.75rem; }
+/* -------- Attribute claim rows (§4 — each labeled separately) ------------ */
+.attr-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.85rem; }
 .attr-row {
   display: grid;
-  gap: 0.25rem;
-  padding: 0.75rem;
+  gap: 0.4rem;
+  padding: 1rem 1.1rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
 }
-.attr-row .attr-name { font-weight: 600; }
+.attr-row .attr-name { font-weight: 650; font-size: 1.02rem; }
 
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.4rem;
   font-size: 0.9rem;
-  font-weight: 600;
-  padding: 0.15rem 0.55rem;
-  border-radius: var(--radius);
+  font-weight: 650;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-pill);
   border: 2px solid currentColor;
   width: fit-content;
+  /* Fallback for browsers without color-mix: a neutral panel. */
+  background: var(--color-surface-2);
+  /* A faint wash of the badge's own tone — adapts to light/dark automatically. */
+  background: color-mix(in srgb, currentColor 12%, var(--color-bg));
 }
 .badge::before { content: attr(data-mark); font-weight: 700; }
 .badge[data-tone="verified"]   { color: var(--tone-verified); }
@@ -165,50 +437,193 @@ h2 { font-size: 1.4rem; }
 .badge[data-tone="disputed"]   { color: var(--tone-disputed); }
 
 .attr-desc { color: var(--color-muted); font-size: 0.95rem; }
-.report-link { font-size: 0.95rem; width: fit-content; }
+.report-link { font-size: 0.95rem; width: fit-content; font-weight: 600; }
+.stale-note {
+  color: var(--tone-disputed);
+  font-size: 0.9rem;
+  font-weight: 650;
+}
 
-/* Contribution form: generous spacing, clear fieldset borders (§5). */
+/* -------- Forms (§5: generous spacing, clear labelled fields) ------------ */
 form fieldset {
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
-  margin: 1.25rem 0;
-  padding: 0.75rem 1rem;
+  margin: 1.5rem 0;
+  padding: 1rem 1.15rem 1.15rem;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
 }
-form legend { font-weight: 600; padding: 0 0.35rem; }
+form legend { font-weight: 650; padding: 0 0.4rem; }
 form label { font-weight: 500; }
+form p label { display: inline-block; }
 form input[type="text"],
 form input[type="date"],
+form select,
 form textarea {
+  /* `font: inherit` keeps controls at the body's 1rem (>=16px, since the min
+     text-size setting is 100%). That >=16px matters: iOS Safari zooms the page
+     when a focused field's font is under 16px. Do not shrink these below 1rem. */
   font: inherit;
-  padding: 0.4rem 0.5rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
+  padding: 0.5rem 0.6rem;
+  margin-top: 0.15rem;
+  border: 1px solid var(--field-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-fg);
   max-width: 100%;
 }
+form input[type="text"]:focus,
+form input[type="date"]:focus,
+form select:focus,
+form textarea:focus { border-color: var(--brand); }
+
+/* A quiet inline explanation next to a checkbox/label (settings page). */
+.field-hint { color: var(--color-muted); font-weight: 400; }
+
+/* Inline, field-level error text (§5: text-based errors, not colour alone —
+   the leading "!" mark carries the meaning without relying on the red). */
+.field-error {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--tone-disputed);
+  font-weight: 650;
+  font-size: 0.95rem;
+}
+.field-error::before { content: "! "; }
+/* A required-field marker on a label; the word "required" is read out via an
+   adjacent .sr-only, so the asterisk itself is decorative to assistive tech. */
+.req { color: var(--tone-disputed); font-weight: 700; margin-left: 0.15rem; }
 form textarea { width: 100%; }
+form input[type="checkbox"] { width: 1.1rem; height: 1.1rem; accent-color: var(--brand); vertical-align: -0.15rem; margin-right: 0.35rem; }
 form button[type="submit"] {
   font: inherit;
-  font-weight: 600;
-  padding: 0.55rem 1.1rem;
-  border: 2px solid var(--color-link);
-  background: var(--color-link);
+  font-weight: 650;
+  padding: 0.6rem 1.3rem;
+  border: 2px solid var(--brand);
+  background: var(--brand);
   color: #fff;
-  border-radius: var(--radius);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background 0.12s ease, transform 0.12s ease;
+}
+form button[type="submit"]:hover { background: var(--brand-strong); transform: translateY(-1px); }
+
+/* Secondary action (e.g. "Reset to defaults") — outline, not filled, so it
+   reads as the quieter of two buttons. */
+.settings-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+.btn-secondary {
+  font: inherit;
+  font-weight: 650;
+  padding: 0.6rem 1.3rem;
+  border: 2px solid var(--brand);
+  background: var(--color-surface);
+  color: var(--brand-ink);
+  border-radius: var(--radius-pill);
   cursor: pointer;
 }
-form button[type="submit"]:hover { background: #093f8f; }
-.stale-note { color: var(--tone-disputed); font-size: 0.9rem; font-weight: 600; }
+.btn-secondary:hover { background: var(--brand-wash); }
 
-.disclaimer {
-  border-left: 4px solid var(--color-border);
+/* A submit button that reads as an inline link — used for zero-JS actions that
+   must be a POST (e.g. "Sign out"), where a link would be semantically wrong. */
+.linklike {
+  font: inherit;
+  color: var(--color-link);
+  background: none;
+  border: 0;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  cursor: pointer;
+}
+.linklike:hover { color: var(--color-link-hover); text-decoration: none; }
+
+/* -------- Native disclosure (<details>) ---------------------------------
+   Zero-JS collapsible. Used for the help-page FAQ now; the same pattern is
+   ready to drop onto a filter panel when search lands (audit Tier 3) — native
+   <details> gives keyboard operability and aria-expanded for free. */
+details {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  margin: 0.6rem 0;
+  padding: 0 1rem;
   background: var(--color-surface);
-  padding: 0.75rem 1rem;
+}
+details[open] { padding-bottom: 0.85rem; }
+summary {
+  cursor: pointer;
+  font-weight: 650;
+  /* Keep the native list-item display so the disclosure triangle stays; the
+     padding alone clears a comfortable ~47px target (WCAG 2.2 §2.5.8). Do NOT
+     set display:flex here — it drops the marker and collapses the summary width. */
+  padding: 0.7rem 0;
+  min-height: 44px;
+}
+summary:hover { color: var(--brand-ink); }
+details > *:not(summary) { margin-top: 0; }
+details p:last-child { margin-bottom: 0; }
+
+/* -------- Callouts ------------------------------------------------------- */
+.disclaimer {
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--brand);
+  background: var(--color-surface-2);
+  padding: 0.9rem 1.1rem;
   margin: 1.5rem 0;
   border-radius: 0 var(--radius) var(--radius) 0;
 }
+.disclaimer p:last-child { margin-bottom: 0; }
+code {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 0.05rem 0.35rem;
+  font-size: 0.9em;
+}
 
+/* -------- Footer --------------------------------------------------------- */
 footer.site {
-  border-top: 2px solid var(--color-border);
-  margin-top: 3rem;
+  border-top: 1px solid var(--color-border);
+  margin-top: 3.5rem;
+  padding-block: 1.5rem;
   color: var(--color-muted);
+  background: var(--color-surface);
+  font-size: 0.95rem;
+}
+footer.site .footer-links { margin-bottom: 0; }
+
+/* -------- Print ----------------------------------------------------------
+   People print or save-as-PDF a listing to carry to a visit (§5: works on
+   paper too). Drop interactive chrome and ink-heavy surfaces, force plain
+   black-on-white, and keep each listing/claim whole across a page break so a
+   safety-relevant attribute never splits mid-row. */
+@media print {
+  :root {
+    --color-bg: #fff;
+    --color-surface: #fff;
+    --color-surface-2: #fff;
+    --color-fg: #000;
+    --color-muted: #1a1a1a;
+    --color-border: #999;
+  }
+  body { background: #fff; color: #000; }
+  /* Nav, skip link, and footer link-row aren't useful on paper (the site name
+     stays, so the printout says where it came from). */
+  header.site nav,
+  .skip-link,
+  footer.site .footer-links { display: none; }
+  /* Flatten decoration that wastes ink or muddies text. */
+  .hero,
+  .listing-card,
+  .attr-row,
+  .disclaimer,
+  form fieldset,
+  .badge {
+    box-shadow: none !important;
+    background: #fff !important;
+  }
+  a { color: #000; text-decoration: underline; }
+  /* Don't split a listing card or an attribute claim across pages. */
+  .listing-card,
+  .attr-row { break-inside: avoid; page-break-inside: avoid; }
+  main.container { padding-block: 0; }
 }

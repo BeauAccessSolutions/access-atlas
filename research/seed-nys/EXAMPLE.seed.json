@@ -1,0 +1,61 @@
+{
+  "_note": "TEMPLATE / ILLUSTRATIVE ONLY — placeholder entities and fake source URLs. NOT real accessibility data. It exists to (a) show scripts/seed-import.mjs a valid file and (b) give the WNY seed research a concrete target shape. Do NOT import this into a production database. Real, sourced WNY data replaces it (see README.md in this folder and docs/seed-format.md).",
+  "source": "EXAMPLE template — replace with a real, cited WNY batch",
+  "listings": [
+    {
+      "source_ref": "example:place:sample-cafe",
+      "source_url": "https://example.com/not-a-real-source",
+      "kind": "place",
+      "name": "Sample Cafe (TEMPLATE — not real)",
+      "summary": "Illustrative place record showing the format.",
+      "street": "123 Example St",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14222",
+      "disabled_owned": true,
+      "disabled_led": true,
+      "attributes": [
+        {
+          "key": "entrance_step_free",
+          "asserted_value": true,
+          "source_url": "https://example.com/placeholder",
+          "note": "Placeholder — a real record cites where the step-free claim comes from"
+        },
+        {
+          "key": "accessible_restroom",
+          "sourced": true,
+          "sourced_note": "TEMPLATE example of a certification/audit-backed (sourced) claim — replace with a real audit"
+        }
+      ]
+    },
+    {
+      "source_ref": "example:provider:sample-clinic",
+      "source_url": "https://example.com/not-a-real-source",
+      "kind": "provider",
+      "name": "Sample Family Medicine (TEMPLATE — not real)",
+      "summary": "Illustrative provider record showing the provider block + attributes.",
+      "city": "Buffalo",
+      "region": "Erie County",
+      "postal_code": "14201",
+      "disabled_owned": false,
+      "disabled_led": true,
+      "provider": {
+        "disability_literate": true
+      },
+      "attributes": [
+        {
+          "key": "height_adjustable_exam_table",
+          "asserted_value": true,
+          "source_url": "https://example.com/placeholder",
+          "note": "Placeholder — a real record cites the source (e.g. an MDE compliance listing)"
+        },
+        {
+          "key": "accessible_scale",
+          "asserted_value": true,
+          "source_url": "https://example.com/placeholder",
+          "note": "Placeholder — accessible_scale is a provider MDE attribute (Gap C)"
+        }
+      ]
+    }
+  ]
+}

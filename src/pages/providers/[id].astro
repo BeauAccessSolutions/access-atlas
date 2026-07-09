@@ -5,6 +5,8 @@ export const prerender = false;
 
 import Base from '../../layouts/Base.astro';
 import AttributeList from '../../components/AttributeList.astro';
+import CategoryIcon from '../../components/CategoryIcon.astro';
+import { categoryLabel, isCategory } from '../../lib/categories';
 import { getListing, getStatusesForListing } from '../../lib/repo';
 
 const { id } = Astro.params;
@@ -26,33 +28,37 @@ const justSubmitted = Astro.url.searchParams.get('submitted') === '1';
   ) : (
     <Base title={listing.name} description={listing.summary ?? undefined}>
       {justSubmitted && (
-        <p class="disclaimer" role="status">
+        <p class="disclaimer" role="status" aria-atomic="true">
           Thanks — your listing was added. It starts as “self-reported / awaiting
           verification” until community visits confirm it.
         </p>
       )}
       <p><a href="/providers/">← All providers</a></p>
       <h1>{listing.name}</h1>
+      {isCategory(listing.category) && (
+        <p class="category-tag">
+          <CategoryIcon category={listing.category} />
+          <span>{categoryLabel(listing.category)}</span>
+        </p>
+      )}
       {place && <p class="listing-meta">{place}</p>}
       {listing.summary && <p>{listing.summary}</p>}
 
-      {prov && (
-        <>
-          <h2>Provider profile</h2>
-          <p>These are <strong>self-attested</strong> by the provider — no medical proof is ever required.</p>
-          <ul>
-            <li>Disability-literate: {prov.disabilityLiterate ? 'Yes (self-attested)' : 'Not attested'}</li>
-            <li>
-              Disabled-owned (a disabled person owns 51% or more):
-              {prov.disabledOwned ? ' Yes (self-attested)' : ' Not attested'}
-            </li>
-            <li>
-              Disabled-led (a disabled person holds primary leadership):
-              {prov.disabledLed ? ' Yes (self-attested)' : ' Not attested'}
-            </li>
-          </ul>
-        </>
-      )}
+      <h2>Ownership, leadership &amp; competence</h2>
+      <p>These are <strong>self-attested</strong> — no medical proof is ever required.</p>
+      <ul>
+        {prov && (
+          <li>Disability-literate: {prov.disabilityLiterate ? 'Yes (self-attested)' : 'Not attested'}</li>
+        )}
+        <li>
+          Disabled-owned (a disabled person owns 51% or more):
+          {listing.disabledOwned ? ' Yes (self-attested)' : ' Not attested'}
+        </li>
+        <li>
+          Disabled-led (a disabled person holds primary leadership):
+          {listing.disabledLed ? ' Yes (self-attested)' : ' Not attested'}
+        </li>
+      </ul>
 
       <h2>Accessibility & competence</h2>
       <p>

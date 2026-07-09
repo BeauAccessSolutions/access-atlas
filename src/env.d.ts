@@ -8,6 +8,12 @@ interface ImportMetaEnv {
   // Must be exactly 'true' to accept contributions before real auth exists.
   // Local/preview ONLY — never set in production.
   readonly ALLOW_PROVISIONAL_CONTRIBUTIONS?: string;
+  // Keycloak OIDC (server-only). Set ALL THREE to switch contribution from the
+  // provisional cookie to real auth (src/lib/auth/config.ts). Unset until the
+  // platform IdP is stood up → provisional/gated behavior unchanged.
+  readonly KEYCLOAK_ISSUER?: string;
+  readonly KEYCLOAK_CLIENT_ID?: string;
+  readonly KEYCLOAK_REDIRECT_URI?: string;
 }
 
 interface ImportMeta {

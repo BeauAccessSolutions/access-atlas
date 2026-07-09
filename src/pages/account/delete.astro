@@ -1,0 +1,104 @@
+---
+// Delete your data — the destructive-action confirmation page (a11y crossover
+// audit, Tier 3). Zero-JS: the safeguard is a typed word in a labeled field,
+// not a modal. Plain language, states exactly what is erased and what is kept,
+// and the safe action (cancel) is offered before the destructive one.
+export const prerender = false;
+
+import Base from '../../layouts/Base.astro';
+import { getAccountContributor } from '../../lib/contributor';
+import { keycloakConfigured } from '../../lib/auth/config';
+import { supabaseAdmin } from '../../lib/supabase-server';
+import { isDbConfigured } from '../../lib/supabase';
+import { DELETE_CONFIRM_PHRASE } from '../../lib/data-rights';
+
+const status = Astro.url.searchParams.get('status');
+const who = supabaseAdmin ? await getAccountContributor(Astro.cookies, supabaseAdmin) : null;
+const loginHref = `/api/auth/login?return_to=${encodeURIComponent('/account/delete/')}`;
+
+const BANNERS: Record<string, { role: 'status' | 'alert'; text: string }> = {
+  need_confirm: {
+    role: 'alert',
+    text: `Please type the word “${DELETE_CONFIRM_PHRASE}” in the confirmation box — nothing was deleted.`,
+  },
+};
+const banner = status ? BANNERS[status] : null;
+---
+
+<Base
+  title="Delete your data"
+  description="Permanently delete your Access Atlas contributions and account."
+>
+  {banner && <p class="disclaimer" role={banner.role} aria-atomic="true">{banner.text}</p>}
+
+  <p><a href="/account/">← Back to your data</a></p>
+  <h1>Delete your data</h1>
+
+  {
+    !isDbConfigured || !supabaseAdmin ? (
+      <p class="disclaimer" role="status" aria-atomic="true">
+        This is a static preview with no database attached, so there is no
+        contributor data to delete here.
+      </p>
+    ) : !who ? (
+      <p class="disclaimer" role="status" aria-atomic="true">
+        {keycloakConfigured() ? (
+          <>
+            To delete your data, please <a href={loginHref}>sign in</a> first — we
+            can only delete your data for you.
+          </>
+        ) : (
+          <>We hold no data for this browser, so there is nothing to delete.</>
+        )}
+      </p>
+    ) : (
+      <>
+        <h2>What will be deleted</h2>
+        <ul>
+          <li>All your visit reports (confirmations), including notes and visit dates.</li>
+          <li>Every evidence photo you uploaded.</li>
+          <li>Your optional access tags and display name.</li>
+          <li>Your account itself, including any sign-in sessions.</li>
+        </ul>
+
+        <h2>What stays</h2>
+        <p>
+          Listings you suggested stay in the directory — they describe a place or
+          provider, not you, and removing them would strand the next person
+          looking for that place. Your name is detached from them.
+        </p>
+
+        <p class="disclaimer">
+          <strong>This cannot be undone.</strong> If you only want a copy of your
+          data, <a href="/account/">download it from your data page</a> instead —
+          you don't have to delete anything to get it.
+        </p>
+
+        <form method="post" action="/api/account/delete">
+          <p>
+            <label for="confirm">
+              To confirm, type the word <strong>{DELETE_CONFIRM_PHRASE}</strong>
+              <span class="sr-only">(required)</span>
+              <span aria-hidden="true"> *</span>
+            </label><br />
+            <input
+              type="text"
+              id="confirm"
+              name="confirm"
+              required
+              autocomplete="off"
+              aria-describedby="confirm-help"
+            />
+            <span id="confirm-help" class="attr-desc">
+              Typing the word is asked so a stray click or key press can never
+              erase your data. Capital letters are fine.
+            </span>
+          </p>
+          <p><button type="submit">Permanently delete my data</button></p>
+        </form>
+
+        <p><a href="/account/">Cancel and keep my data</a></p>
+      </>
+    )
+  }
+</Base>

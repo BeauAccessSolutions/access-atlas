@@ -14,10 +14,7 @@ import type { APIRoute } from 'astro';
 import sharp from 'sharp';
 import { supabaseAdmin } from '../../lib/supabase-server';
 import { getClaimForConfirm } from '../../lib/repo';
-import {
-  getOrCreateContributor,
-  provisionalContributionsAllowed,
-} from '../../lib/contributor';
+import { resolveContributor } from '../../lib/contributor';
 import { sanitizeTags } from '../../lib/identity-tags';
 
 export const prerender = false;
@@ -42,10 +39,10 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     return new Response('Bad request', { status: 400 });
   }
 
-  // Hard gate: no real auth yet, so refuse unless explicitly enabled (§6).
-  if (!provisionalContributionsAllowed() || !supabaseAdmin) {
-    return back(claimId, 'disabled');
-  }
+  // Writes require a resolved contributor — a verified Keycloak session, or the
+  // provisional stand-in when explicitly enabled. resolveContributor encodes the
+  // precedence and the hard gate (§6); we just need the DB to be configured here.
+  if (!supabaseAdmin) return back(claimId, 'disabled');
 
   try {
     const claim = await getClaimForConfirm(claimId);
@@ -73,7 +70,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const tags = sanitizeTags(form.getAll('identity_tags').map(String));
     const pseudonym = (form.get('pseudonym') as string | null) ?? null;
 
-    const contributor = await getOrCreateContributor(cookies, supabaseAdmin, pseudonym);
+    const resolved = await resolveContributor(cookies, supabaseAdmin, { pseudonym });
+    if ('gate' in resolved) return back(claimId, resolved.gate);
+    const contributor = resolved.contributor;
 
     // Strip EXIF + normalize BEFORE storing (§6). sharp drops metadata by
     // default on re-encode; rotate() bakes in orientation so we can.

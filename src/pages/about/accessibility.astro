@@ -1,0 +1,97 @@
+---
+// Accessibility statement. Honest, checkable enumeration of what we actually do
+// (§6: public claims must be backed by the implementation). Everything here is
+// true today — settings that don't exist yet are described as such, not implied.
+// On-demand so a visitor's own saved settings apply while they read it.
+export const prerender = false;
+
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Accessibility statement"
+  description="What Access Atlas does to be accessible — and how you can check that we mean it."
+>
+  <h1>Accessibility statement</h1>
+
+  <p class="lead">
+    A disability platform that isn’t itself accessible is a failure. WCAG 2.2 AA
+    is our floor, not our goal. Here is what we do — stated plainly so you can
+    check it.
+  </p>
+
+  <h2>What you can adjust yourself</h2>
+  <p>
+    Open <a href="/settings/">Accessibility settings</a> to change, across the
+    whole site:
+  </p>
+  <ul>
+    <li>Text size, up to 200%.</li>
+    <li>Line spacing.</li>
+    <li>
+      A more legible font — either a wide, high-legibility font already on your
+      device, or OpenDyslexic. Both are served from our own site (never a
+      third-party font host), and OpenDyslexic only downloads if you choose it.
+    </li>
+    <li>High contrast.</li>
+    <li>Reduced motion.</li>
+    <li>Larger click and tap targets (at least 44&nbsp;pixels).</li>
+  </ul>
+  <p>
+    These are saved in one functional cookie on your device. There is no account
+    and no tracking, and the setting is applied by our server before the page
+    reaches you — so it works with <strong>no JavaScript at all</strong>.
+  </p>
+
+  <h2>How the site is built</h2>
+  <ul>
+    <li>
+      <strong>Zero JavaScript on browsing pages.</strong> The pages you read are
+      plain server-rendered HTML. Our security policy blocks scripts outright, so
+      the site stays fast and works on low bandwidth and older devices.
+    </li>
+    <li>
+      <strong>List first, never map-only.</strong> Every result is a real,
+      readable list. A map, if we add one, will only ever be an extra on top.
+    </li>
+    <li>
+      <strong>Keyboard and screen reader.</strong> A skip link, semantic
+      landmarks, a visible focus outline, a sensible heading order, and text
+      labels on every form field — designed in, not bolted on.
+    </li>
+    <li>
+      <strong>Colour is never the only signal.</strong> Every trust label carries
+      a word and a symbol, not just a colour.
+    </li>
+    <li>
+      <strong>We respect your system settings too.</strong> Dark mode, high
+      contrast, and reduced motion follow your operating system automatically —
+      the controls above only override them when you want to.
+    </li>
+  </ul>
+
+  <h2>How we test — and where we’re honest about limits</h2>
+  <p>
+    Every build runs automated accessibility checks (axe-core) in our continuous
+    integration; a change that fails them does not ship. But automated tools
+    catch only about 40% of real barriers, so automated passing is
+    <strong>not</strong> the same as accessible. Manual testing with real
+    assistive technology, and paid disabled co-designers across a range of access
+    needs, are part of how we judge a feature done.
+  </p>
+
+  <h2>Found a barrier?</h2>
+  <p>
+    If something here blocks you, that’s a bug to us — please tell us so we can
+    fix it. This statement will be updated as the platform grows; it describes
+    what is true today, not what we hope to build.
+  </p>
+
+  <div class="disclaimer">
+    <p>
+      We’d rather under-claim than over-claim. If we say we do something for
+      accessibility, it’s because the code actually does it — and you’re welcome
+      to check, because the code is open.
+    </p>
+  </div>
+</Base>
