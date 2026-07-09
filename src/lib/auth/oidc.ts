@@ -108,12 +108,28 @@ export async function exchangeCode(
 
 /**
  * Only allow same-origin relative paths as a post-login destination, to prevent
- * an open-redirect. Anything suspicious falls back to the submit page.
+ * an open-redirect (the value flows into a Location header in the callback).
+ * Anything suspicious falls back to the submit page.
+ *
+ * Cheap prefix checks aren't enough: browsers normalize a backslash to a slash
+ * when parsing a redirect target, so "/\\evil.com" (and "\\/evil.com") resolve
+ * to "https://evil.com". Reject anything that isn't a clean root-relative path,
+ * then resolve it against a throwaway origin and confirm the origin didn't
+ * change — so only the path+query+hash of a genuinely same-origin URL survive.
  */
 export function sanitizeReturnTo(raw: string | null | undefined): string {
   const fallback = '/contribute/submit/';
   if (!raw) return fallback;
-  // Must be a root-relative path, and NOT a protocol-relative "//evil.com".
+  // Must be root-relative, not protocol-relative ("//"), and contain no
+  // backslashes or control chars that a browser would rewrite into an authority.
   if (!raw.startsWith('/') || raw.startsWith('//')) return fallback;
-  return raw;
+  if (/[\\\x00-\x1f]/.test(raw)) return fallback;
+  try {
+    const base = 'https://return-to.invalid';
+    const url = new URL(raw, base);
+    if (url.origin !== base) return fallback;
+    return url.pathname + url.search + url.hash;
+  } catch {
+    return fallback;
+  }
 }
