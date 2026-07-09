@@ -1,0 +1,103 @@
+---
+// Zero-JS search + filter panel for the list pages. A native <details>
+// disclosure (the audit-Tier-3 pattern proven on the help page) wrapping a
+// plain GET form: the URL is the state, so results are bookmarkable and
+// shareable, and nothing here ships a <script> (§5 low-bandwidth).
+//
+// A11y notes (§5):
+//   * The panel is OPEN whenever a filter is active — collapsed-but-active
+//     filters would silently hide why the list looks short.
+//   * Every control has a visible label; checkboxes sit inside a fieldset
+//     with a legend. No placeholder-only fields.
+//   * Filtering never alters cards or claim labels (§4) — it only narrows.
+import { CATEGORIES, CATEGORY_LABELS } from '../lib/categories';
+import type { ListingFilters } from '../lib/filters';
+import type { ListingKind } from '../lib/types';
+
+interface Props {
+  kind: ListingKind;
+  filters: ListingFilters;
+  counties: string[];
+  active: boolean;
+  /** The bare list path, e.g. "/places/" — form action and clear-link target. */
+  action: string;
+}
+const { kind, filters, counties, active, action } = Astro.props;
+const noun = kind === 'provider' ? 'providers' : 'places';
+---
+
+<details class="filter-panel" open={active}>
+  <summary>Search &amp; filter {noun}</summary>
+  <form method="get" action={action}>
+    <div class="filter-grid">
+      <p>
+        <label for="filter-q">Search by name, description, or city</label>
+        <input
+          type="text"
+          id="filter-q"
+          name="q"
+          value={filters.q}
+          autocomplete="off"
+        />
+      </p>
+      <p>
+        <label for="filter-category">Category</label>
+        <select id="filter-category" name="category">
+          <option value="">All categories</option>
+          {CATEGORIES.map((c) => (
+            <option value={c} selected={filters.category === c}>
+              {CATEGORY_LABELS[c]}
+            </option>
+          ))}
+        </select>
+      </p>
+      <p>
+        <label for="filter-county">County</label>
+        <select id="filter-county" name="county">
+          <option value="">All counties</option>
+          {counties.map((c) => (
+            <option value={c} selected={filters.county === c}>
+              {c}
+            </option>
+          ))}
+        </select>
+      </p>
+    </div>
+
+    <fieldset>
+      <legend>Only show</legend>
+      {/* Representation (§1) and provider competence (§8) are independent
+          axes — independent checkboxes, never merged. All self-attested. */}
+      <p>
+        <label>
+          <input type="checkbox" name="owned" value="1" checked={filters.owned} />
+          Disabled-owned (self-attested)
+        </label>
+      </p>
+      <p>
+        <label>
+          <input type="checkbox" name="led" value="1" checked={filters.led} />
+          Disabled-led (self-attested)
+        </label>
+      </p>
+      {kind === 'provider' && (
+        <p>
+          <label>
+            <input
+              type="checkbox"
+              name="literate"
+              value="1"
+              checked={filters.literate}
+            />
+            Disability-literate (self-attested)
+          </label>
+        </p>
+      )}
+    </fieldset>
+
+    <p class="filter-actions">
+      <button type="submit" class="btn">Apply filters</button>
+      {active && <a href={action}>Clear all filters</a>}
+    </p>
+  </form>
+</details>

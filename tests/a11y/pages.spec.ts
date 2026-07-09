@@ -8,6 +8,10 @@ const ROUTES = [
   '/',
   '/places/',
   '/providers/',
+  // filter panel open + result count (zero-JS GET form)
+  '/places/?category=arts_culture&county=Erie+County',
+  // filtered empty state (an intentionally over-narrow combination)
+  '/providers/?q=zzz-no-such-listing&literate=1',
   '/about/privacy/',
   '/about/accessibility/',
   '/about/help/',
@@ -47,7 +51,7 @@ test('home has skip link, one h1, and a main landmark', async ({ page }) => {
 
 // The browsing surface must stay zero-JS even though list/detail pages are now
 // on-demand rendered (low-bandwidth mandate, §5). No <script> on these routes.
-for (const route of ['/', '/places/', '/providers/', '/settings/', '/about/accessibility/', '/about/help/', '/places/11111111-1111-1111-1111-111111111111/', '/account/', '/account/delete/']) {
+for (const route of ['/', '/places/', '/places/?q=cafe&owned=1', '/providers/', '/settings/', '/about/accessibility/', '/about/help/', '/places/11111111-1111-1111-1111-111111111111/', '/account/', '/account/delete/']) {
   test(`ships zero <script>: ${route}`, async ({ page }) => {
     await page.goto(route);
     await expect(page.locator('script')).toHaveCount(0);

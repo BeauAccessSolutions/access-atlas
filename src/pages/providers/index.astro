@@ -4,9 +4,19 @@ export const prerender = false;
 
 import Base from '../../layouts/Base.astro';
 import ListingCard from '../../components/ListingCard.astro';
+import ListingFilters from '../../components/ListingFilters.astro';
 import { getListings } from '../../lib/repo';
+import {
+  applyListingFilters,
+  countyOptions,
+  hasActiveFilters,
+  parseListingFilters,
+} from '../../lib/filters';
 
 const providers = await getListings('provider');
+const filters = parseListingFilters(Astro.url.searchParams);
+const active = hasActiveFilters(filters, 'provider');
+const shown = active ? applyListingFilters(providers, filters) : providers;
 ---
 
 <Base
@@ -22,22 +32,50 @@ const providers = await getListings('provider');
   </p>
   <p><a href="/contribute/submit/?kind=provider">+ Suggest a provider</a></p>
 
+  <ListingFilters
+    kind="provider"
+    filters={filters}
+    counties={countyOptions(providers)}
+    active={active}
+    action="/providers/"
+  />
+
   {
-    providers.length === 0 ? (
-      <div class="disclaimer">
-        <p>
-          <strong>No providers here yet.</strong> We're seeding Buffalo / Erie
-          County first, and listings are validated by first-person visits — so
-          coverage starts thin and grows as people contribute.
-        </p>
-        <p>
-          <a href="/contribute/submit/?kind=provider">Suggest a provider</a>, or
-          browse <a href="/places/">places</a> instead.
-        </p>
-      </div>
+    active && (
+      <p class="filter-result-count">
+        <strong>{shown.length}</strong> of {providers.length}{' '}
+        {providers.length === 1 ? 'provider matches' : 'providers match'} your
+        filters.
+      </p>
+    )
+  }
+
+  {
+    shown.length === 0 ? (
+      active ? (
+        <div class="disclaimer">
+          <p>
+            <strong>No providers match these filters.</strong> Try removing a
+            filter, or <a href="/providers/">clear all filters</a> to see the
+            full list.
+          </p>
+        </div>
+      ) : (
+        <div class="disclaimer">
+          <p>
+            <strong>No providers here yet.</strong> We're seeding Buffalo / Erie
+            County first, and listings are validated by first-person visits — so
+            coverage starts thin and grows as people contribute.
+          </p>
+          <p>
+            <a href="/contribute/submit/?kind=provider">Suggest a provider</a>, or
+            browse <a href="/places/">places</a> instead.
+          </p>
+        </div>
+      )
     ) : (
       <ul class="listing-list">
-        {providers.map((listing) => (
+        {shown.map((listing) => (
           <ListingCard listing={listing} />
         ))}
       </ul>

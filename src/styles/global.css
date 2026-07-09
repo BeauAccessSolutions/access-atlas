@@ -585,6 +585,31 @@ summary:hover { color: var(--brand-ink); }
 details > *:not(summary) { margin-top: 0; }
 details p:last-child { margin-bottom: 0; }
 
+/* -------- List-page filter panel (zero-JS GET form in a <details>) ------- */
+.filter-panel { margin: 1rem 0 1.5rem; }
+.filter-panel .filter-grid {
+  display: grid;
+  gap: 0.35rem 1.25rem;
+  /* Columns collapse to one on narrow screens; the page never scrolls sideways. */
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  margin-top: 0.75rem;
+}
+.filter-panel .filter-grid label { display: block; }
+.filter-panel .filter-grid input[type="text"],
+.filter-panel .filter-grid select {
+  width: 100%;
+}
+.filter-panel fieldset { margin: 0.75rem 0; }
+.filter-panel fieldset p { margin: 0.35rem 0; }
+.filter-panel .filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.35rem;
+}
+.filter-result-count { margin-top: 0; }
+
 /* -------- Callouts ------------------------------------------------------- */
 .disclaimer {
   border: 1px solid var(--color-border);
