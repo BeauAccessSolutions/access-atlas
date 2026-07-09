@@ -17,14 +17,17 @@
 //   * Carry the research's flags + source_notes into a `_review` field so the
 //     reviewer sees them (the importer ignores underscore-prefixed fields).
 //
-// Run:  node research/seed-nys/convert.mjs
+// Run:  node research/seed-nys/convert.mjs                        (batch 1 defaults)
+//       node research/seed-nys/convert.mjs <in.json> <out.seed.json> ["source label"]
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const SRC = resolve(HERE, 'listings.json');
-const OUT = resolve(HERE, 'wny-2026-07.seed.json');
+const SRC = process.argv[2] ? resolve(process.argv[2]) : resolve(HERE, 'listings.json');
+const OUT = process.argv[3] ? resolve(process.argv[3]) : resolve(HERE, 'wny-2026-07.seed.json');
+const SOURCE_LABEL =
+  process.argv[4] ?? 'WNY seed research batch 2026-07-08 (Erie County beachhead, §3)';
 
 // The live attribute catalog (mirror of seed.sql / src/lib/seed.ts ATTR).
 const CATALOG = {
@@ -39,7 +42,14 @@ const CATALOG = {
 const kindOk = (key, kind) => CATALOG[key] === 'both' || CATALOG[key] === kind;
 
 // Flags that remove the listing entirely (not real/available).
-const DROP_LISTING = new Set(['planned_2027_not_operational']);
+const DROP_LISTING = new Set(['planned_2027_not_operational', 'planned_not_operational']);
+// Allowed scannability categories (mirror of src/lib/categories.ts). A raw record
+// may carry an explicit `category`; anything not in this list falls back to the
+// name classifier below.
+const VALID_CATEGORIES = new Set([
+  'healthcare', 'disability_services', 'business',
+  'library', 'arts_culture', 'parks_recreation', 'transit',
+]);
 // Editorial exclusions (reviewer decision 2026-07-08): pure-B2B service-disabled-
 // veteran-owned firms (construction / IT / snow plowing) that are legitimately
 // disabled-owned but are NOT accessible places or disability-competent providers
@@ -47,13 +57,16 @@ const DROP_LISTING = new Set(['planned_2027_not_operational']);
 // read as veteran-B2B padding. Kept in the raw batch for a possible future
 // disabled-owned-business directory. Service Bridges (Deaf-owned interpreting) and
 // Fly By Cafe (a visitable place) are RETAINED.
-const DROP_CANDIDATE = new Set([
-  'hoag-group',
-  'greater-frontier',
-  'vanguard-innovative',
-  'buffalo-veteran-contracting',
-  'aveteran-corp',
-  'cw-snow-plowing',
+const DROP_CANDIDATE = new Map([
+  ['hoag-group', 'pure-B2B SDVOB, off-mission — reviewer decision'],
+  ['greater-frontier', 'pure-B2B SDVOB, off-mission — reviewer decision'],
+  ['vanguard-innovative', 'pure-B2B SDVOB, off-mission — reviewer decision'],
+  ['buffalo-veteran-contracting', 'pure-B2B SDVOB, off-mission — reviewer decision'],
+  ['aveteran-corp', 'pure-B2B SDVOB, off-mission — reviewer decision'],
+  ['cw-snow-plowing', 'pure-B2B SDVOB, off-mission — reviewer decision'],
+  // Batch 2 (2026-07-09): SDVOB-certified but no operating storefront could be
+  // confirmed (no OCM retail license in open data). §4: omit rather than guess.
+  ['combat-vet-cannabis-tonawanda', 'operating storefront unconfirmed — batch-2 review decision'],
 ]);
 // Attributes we could not verify from here and won't assert (§4): Explore & More's
 // accessibility page hard-blocks fetching (403 to curl AND WebFetch), so its claim
@@ -122,7 +135,7 @@ for (const r of records) {
     continue;
   }
   if (DROP_CANDIDATE.has(id)) {
-    log.push(`EXCLUDE listing (pure-B2B SDVOB, off-mission — reviewer decision): ${tag}`);
+    log.push(`EXCLUDE listing (${DROP_CANDIDATE.get(id)}): ${tag}`);
     dropped++;
     continue;
   }
@@ -139,7 +152,12 @@ for (const r of records) {
     postal_code: r.postal_code ?? null,
     lat: r.lat ?? null,
     lng: r.lng ?? null,
-    category: CATEGORY_OVERRIDE[id] ?? classifyCategory(r.name),
+    // Explicit category on the raw record wins (batch 2+); else the batch-1
+    // override table; else the name classifier.
+    category:
+      (VALID_CATEGORIES.has(r.category) ? r.category : null) ??
+      CATEGORY_OVERRIDE[id] ??
+      classifyCategory(r.name),
     // The research batch stored ownership inconsistently: top-level for places,
     // but inside provider_profile for providers. Read BOTH so the representation
     // axis (§1) isn't silently lost for the SDVOB / disabled-led provider records.
@@ -211,7 +229,7 @@ for (const r of records) {
 const dataset = {
   _note:
     'CANDIDATE WNY seed batch, converted from listings.json by convert.mjs. NOT reviewed, NOT imported. Every record needs source sign-off and the _review flags resolved before import (see CONVERSION-NOTES.md). All claims import as self_reported (§4).',
-  source: 'WNY seed research batch 2026-07-08 (Erie County beachhead, §3)',
+  source: SOURCE_LABEL,
   listings: out,
 };
 writeFileSync(OUT, JSON.stringify(dataset, null, 2) + '\n');
