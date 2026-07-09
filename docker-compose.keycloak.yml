@@ -1,0 +1,26 @@
+# Local Keycloak for developing/testing the contributor OIDC BFF flow
+# (src/pages/api/auth/*). NOT production — dev mode, in-memory, http.
+#
+#   docker compose -f docker-compose.keycloak.yml up -d
+#
+# Then set in .env (local only) and run the app:
+#   KEYCLOAK_ISSUER=http://localhost:8080/realms/bas
+#   KEYCLOAK_CLIENT_ID=access-atlas
+#   KEYCLOAK_REDIRECT_URI=http://localhost:4321/api/auth/callback
+#
+# The realm ships one pre-registered public PKCE client (access-atlas) and a
+# test user (testcontributor / test). Production uses the platform BAS Keycloak,
+# not this — see docs/platform-membership.md "Register the Keycloak client".
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.1
+    container_name: aa-keycloak-dev
+    command: ["start-dev", "--import-realm", "--http-port=8080"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HEALTH_ENABLED: "true"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./docker/keycloak/realm-access-atlas.json:/opt/keycloak/data/import/realm-access-atlas.json:ro

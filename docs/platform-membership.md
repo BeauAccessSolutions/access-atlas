@@ -69,8 +69,18 @@ platform IdP is Phase 0 (not stood up). Current state:
 - [x] **CODEOWNERS** (invariant #4) — `.github/CODEOWNERS` guards the write path,
   service-role client, identity seam, security policy, and safety-critical SQL.
   Still needs "Require review from Code Owners" enabled in branch protection.
-- [ ] Register an OIDC client for Access Atlas on Keycloak (when the IdP exists) —
-  see "Register the Keycloak client" below.
+- [ ] Register an OIDC client for Access Atlas on the **platform** Keycloak (when
+  the IdP exists) — see "Register the Keycloak client" below.
+- [x] **BFF flow verified end-to-end against a real Keycloak (2026-07-10).** A
+  local dev harness (`docker-compose.keycloak.yml` + `docker/keycloak/realm-access-atlas.json`)
+  stands up Keycloak with the `access-atlas` public PKCE client pre-registered.
+  Driving the full flow proved: `/api/auth/login` builds the authorize URL with
+  `state` + `code_challenge`/`S256`; Keycloak login → `/api/auth/callback` does
+  the code exchange, JWKS verify, and mints the app session; the session cookie is
+  **httpOnly** (JS cannot read it); the contributor row is keyed by the Keycloak
+  `sub`; the session token is stored **SHA-256-hashed** (raw never persisted);
+  `/account/` resolves the verified session; and `/api/auth/logout` **revokes** the
+  session row. Only the platform-side client registration (below) remains.
 - [x] Replace the provisional cookie seam with the Keycloak-verified `sub` —
   **code-complete, config-gated** (`src/lib/contributor.ts` `resolveContributor`;
   the BFF flow in `src/pages/api/auth/*`). Goes live when the three `KEYCLOAK_*`
