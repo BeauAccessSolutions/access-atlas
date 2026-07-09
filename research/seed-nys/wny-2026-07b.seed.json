@@ -1027,7 +1027,20 @@
         ],
         "source_notes": "First-party 'Amenities and accessibility' page (fetched 2026-07-09); high reliability. Caution wording quoted exactly: 'Due to the historic nature of the conservatory, some areas may present challenges to those with ambulatory disabilities; however, most areas, including restrooms, are accessible and ADA-compliant.' Loaner wheelchairs first-come first-served at the admissions desk (no schema key). An expansion project (per buffalogardens.com/about/our-expansion/) includes a new accessible entrance with drop-off circle — in progress, so entrance conditions may change; entrance_step_free NOT asserted (never stated explicitly). Adapted guided tours offered; aides/personal care attendants admitted free."
       },
-      "attributes": []
+      "attributes": [
+        {
+          "key": "accessible_restroom",
+          "asserted_value": true,
+          "source_url": "https://www.buffalogardens.com/plan-your-visit/visitor-amenities/",
+          "note": "Source states the Gardens have 'accessible restrooms, drinking fountains and water bottle filling stations for visitors to use during their visit' and that 'most areas, including restrooms, are accessible and ADA-compliant.'"
+        },
+        {
+          "key": "accessible_parking",
+          "asserted_value": true,
+          "source_url": "https://www.buffalogardens.com/plan-your-visit/visitor-amenities/",
+          "note": "Source states: 'Designated parking spots for people with disabilities are available in our parking lot. A passenger drop-off zone can also be utilized at the main entrance circle.'"
+        }
+      ]
     },
     {
       "source_ref": "wny:place:buffalo-naval-military-park",
@@ -1120,7 +1133,14 @@
         ],
         "source_notes": "First-party Plan Your Visit page (fetched 2026-07-09); high reliability. Exact wording: 'As a historic house, Graycliff is not currently accessible due to a variety of reasons, including stairs, unpaved and uneven areas, lighting limitations, and other concerns' and 'Our Visitor Pavilion is accessible at this time.' Mobility assistance is via a golf cart ('first come first serve reservation', call (716) 947-9217) that is 'weather dependent... not available if it is raining, or has recently rained, or during the off-season of November through March' — significant reliability caveat, no schema key. Search results indicate the Standard tour first floor is described as wheelchair accessible on tour pages, but the main house's overall non-accessibility statement governs; no entrance/restroom attributes asserted. Wheelchairs not furnished; visitors' own mobility devices allowed with rubber wheels/tips."
       },
-      "attributes": []
+      "attributes": [
+        {
+          "key": "accessible_parking",
+          "asserted_value": true,
+          "source_url": "https://experiencegraycliff.org/visit/plan-your-visit/",
+          "note": "Source states: 'A parking area is located just outside the M&T Bank Visitor Pavilion with two designated accessible parking spots.'"
+        }
+      ]
     },
     {
       "source_ref": "wny:place:flw-martin-house",
@@ -1200,7 +1220,20 @@
         ],
         "source_notes": "First-party dedicated accessibility page (fetched 2026-07-09); high reliability. Exact wording: 'Automatic doors are located at both entrances as well as the accessible restroom on the lobby level'; 'Wheelchair-accessible seating is located on the main floor. Please note, there is no elevator to the balcony level.' Caution: balcony level is NOT reachable by elevator (an elevator serves lobby-to-lower-level only, near the Pennsylvania Ave. entrance). Entrance not asserted as step-free because the page says 'automatic doors,' not step-free. Assistive listening ('augmentative hearing devices') and noise-muffling headphones at coat check have no schema key — noted here only. Box Office (716) 885-5000 for accessible seating."
       },
-      "attributes": []
+      "attributes": [
+        {
+          "key": "accessible_restroom",
+          "asserted_value": true,
+          "source_url": "https://kleinhansbuffalo.org/accessibility/",
+          "note": "Source states: 'There is a private, accessible restroom on the lobby level. Accessible stalls are also available in the general restrooms on the upper and lower levels.'"
+        },
+        {
+          "key": "accessible_parking",
+          "asserted_value": true,
+          "source_url": "https://kleinhansbuffalo.org/accessibility/",
+          "note": "Source states: 'Accessible parking is available on a first come, first served basis.' Drop-off available on the Pennsylvania side of the building."
+        }
+      ]
     },
     {
       "source_ref": "wny:place:sahlen-field",
@@ -1251,7 +1284,14 @@
         ],
         "source_notes": "First-party pages (fetched 2026-07-09). The auditions page carries the most explicit facility statement: 'The Allendale Theatre offers seating for 445 people and 10 wheelchair locations' and the restroom wording quoted in the attribute; it also states 'our stage and rehearsal room are currently not accessible as a result of steps or stairs' (affects performers/participants, not audience) 'seeing as it is a city building.' Ticket Policies page (theatreofyouth.org/ticket-policies/) adds: 'Please inform the box office, when ordering tickets, if a wheelchair location or hearing-assisted device is required.' Sensory-friendly performances offered (theatreofyouth.org/sensory-friendly/) — no schema key. Historic building; no explicit step-free-entrance or accessible-parking statement, so those are not asserted. Odd source page (auditions) but first-party and specific — a dedicated accessibility page would be a better long-term citation."
       },
-      "attributes": []
+      "attributes": [
+        {
+          "key": "accessible_restroom",
+          "asserted_value": true,
+          "source_url": "https://theatreofyouth.org/auditions/",
+          "note": "Source states: 'there is a female and male identifying set of bathrooms in our lobby with each respective restroom having one wheelchair accessible stall.'"
+        }
+      ]
     },
     {
       "source_ref": "wny:place:akron-falls-park",

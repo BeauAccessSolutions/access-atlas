@@ -79,6 +79,18 @@ const DROP_ATTRS = new Set([
   'partial_accessibility_caution', // e.g. Shea's — not fully accessible, no elevator
   'elevator_dependent_underground', // access hinges on elevators that can fail
 ]);
+// Reviewer restore (batch 2, 2026-07-09): the project owner has personally
+// visited these venues and signed off on keeping their explicit first-party
+// restroom/parking claims despite the partial-access caution flags (the caution
+// stays on the record — it describes balconies/historic interiors, not these
+// claims). Claims stay `self_reported`; a visit only becomes a confirmation
+// through the contribute flow (§4). Martin House was NOT restored.
+const KEEP_ATTRS_DESPITE_CAUTION = new Set([
+  'kleinhans-music-hall',
+  'buffalo-erie-county-botanical-gardens',
+  'flw-graycliff',
+  'theatre-of-youth-allendale',
+]);
 const PROMOTE_PARKING = 'provider_parking_evidence_no_schema_slot';
 // Source upgrades (reviewer 2026-07-08): replace a weak/transient source with a
 // durable first-party one that was corroborated during the review pass.
@@ -171,7 +183,12 @@ for (const r of records) {
   }
 
   // Attributes
-  const safetyDrop = flags.filter((f) => DROP_ATTRS.has(f));
+  const safetyDrop = KEEP_ATTRS_DESPITE_CAUTION.has(id)
+    ? []
+    : flags.filter((f) => DROP_ATTRS.has(f));
+  if (KEEP_ATTRS_DESPITE_CAUTION.has(id) && flags.some((f) => DROP_ATTRS.has(f))) {
+    log.push(`KEEP ${r.attributes?.length ?? 0} attr claim(s) despite caution flags — reviewer visited & signed off 2026-07-09: ${tag}`);
+  }
   if (DROP_ATTRS_FOR_CANDIDATE.has(id) && (r.attributes || []).length) {
     log.push(`DROP ${r.attributes.length} attr claim(s) — source unverifiable from here (403): ${tag}`);
     attrsDropped += r.attributes.length;

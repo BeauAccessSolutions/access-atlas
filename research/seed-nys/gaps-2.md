@@ -14,7 +14,7 @@
 | Libraries (6 more BECPL branches, chosen for town spread) | 6 | **High**, low detail (system boilerplate) |
 | Businesses incl. disabled-owned | 7 | **Mixed** — the thinnest category, again |
 
-- **35 raw attribute claims → 28 imported** (7 safety-dropped at conversion on `partial_accessibility_caution` records — see CONVERSION-NOTES-2 §restore list).
+- **35 raw attribute claims → 34 in the candidate file** (7 were safety-dropped at conversion; 6 were then restored by reviewer sign-off 2026-07-09 — the project owner has visited Kleinhans, Botanical Gardens, Graycliff, and Theatre of Youth. Only Martin House's single-spot parking claim remains dropped. See CONVERSION-NOTES-2).
 - All 68 records are **Erie County** — batch 2 adds no adjacent-county tail, so every kept record counts toward the §3 density target. Running total toward ~200 validated: 42 (batch 1) + 66 (batch 2) = **108 candidate listings** — but remember §3 counts *validated* listings; everything here is still `self_reported`.
 
 ## 2. Where batch 2 confirms batch 1's structural gaps
@@ -44,7 +44,7 @@
 
 ## 5. Recommended next moves (delta to gaps.md §5)
 
-1. **Restore-or-confirm the 7 safety-dropped claims** (all explicit first-party restroom/parking facts on partial-access venues) during human review — the attribute-level model (§4) arguably supports keeping a well-sourced parking claim even where a balcony is inaccessible; that judgment is the reviewer's, not the converter's.
+1. ~~Restore-or-confirm the 7 safety-dropped claims~~ **Done 2026-07-09** — 6 restored on reviewer sign-off (owner has visited); Martin House's stays dropped. Once the contribute flow opens, those same venues are natural first first-person confirmations for the reviewer to file properly (§4).
 2. **Find NFTA's live elevator-status page** and wire it into re-verification for the 7 underground stations.
 3. **Re-check batch-1 Canalside Station** against the June 2026 single-tracking alert.
 4. **Browser-based pass on Wheel the World** for RiverWorks/West Side Bazaar measured data (JS-rendered, unfetchable by plain HTTP).

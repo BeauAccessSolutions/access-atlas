@@ -12,9 +12,9 @@ node research/seed-nys/convert.mjs research/seed-nys/listings-2.json \
 npm run seed:import -- research/seed-nys/wny-2026-07b.seed.json --dry-run
 ```
 
-## Result (pre-review)
+## Result (after the 2026-07-09 partial review pass)
 
-- **66** listings (2 dropped), **28** self-reported attribute claims (7 safety-dropped).
+- **66** listings (2 dropped), **34** self-reported attribute claims (1 safety-dropped).
 - 21 providers + 45 places. **All 66 in Erie County** (no adjacent-county tail this batch).
 - By category: transit 15, healthcare 11, arts_culture 10, disability_services 9,
   parks_recreation 9, library 6, business 6 (after conversion drops; PAL counts under transit).
@@ -29,7 +29,8 @@ npm run seed:import -- research/seed-nys/wny-2026-07b.seed.json --dry-run
 |---|---|---|
 | Excluded — not operational | `planned_not_operational` | Highmark Stadium (old venue retiring, new venue opening 2026 season — re-add when its guide is live) |
 | Excluded — reviewer decision | storefront unconfirmed (no OCM retail license) | Combat Vet Cannabis |
-| Dropped 7 claims (listings kept) | physical-safety caution — never assert access on partial-access records (§4) | Kleinhans (2), Botanical Gardens (2), Martin House (1), Graycliff (1), Theatre of Youth (1) |
+| Dropped 1 claim (listing kept) | physical-safety caution — never assert access on partial-access records (§4) | Martin House (accessible_parking — a single spot; not reviewer-restored) |
+| **Restored 6 claims** | reviewer (project owner) has personally visited and signed off 2026-07-09; caution flags stay on the records | Kleinhans (restroom+parking), Botanical Gardens (restroom+parking), Graycliff (parking), Theatre of Youth (restroom — venue confirmed open, 2026-27 season announced) |
 | Category | explicit `category` on each raw record (converter now honors it) | all 68 |
 
 ## Merge-time review decisions (orchestrator, 2026-07-09 — confirm at human review)
@@ -55,12 +56,15 @@ npm run seed:import -- research/seed-nys/wny-2026-07b.seed.json --dry-run
 
 ## Human-review checklist before import
 
-- [ ] **Decide the 7 safety-dropped claims.** All are explicit first-party
-  restroom/parking facts on venues whose *overall* access is partial (no elevator
-  to a balcony, historic house, expansion mid-build). §4 is attribute-level —
-  a reviewer may reasonably restore, e.g., Kleinhans' lobby-level accessible
-  restroom while the record still carries `partial_accessibility_caution`.
-  The converter can't make that judgment; a human can.
+- [x] **Decide the 7 safety-dropped claims.** ✅ RESOLVED 2026-07-09: the project
+  owner has personally visited Kleinhans, the Botanical Gardens, Graycliff, and
+  Theatre of Youth and signed off on restoring their 6 explicit first-party
+  restroom/parking claims (encoded in `convert.mjs` `KEEP_ATTRS_DESPITE_CAUTION`;
+  the `partial_accessibility_caution` flags stay on the records). Theatre of
+  Youth confirmed still operating (2026-27 season announced on its site).
+  **Martin House's single-spot parking claim stays dropped** (not visited/signed
+  off). Reminder: the restored claims are still `self_reported` — the owner's
+  visits become real confirmations only through the contribute flow (§4).
 - [ ] Confirm the 2 excluded listings stay excluded (Highmark until the new
   stadium's guide is live; Combat Vet Cannabis until a storefront is confirmed).
 - [ ] Spot-check the 211WNY-derived `entrance_step_free` claims (6 records,

@@ -46,8 +46,8 @@ seed data is a starting point, never a substitute for first-person confirmation.
 - `listings-2.json` / `listings-2.csv` — 68 candidate records (source of record).
 - `attributes-2.csv` — batch-2 attribute claims, flat.
 - `sources-memo-2.md` / `gaps-2.md` — sources used + coverage gaps/flags (delta to batch 1's).
-- `wny-2026-07b.seed.json` — the **candidate** import file. 66 listings, 28 self-reported
-  claims. **Not reviewed, not imported.**
+- `wny-2026-07b.seed.json` — the **candidate** import file. 66 listings, 34 self-reported
+  claims. **Partially reviewed (restore decision 2026-07-09), not imported.**
 - `CONVERSION-NOTES-2.md` — automated decisions + the human-review checklist.
 - Convert: `node research/seed-nys/convert.mjs research/seed-nys/listings-2.json research/seed-nys/wny-2026-07b.seed.json "WNY seed research batch 2 2026-07-09 (Erie County beachhead, §3)"`
 
