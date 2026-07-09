@@ -457,7 +457,7 @@
           "disabled_led_needs_confirmation",
           "org_status_unconfirmed"
         ],
-        "source_notes": "Org website (fetched 2026-07-10). Exact self-description: 'Inclusive Theater of WNY seeks to reimagine our society through producing original scripts in our ongoing writing group and writing workshops, and through the production and performance of those scripts with actors who are chosen solely on their ability—whether they have a disability or not.' Also: 'ITOWNY is committed to diversity at all levels: on our stage, in our audience, on our staff, and within our leadership.' Address per site: 'The Foundry, 298 Northampton Street, Buffalo, NY. 14208' (matches lead); some performances at St. Mary's HS, Lancaster. The lead's 'disability-led' claim is NOT stated first-party — disabled_led left false; NEEDS SELF-ATTESTATION AT ONBOARDING. Status caveat: newest listed performances ran through December 2025; confirm 2026 season activity. No physical-access statements."
+        "source_notes": "Org website (fetched 2026-07-10). Exact self-description: 'Inclusive Theater of WNY seeks to reimagine our society through producing original scripts in our ongoing writing group and writing workshops, and through the production and performance of those scripts with actors who are chosen solely on their ability—whether they have a disability or not.' Also: 'ITOWNY is committed to diversity at all levels: on our stage, in our audience, on our staff, and within our leadership.' Address per site: 'The Foundry, 298 Northampton Street, Buffalo, NY. 14208' (matches lead); some performances at St. Mary's HS, Lancaster. The lead's 'disability-led' claim is NOT stated first-party — disabled_led left false; NEEDS SELF-ATTESTATION AT ONBOARDING. Status caveat: newest listed performances ran through December 2025; confirm 2026 season activity. No physical-access statements. ORG-STATUS RE-VERIFY 2026-07-10: not defunct, but the newest first-party activity is 2025 (It's a Wonderful Life, Dec 5-14 2025; most recent post Nov 15 2025) — NO 2026 season is posted. Present as awaiting-2026-season; re-verify before surfacing as currently producing."
       },
       "provider": {
         "disability_literate": true
@@ -879,8 +879,8 @@
       "source_ref": "wny:provider:buffalo-physical-therapy-sports-rehabilitation",
       "source_url": "https://paragonptgroup.com/location/buffalo-physical-therapy-sports-rehabilitation-pc/",
       "kind": "provider",
-      "name": "Buffalo Physical Therapy & Sports Rehabilitation",
-      "summary": "Williamsville outpatient physical therapy clinic, now part of Paragon Physical Therapy Group, offering balance and fall prevention, osteoporosis management, and post-concussion rehabilitation.",
+      "name": "Buffalo Physical Therapy (Paragon Physical Therapy Group)",
+      "summary": "Williamsville outpatient physical therapy clinic, part of Paragon Physical Therapy Group, offering balance and fall prevention, osteoporosis management, and post-concussion rehabilitation.",
       "street": "192 Park Club Lane, Suite 110",
       "city": "Williamsville",
       "region": "Erie County",
@@ -893,10 +893,9 @@
       "_review": {
         "flags": [
           "coverage_only_no_attributes",
-          "org_status_unconfirmed",
           "mde_recruit_pt_ot"
         ],
-        "source_notes": "Parent-group website (Paragon Physical Therapy Group, fetched 2026-07-10) lists '192 Park Club Lane Suite 110, Williamsville, NY 14221', phone 716-632-9200 (matches lead). Lead's website (buffalophysicaltherapy.com) serves an empty page and buffalopt.com is domain-parked; lead street 5500 Main St not corroborated anywhere — corrected to Paragon's listed address. Services quoted: 'Balance and Fall Prevention', 'Osteoporosis Management', 'Post Concussion Rehabilitation'. org_status_unconfirmed: practice appears absorbed into Paragon PT Group — confirm current branding before import. No physical-access/MDE statements — ADA MDE recruitment target. disability_literate false."
+        "source_notes": "Parent-group website (Paragon Physical Therapy Group) verified live 2026-07-10: page header 'Buffalo Physical Therapy - Paragon Physical Therapy Group', address '192 Park Club Lane Suite 110, Williamsville, NY 14221', phone 716-632-9200. The legacy '& Sports Rehabilitation' suffix no longer appears — renamed accordingly. Services: 'Balance and Fall Prevention', 'Osteoporosis Management', 'Post Concussion Rehabilitation'. No physical-access/MDE statements — ADA MDE recruitment target. disability_literate false."
       },
       "provider": {
         "disability_literate": false
@@ -1361,15 +1360,15 @@
       ]
     },
     {
-      "source_ref": "wny:place:escarpment-arms",
-      "source_url": "https://sdves.ogs.ny.gov/business-search/73218d62-1ad0-4d74-bcd9-3f0aebe40521",
+      "source_ref": "wny:place:es-and-es-enterprises-49-express-pit-stop",
+      "source_url": "https://search.certifications.sba.gov/profile/P4NPNZZLWGB2/4TXK8",
       "kind": "place",
-      "name": "Escarpment Arms, Inc.",
-      "summary": "Retail firearms and ammunition store offering gunsmithing and NYS pistol-permit and live-fire training classes at a visitable storefront in Lockport.",
-      "street": "3580 Lockport-Olcott Rd",
-      "city": "Lockport",
-      "region": "Niagara County",
-      "postal_code": "14094",
+      "name": "ES & ES Enterprises, LLC (49 Express Pit Stop)",
+      "summary": "Full-service gas station and convenience store (49 Express Pit Stop) selling fuel, bottled water, gifts, souvenirs, and camping supplies at 409 Bloomingdale Rd.",
+      "street": "409 Bloomingdale Rd",
+      "city": "Akron",
+      "region": "Genesee County",
+      "postal_code": "14001",
       "lat": null,
       "lng": null,
       "category": "business",
@@ -1378,11 +1377,11 @@
       "_review": {
         "flags": [
           "outside_erie_county",
-          "sdvob_veteran_subset",
           "sdvosb_federal_cert",
+          "sdvob_veteran_subset",
           "disabled_owned_needs_attestation"
         ],
-        "source_notes": "Dual-certified: NYS OGS SDVOB control number 221378 AND federal SBA SDVOSB active since 01/28/2022 (UEI EDPVJKD8R338, CAGE 8H3C5, profile https://search.certifications.sba.gov/profile/EDPVJKD8R338/8H3C5). Both certs require >=51% service-disabled-veteran ownership + control. Business site escarpmentarms.com confirms storefront hours (Tue-Fri 10-6, Sat 10-4). No accessibility features stated on the site, so no attribute claims. NEEDS OWNER SELF-ATTESTATION AT ONBOARDING."
+        "source_notes": "Federal SBA VetCert SDVOSB, active since 08/01/2024 (UEI P4NPNZZLWGB2, CAGE 4TXK8; cert basis: >=51% service-disabled-veteran ownership + control; also identifies as Native American owned). SBA capabilities narrative states 'Bottled Water, Gas Station, Gifts, Novelties, Souvenirs, Camping Survival Supplies'; Yelp confirms the 49 Express Pit Stop gas station operates at the same 409 Bloomingdale Rd address. CAVEAT (reason for storefront_status_unconfirmed): the company's own site esandesenterprises.com presents only B2B first-responder/tactical equipment distribution - confirm the certified entity operates the retail station before import. SBA lists Genesee County (some registries give Basom NY 14013); zip 14001 is Akron. NEEDS OWNER SELF-ATTESTATION AT ONBOARDING. STOREFRONT LINK CONFIRMED 2026-07-10 (owner policy: include once a real operating location is verified): the certified SDVOSB LLC's federal SAM.gov entity registration lists 'ES & ES Enterprises, LLC' at 409 Bloomingdale Rd (Basom/Akron) with NAICS 'Gasoline Stations with Convenience Stores' + 'Gift/Novelty/Souvenir Stores', owner Eric W Smith; Yelp confirms the 49 Express Pit Stop operates at that address. The certified entity therefore operates the visitable retail station (the tactical B2B site is a separate line under the same LLC). Ownership remains SELF-ATTESTED per §12 (needs onboarding attestation); the entity-to-storefront link rests on federal SAM registration, not a single first-party statement."
       },
       "attributes": []
     },

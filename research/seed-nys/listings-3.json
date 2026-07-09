@@ -1,1412 +1,1410 @@
 [
-  {
-    "candidate_id": "lincare-buffalo-orchard-park",
-    "kind": "provider",
-    "name": "Lincare - Buffalo (Orchard Park)",
-    "street": "40 Centre Drive, Suite 700",
-    "city": "Orchard Park",
-    "region": "Erie County",
-    "postal_code": "14127",
-    "lat": null,
-    "lng": null,
-    "summary": "Erie County location of a national respiratory-care and durable medical equipment supplier providing oxygen therapy, sleep apnea equipment and in-home set-up and instruction.",
-    "category": "business",
-    "provider_profile": {
-      "disability_literate": false,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes"
-    ],
-    "source_url": "https://www.lincare.com/en/locations/buffalo-lincare",
-    "source_notes": "First-party location page ('Buffalo Lincare'): address 40 Centre Drive, Suite 700, Orchard Park, NY 14127 (Erie County - corrects the lead's vaguer 'Jamestown/Orchard Park/Canisteo' listing). Exact wording: '24/7 support and in-home instruction and set-up', 'respiratory and oxygen care', 'durable medical equipment', goal to 'keep you safe at home and out of the hospital.' Primarily an in-home service run from an office address; the page does not state whether customers can walk in, so treat showroom visitability as unconfirmed. disability_literate false = not yet attested, not a negative finding. No premises-access statements - zero attribute claims."
+ {
+  "candidate_id": "lincare-buffalo-orchard-park",
+  "kind": "provider",
+  "name": "Lincare - Buffalo (Orchard Park)",
+  "street": "40 Centre Drive, Suite 700",
+  "city": "Orchard Park",
+  "region": "Erie County",
+  "postal_code": "14127",
+  "lat": null,
+  "lng": null,
+  "summary": "Erie County location of a national respiratory-care and durable medical equipment supplier providing oxygen therapy, sleep apnea equipment and in-home set-up and instruction.",
+  "category": "business",
+  "provider_profile": {
+   "disability_literate": false,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "numotion-west-seneca",
-    "kind": "provider",
-    "name": "Numotion - Buffalo (West Seneca)",
-    "street": "2440 North America Dr, Ste 40",
-    "city": "West Seneca",
-    "region": "Erie County",
-    "postal_code": "14224",
-    "lat": null,
-    "lng": null,
-    "summary": "Appointment-only Erie County branch of a national complex rehab technology supplier providing power wheelchairs, custom seating systems and mobility equipment.",
-    "category": "business",
-    "provider_profile": {
-      "disability_literate": false,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes"
-    ],
-    "source_url": "https://www.numotion.com/locations/buffalo",
-    "source_notes": "First-party location page confirms '2440 North America Drive Suite 40 West Seneca, NY 14224'. The page states the branch operates 'By Appointment Only' and that 'Service' is 'Not offered onsite' - no public retail floor, so listed as a provider rather than a place; customers visit only by scheduled appointment. Classified provider on that first-party basis. disability_literate false = not yet attested (CRT is disability-focused equipment, but no competence self-attestation captured). No statements about the premises' own physical access - zero attribute claims."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes"
+  ],
+  "source_url": "https://www.lincare.com/en/locations/buffalo-lincare",
+  "source_notes": "First-party location page ('Buffalo Lincare'): address 40 Centre Drive, Suite 700, Orchard Park, NY 14127 (Erie County - corrects the lead's vaguer 'Jamestown/Orchard Park/Canisteo' listing). Exact wording: '24/7 support and in-home instruction and set-up', 'respiratory and oxygen care', 'durable medical equipment', goal to 'keep you safe at home and out of the hospital.' Primarily an in-home service run from an office address; the page does not state whether customers can walk in, so treat showroom visitability as unconfirmed. disability_literate false = not yet attested, not a negative finding. No premises-access statements - zero attribute claims."
+ },
+ {
+  "candidate_id": "numotion-west-seneca",
+  "kind": "provider",
+  "name": "Numotion - Buffalo (West Seneca)",
+  "street": "2440 North America Dr, Ste 40",
+  "city": "West Seneca",
+  "region": "Erie County",
+  "postal_code": "14224",
+  "lat": null,
+  "lng": null,
+  "summary": "Appointment-only Erie County branch of a national complex rehab technology supplier providing power wheelchairs, custom seating systems and mobility equipment.",
+  "category": "business",
+  "provider_profile": {
+   "disability_literate": false,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "people-first-mobility",
-    "kind": "provider",
-    "name": "People First Mobility",
-    "street": "800 Hertel Avenue, Suite 103",
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14207",
-    "lat": null,
-    "lng": null,
-    "summary": "Buffalo-based complex rehab and durable medical equipment provider offering in-home evaluations, equipment setup, training, repair and free loaner equipment for people with long-term disabilities, with assessments also available at its Hertel Avenue office.",
-    "category": "business",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "org_status_unconfirmed"
-    ],
-    "source_url": "https://www.peoplefirstmobility.net/",
-    "source_notes": "First-party site: address 800 Hertel Avenue, Suite 103, Buffalo, NY 14207 confirmed on both homepage and services page. Exact wording (services page): 'We offer in-home evaluations, free delivery, equipment setup and training, equipment repair, certified Assisted Technology Professionals (ATPs), certified repair technicians, free loaner equipment and hands-on trials'; 'We serve those with long-term developmental disabilities, cerebral palsy, mutliple sclerosis, muscular dystrophy, traumatic brain injury, Alzheimer's and dementia... the area's leading provider of pediatric mobility equipment.' Assessments happen 'at your home, school, Physical/Occupational therapist office, doctors office or our office' - the office is visitable by arrangement but no retail showroom is described. disability_literate true is grounded in the first-party certified-ATP statement and disability-specific service focus; still subject to formal self-attestation. The lead's 'division of People Inc.' claim was NOT found on the pages fetched (the /about-us page returned 403) - hence org_status_unconfirmed; verify affiliation before displaying it. No premises-access statements - zero attribute claims."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes"
+  ],
+  "source_url": "https://www.numotion.com/locations/buffalo",
+  "source_notes": "First-party location page confirms '2440 North America Drive Suite 40 West Seneca, NY 14224'. The page states the branch operates 'By Appointment Only' and that 'Service' is 'Not offered onsite' - no public retail floor, so listed as a provider rather than a place; customers visit only by scheduled appointment. Classified provider on that first-party basis. disability_literate false = not yet attested (CRT is disability-focused equipment, but no competence self-attestation captured). No statements about the premises' own physical access - zero attribute claims."
+ },
+ {
+  "candidate_id": "people-first-mobility",
+  "kind": "provider",
+  "name": "People First Mobility",
+  "street": "800 Hertel Avenue, Suite 103",
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14207",
+  "lat": null,
+  "lng": null,
+  "summary": "Buffalo-based complex rehab and durable medical equipment provider offering in-home evaluations, equipment setup, training, repair and free loaner equipment for people with long-term disabilities, with assessments also available at its Hertel Avenue office.",
+  "category": "business",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "quick-access-llc",
-    "kind": "provider",
-    "name": "Quick Access LLC",
-    "street": null,
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": null,
-    "lat": null,
-    "lng": null,
-    "summary": "Locally owned, family-run Buffalo-area business that installs and services stairlifts, modular and portable ramps, automatic door openers and grab bars in customers' homes; no public showroom.",
-    "category": "business",
-    "provider_profile": {
-      "disability_literate": false,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "no_public_premises",
-      "missing_street_address"
-    ],
-    "source_url": "https://quickaccesswny.com/",
-    "source_notes": "First-party site (live): exact product wording 'Stairlifts - Ramps - Door Openers - Used stairlifts - Modular Ramps - Portable Ramps - Service & Grab bars'; self-describes as 'a local family-owned business'; phone 716-359-9419 (Buffalo area code); Buffalo-local presence corroborated by Buffalo-based HomeAdvisor/Angi listings. The lead's street address (331 University Ave, Buffalo 14223) does NOT appear on the site and was not confirmed anywhere first-party - omitted rather than repeated. In-home installation service with no showroom found; can be listed honestly only as a service provider. No premises-access statements - zero attribute claims. disability_literate false = not yet attested."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "org_status_unconfirmed"
+  ],
+  "source_url": "https://www.peoplefirstmobility.net/",
+  "source_notes": "First-party site: address 800 Hertel Avenue, Suite 103, Buffalo, NY 14207 confirmed on both homepage and services page. Exact wording (services page): 'We offer in-home evaluations, free delivery, equipment setup and training, equipment repair, certified Assisted Technology Professionals (ATPs), certified repair technicians, free loaner equipment and hands-on trials'; 'We serve those with long-term developmental disabilities, cerebral palsy, mutliple sclerosis, muscular dystrophy, traumatic brain injury, Alzheimer's and dementia... the area's leading provider of pediatric mobility equipment.' Assessments happen 'at your home, school, Physical/Occupational therapist office, doctors office or our office' - the office is visitable by arrangement but no retail showroom is described. disability_literate true is grounded in the first-party certified-ATP statement and disability-specific service focus; still subject to formal self-attestation. The lead's 'division of People Inc.' claim was NOT found on the pages fetched (the /about-us page returned 403) - hence org_status_unconfirmed; verify affiliation before displaying it. No premises-access statements - zero attribute claims."
+ },
+ {
+  "candidate_id": "quick-access-llc",
+  "kind": "provider",
+  "name": "Quick Access LLC",
+  "street": null,
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": null,
+  "lat": null,
+  "lng": null,
+  "summary": "Locally owned, family-run Buffalo-area business that installs and services stairlifts, modular and portable ramps, automatic door openers and grab bars in customers' homes; no public showroom.",
+  "category": "business",
+  "provider_profile": {
+   "disability_literate": false,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "ace-employment-services-restoration-society",
-    "kind": "provider",
-    "name": "Ace Employment Services (Restoration Society, Inc.)",
-    "street": "327 Elm St., 2nd Floor",
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14203",
-    "lat": null,
-    "lng": null,
-    "summary": "A vocational rehabilitation program of Restoration Society, Inc. helping people with primary mental health conditions choose, get, and maintain competitive employment, including Ticket to Work services for SSI/SSDI beneficiaries.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes"
-    ],
-    "source_url": "https://www.rsiwny.org/what-we-do/ace-employment.html",
-    "source_notes": "First-party program page (fetched OK). Exact wording: offers 'a diverse range of vocational rehabilitation services that assist customers to choose, get and maintain preferred competitive employment positions'; participants 'have a primary mental health condition and desire to gain competitive employment status.' Buffalo site 327 Elm Street confirmed (second site in Batavia, Genesee County). Parent Restoration Society is not among seeded orgs. No physical-access statements found."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "no_public_premises",
+   "missing_street_address"
+  ],
+  "source_url": "https://quickaccesswny.com/",
+  "source_notes": "First-party site (live): exact product wording 'Stairlifts - Ramps - Door Openers - Used stairlifts - Modular Ramps - Portable Ramps - Service & Grab bars'; self-describes as 'a local family-owned business'; phone 716-359-9419 (Buffalo area code); Buffalo-local presence corroborated by Buffalo-based HomeAdvisor/Angi listings. The lead's street address (331 University Ave, Buffalo 14223) does NOT appear on the site and was not confirmed anywhere first-party - omitted rather than repeated. In-home installation service with no showroom found; can be listed honestly only as a service provider. No premises-access statements - zero attribute claims. disability_literate false = not yet attested."
+ },
+ {
+  "candidate_id": "ace-employment-services-restoration-society",
+  "kind": "provider",
+  "name": "Ace Employment Services (Restoration Society, Inc.)",
+  "street": "327 Elm St., 2nd Floor",
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14203",
+  "lat": null,
+  "lng": null,
+  "summary": "A vocational rehabilitation program of Restoration Society, Inc. helping people with primary mental health conditions choose, get, and maintain competitive employment, including Ticket to Work services for SSI/SSDI beneficiaries.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "aspire-wny-emods-assistive-technology",
-    "kind": "provider",
-    "name": "Aspire of WNY - Environmental Modifications (EMODS) & Assistive Technology",
-    "street": "2356 N Forest Rd",
-    "city": "Getzville",
-    "region": "Erie County",
-    "postal_code": "14068",
-    "lat": null,
-    "lng": null,
-    "summary": "Nonprofit program that helps people with developmental disabilities obtain funding for and coordinate installation of home modifications (ramps, lifts, accessible bathrooms) and adaptive technologies; the work is delivered in the client's home, not at a showroom.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "no_public_premises"
-    ],
-    "source_url": "https://www.aspirewny.org/services/central-intake/environmental-modifications-emods-assistive-technology/",
-    "source_notes": "First-party service page (live 2026-07): 'The Environmental Modification & Assistive Technology (EMODS) team provides assistance to obtain funding for environmental modifications and adaptive technologies...'; referrals via 716.838.0047 option 1 / intake@aspirewny.org. Two lead-list rows merged into this one record - the site shows a single combined EMODS & AT program; no separate orthotics/AT-training service page found. Address corrected: the lead's 4635 Union Rd Cheektowaga is Aspire's Center for Learning (an educational program); the org's contact page lists only 2356 N Forest Rd, Getzville NY 14068 (Erie County). In-home coordination service, no public showroom. Caveat: a stale search snippet suggested a 4/17/24 referral pause, but the live page shows active referral instructions - re-check status at import. disability_literate reflects that this is an OPWDD disability-services nonprofit per its own site; formal self-attestation still needed. No statements about their own premises' physical access - zero attribute claims."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes"
+  ],
+  "source_url": "https://www.rsiwny.org/what-we-do/ace-employment.html",
+  "source_notes": "First-party program page (fetched OK). Exact wording: offers 'a diverse range of vocational rehabilitation services that assist customers to choose, get and maintain preferred competitive employment positions'; participants 'have a primary mental health condition and desire to gain competitive employment status.' Buffalo site 327 Elm Street confirmed (second site in Batavia, Genesee County). Parent Restoration Society is not among seeded orgs. No physical-access statements found."
+ },
+ {
+  "candidate_id": "aspire-wny-emods-assistive-technology",
+  "kind": "provider",
+  "name": "Aspire of WNY - Environmental Modifications (EMODS) & Assistive Technology",
+  "street": "2356 N Forest Rd",
+  "city": "Getzville",
+  "region": "Erie County",
+  "postal_code": "14068",
+  "lat": null,
+  "lng": null,
+  "summary": "Nonprofit program that helps people with developmental disabilities obtain funding for and coordinate installation of home modifications (ramps, lifts, accessible bathrooms) and adaptive technologies; the work is delivered in the client's home, not at a showroom.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "beyond-support-network-employment-services-tri-main",
-    "kind": "provider",
-    "name": "Beyond Support Network — Employment Services (Tri-Main Center)",
-    "street": "2495 Main St., Suite 342",
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14214",
-    "lat": null,
-    "lng": null,
-    "summary": "The Buffalo employment-services site of Beyond Support Network offering Community Pre-Vocational Services and SEMP supported employment for people with developmental disabilities.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [
-      {
-        "attribute_key": "entrance_step_free",
-        "asserted_value": true,
-        "source_url": "https://www.211wny.org/provider/11648/",
-        "note": "211WNY directory field 'Handicap Accessible? Yes' with no further detail — mapped to a single conservative entrance claim only (general_accessible_flag_only). Needs first-person confirmation."
-      }
-    ],
-    "flags": [
-      "duplicate_of_parent_check",
-      "source_fetch_403_reverify",
-      "general_accessible_flag_only"
-    ],
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "no_public_premises"
+  ],
+  "source_url": "https://www.aspirewny.org/services/central-intake/environmental-modifications-emods-assistive-technology/",
+  "source_notes": "First-party service page (live 2026-07): 'The Environmental Modification & Assistive Technology (EMODS) team provides assistance to obtain funding for environmental modifications and adaptive technologies...'; referrals via 716.838.0047 option 1 / intake@aspirewny.org. Two lead-list rows merged into this one record - the site shows a single combined EMODS & AT program; no separate orthotics/AT-training service page found. Address corrected: the lead's 4635 Union Rd Cheektowaga is Aspire's Center for Learning (an educational program); the org's contact page lists only 2356 N Forest Rd, Getzville NY 14068 (Erie County). In-home coordination service, no public showroom. Caveat: a stale search snippet suggested a 4/17/24 referral pause, but the live page shows active referral instructions - re-check status at import. disability_literate reflects that this is an OPWDD disability-services nonprofit per its own site; formal self-attestation still needed. No statements about their own premises' physical access - zero attribute claims."
+ },
+ {
+  "candidate_id": "beyond-support-network-employment-services-tri-main",
+  "kind": "provider",
+  "name": "Beyond Support Network \u2014 Employment Services (Tri-Main Center)",
+  "street": "2495 Main St., Suite 342",
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14214",
+  "lat": null,
+  "lng": null,
+  "summary": "The Buffalo employment-services site of Beyond Support Network offering Community Pre-Vocational Services and SEMP supported employment for people with developmental disabilities.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
+  },
+  "attributes": [
+   {
+    "attribute_key": "entrance_step_free",
+    "asserted_value": true,
     "source_url": "https://www.211wny.org/provider/11648/",
-    "source_notes": "PARENT ALREADY SEEDED: Beyond Support Network is in batch 2 at its Depew campus (2049 George Urban Blvd) — this record is the DISTINCT Buffalo program site only. 211WNY (fetched OK) lists '2495 Main Street Suite 342 Buffalo, NY 14214' and names 'Community Pre-Vocational Services' and 'SEMP (Supported Employment)'. First-party beyondwny.org/work returned HTTP 403 (same 403 noted for the parent record) — reverify address and program wording on the live site. Attribute is a bare 211 'Handicap Accessible? Yes' flag, one conservative entrance claim per rules."
+    "note": "211WNY directory field 'Handicap Accessible? Yes' with no further detail \u2014 mapped to a single conservative entrance claim only (general_accessible_flag_only). Needs first-person confirmation."
+   }
+  ],
+  "flags": [
+   "duplicate_of_parent_check",
+   "source_fetch_403_reverify",
+   "general_accessible_flag_only"
+  ],
+  "source_url": "https://www.211wny.org/provider/11648/",
+  "source_notes": "PARENT ALREADY SEEDED: Beyond Support Network is in batch 2 at its Depew campus (2049 George Urban Blvd) \u2014 this record is the DISTINCT Buffalo program site only. 211WNY (fetched OK) lists '2495 Main Street Suite 342 Buffalo, NY 14214' and names 'Community Pre-Vocational Services' and 'SEMP (Supported Employment)'. First-party beyondwny.org/work returned HTTP 403 (same 403 noted for the parent record) \u2014 reverify address and program wording on the live site. Attribute is a bare 211 'Handicap Accessible? Yes' flag, one conservative entrance claim per rules."
+ },
+ {
+  "candidate_id": "buffalo-therapeutic-riding-center",
+  "kind": "provider",
+  "name": "The Buffalo Therapeutic Riding Center, Inc.",
+  "street": "950 Amherst St",
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14216",
+  "lat": null,
+  "lng": null,
+  "summary": "Accredited therapeutic horseback riding program for children with emotional, developmental, or physical challenges ages 5-18, housed in one of the largest indoor riding arenas in the nation.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "buffalo-therapeutic-riding-center",
-    "kind": "provider",
-    "name": "The Buffalo Therapeutic Riding Center, Inc.",
-    "street": "950 Amherst St",
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14216",
-    "lat": null,
-    "lng": null,
-    "summary": "Accredited therapeutic horseback riding program for children with emotional, developmental, or physical challenges ages 5-18, housed in one of the largest indoor riding arenas in the nation.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "source_fetch_403_reverify"
-    ],
-    "source_url": "https://www.thebtrc.org/",
-    "source_notes": "Org website blocks automated fetch (HTTP 403); details from search excerpts of thebtrc.org pages (/facility, /contact, /directions). Stated mission: 'to enhance the development and quality of life for special needs children in Western New York by providing an accredited therapeutic riding program in a safe and nurturing environment.' Address 950 Amherst St, Buffalo NY 14216 confirmed across thebtrc.org excerpts, GuideStar, and VolunteerWNY. Facility is shared with Buffalo Equestrian Center / SBS Farms (same building). Re-verify by manual visit to the site. No explicit physical-access statements found; therapeutic riding itself has no schema key."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "source_fetch_403_reverify"
+  ],
+  "source_url": "https://www.thebtrc.org/",
+  "source_notes": "Org website blocks automated fetch (HTTP 403); details from search excerpts of thebtrc.org pages (/facility, /contact, /directions). Stated mission: 'to enhance the development and quality of life for special needs children in Western New York by providing an accredited therapeutic riding program in a safe and nurturing environment.' Address 950 Amherst St, Buffalo NY 14216 confirmed across thebtrc.org excerpts, GuideStar, and VolunteerWNY. Facility is shared with Buffalo Equestrian Center / SBS Farms (same building). Re-verify by manual visit to the site. No explicit physical-access statements found; therapeutic riding itself has no schema key."
+ },
+ {
+  "candidate_id": "center-for-self-advocacy",
+  "kind": "provider",
+  "name": "Center for Self-Advocacy Inc.",
+  "street": "1021 Broadway St., 4th Floor",
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14212",
+  "lat": null,
+  "lng": null,
+  "summary": "A Buffalo self-advocacy organization that works to advocate for equality and empower individuals with intellectual and developmental disabilities to actively participate in society.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": true
   },
-  {
-    "candidate_id": "center-for-self-advocacy",
-    "kind": "provider",
-    "name": "Center for Self-Advocacy Inc.",
-    "street": "1021 Broadway St., 4th Floor",
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14212",
-    "lat": null,
-    "lng": null,
-    "summary": "A Buffalo self-advocacy organization that works to advocate for equality and empower individuals with intellectual and developmental disabilities to actively participate in society.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": true
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "disabled_led_needs_confirmation"
-    ],
-    "source_url": "https://center4sa.org/about/",
-    "source_notes": "First-party site (fetched OK). Purpose wording: 'advocate for equality and empower individuals with intellectual and developmental disabilities to actively participate in society'; homepage: 'We help people with developmental disabilities work, advocate within their communities, and have an independent and productive lifestyle.' About page describes leadership and peer-mentor staff with lived disability experience (self-advocate-led org) — basis for disabled_led, but NEEDS SELF-ATTESTATION AT ONBOARDING. Shares 1021 Broadway with the already-seeded SANYS Western Region but is a distinct incorporated org. No physical-access statements found."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "disabled_led_needs_confirmation"
+  ],
+  "source_url": "https://center4sa.org/about/",
+  "source_notes": "First-party site (fetched OK). Purpose wording: 'advocate for equality and empower individuals with intellectual and developmental disabilities to actively participate in society'; homepage: 'We help people with developmental disabilities work, advocate within their communities, and have an independent and productive lifestyle.' About page describes leadership and peer-mentor staff with lived disability experience (self-advocate-led org) \u2014 basis for disabled_led, but NEEDS SELF-ATTESTATION AT ONBOARDING. Shares 1021 Broadway with the already-seeded SANYS Western Region but is a distinct incorporated org. No physical-access statements found."
+ },
+ {
+  "candidate_id": "community-services-for-every1",
+  "kind": "provider",
+  "name": "Community Services for Every1",
+  "street": "180 Oak St.",
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14203",
+  "lat": null,
+  "lng": null,
+  "summary": "A Buffalo human-services agency specializing in support for people with intellectual/developmental disabilities, people with chronic health and complex mental health concerns, and survivors of domestic violence, with adult services including vocational supports.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "community-services-for-every1",
-    "kind": "provider",
-    "name": "Community Services for Every1",
-    "street": "180 Oak St.",
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14203",
-    "lat": null,
-    "lng": null,
-    "summary": "A Buffalo human-services agency specializing in support for people with intellectual/developmental disabilities, people with chronic health and complex mental health concerns, and survivors of domestic violence, with adult services including vocational supports.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes"
-    ],
-    "source_url": "https://www.csevery1.com/",
-    "source_notes": "WEBSITE CORRECTED: lead's csevery1.org does not resolve (DNS dead); live first-party site is csevery1.com (fetched OK). Site wording: specializes in support for 'individuals with developmental disabilities, youth and adults with chronic health conditions and complex mental health concerns, and survivors of domestic violence'; banner 'Empowering Lives Through Connection.' HQ 180 Oak St. confirmed. Employment/pre-voc services per the lead and OPWDD/ACCES-VR referral model, but the fetched homepage shows 'Adult Services' generally — confirm the employment program wording at onboarding. No physical-access statements found."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes"
+  ],
+  "source_url": "https://www.csevery1.com/",
+  "source_notes": "WEBSITE CORRECTED: lead's csevery1.org does not resolve (DNS dead); live first-party site is csevery1.com (fetched OK). Site wording: specializes in support for 'individuals with developmental disabilities, youth and adults with chronic health conditions and complex mental health concerns, and survivors of domestic violence'; banner 'Empowering Lives Through Connection.' HQ 180 Oak St. confirmed. Employment/pre-voc services per the lead and OPWDD/ACCES-VR referral model, but the fetched homepage shows 'Adult Services' generally \u2014 confirm the employment program wording at onboarding. No physical-access statements found."
+ },
+ {
+  "candidate_id": "danceability-inc",
+  "kind": "provider",
+  "name": "Danceability, Inc.",
+  "street": "2365 George Urban Blvd",
+  "city": "Depew",
+  "region": "Erie County",
+  "postal_code": "14043",
+  "lat": null,
+  "lng": null,
+  "summary": "Individualized dance, fitness and movement program (tap, jazz, ballet, fitness) for children and adults with disabilities, running September through May.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "danceability-inc",
-    "kind": "provider",
-    "name": "Danceability, Inc.",
-    "street": "2365 George Urban Blvd",
-    "city": "Depew",
-    "region": "Erie County",
-    "postal_code": "14043",
-    "lat": null,
-    "lng": null,
-    "summary": "Individualized dance, fitness and movement program (tap, jazz, ballet, fitness) for children and adults with disabilities, running September through May.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes"
-    ],
-    "source_url": "https://www.danceabilityinc.org",
-    "source_notes": "Org website (fetched 2026-07-10). Exact self-description: 'Danceability is an individualized dance, fitness and movement program serving the special needs community.' Site notes it is in its 19th season, confirming current operation. Address confirmed on site. No physical-access statements on site; no disability-led wording. This lead appeared twice in the input (Adaptive Sports + Arts Inclusive Programs) — merged into one record."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes"
+  ],
+  "source_url": "https://www.danceabilityinc.org",
+  "source_notes": "Org website (fetched 2026-07-10). Exact self-description: 'Danceability is an individualized dance, fitness and movement program serving the special needs community.' Site notes it is in its 19th season, confirming current operation. Address confirmed on site. No physical-access statements on site; no disability-led wording. This lead appeared twice in the input (Adaptive Sports + Arts Inclusive Programs) \u2014 merged into one record."
+ },
+ {
+  "candidate_id": "ddawny-developmental-disabilities-alliance-of-wny",
+  "kind": "provider",
+  "name": "Developmental Disabilities Alliance of Western New York (DDAWNY)",
+  "street": "960 W. Maple Ct.",
+  "city": "Elma",
+  "region": "Erie County",
+  "postal_code": "14059",
+  "lat": null,
+  "lng": null,
+  "summary": "A collaborative alliance of member voluntary agencies across Western New York that provide services to people with developmental disabilities and advocate on developmental-disability issues.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "ddawny-developmental-disabilities-alliance-of-wny",
-    "kind": "provider",
-    "name": "Developmental Disabilities Alliance of Western New York (DDAWNY)",
-    "street": "960 W. Maple Ct.",
-    "city": "Elma",
-    "region": "Erie County",
-    "postal_code": "14059",
-    "lat": null,
-    "lng": null,
-    "summary": "A collaborative alliance of member voluntary agencies across Western New York that provide services to people with developmental disabilities and advocate on developmental-disability issues.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes"
-    ],
-    "source_url": "https://www.ddawny.org",
-    "source_notes": "First-party site (fetched OK). Exact wording: 'The Developmental Disabilities Alliance of Western New York is a collaborative group of member voluntary agencies that provide services to people with developmental disabilities.' ADDRESS CORRECTED: lead gave 1219 North Forest Rd., Williamsville (People Inc. HQ — stale); the site lists 960 W. Maple Ct., Elma, NY 14059 (Erie County). Membership coalition, not a direct-service provider — disability_literate true on advocacy mission. No physical-access statements found."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes"
+  ],
+  "source_url": "https://www.ddawny.org",
+  "source_notes": "First-party site (fetched OK). Exact wording: 'The Developmental Disabilities Alliance of Western New York is a collaborative group of member voluntary agencies that provide services to people with developmental disabilities.' ADDRESS CORRECTED: lead gave 1219 North Forest Rd., Williamsville (People Inc. HQ \u2014 stale); the site lists 960 W. Maple Ct., Elma, NY 14059 (Erie County). Membership coalition, not a direct-service provider \u2014 disability_literate true on advocacy mission. No physical-access statements found."
+ },
+ {
+  "candidate_id": "excalibur-leisure-skills-center",
+  "kind": "provider",
+  "name": "Excalibur Leisure Skills Center, Inc.",
+  "street": "1111 Fuhrmann Blvd (Safe Harbor Marina, Buffalo Harbor State Park)",
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14203",
+  "lat": null,
+  "lng": null,
+  "summary": "All-volunteer nonprofit providing adaptive boating and fishing excursions on a US Coast Guard-certified wheelchair-accessible vessel moored at Buffalo Harbor State Park.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "excalibur-leisure-skills-center",
-    "kind": "provider",
-    "name": "Excalibur Leisure Skills Center, Inc.",
-    "street": "1111 Fuhrmann Blvd (Safe Harbor Marina, Buffalo Harbor State Park)",
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14203",
-    "lat": null,
-    "lng": null,
-    "summary": "All-volunteer nonprofit providing adaptive boating and fishing excursions on a US Coast Guard-certified wheelchair-accessible vessel moored at Buffalo Harbor State Park.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "general_accessible_flag_only",
-      "org_status_unconfirmed"
-    ],
-    "source_url": "https://excaliburls.com/boating-excursions/",
-    "source_notes": "Org website (fetched 2026-07-10). Self-description: 'Dedicated to providing adaptive boating and fishing opportunities for developmentally challenged and disadvantaged persons.' Site states the vessel 'Richard A. Smith' 'is moored at the Wheelchair Access Dock. Address: 1111 Fuhrmann Blvd. Buffalo, New York, 14203' and 'It is wheelchair accessible, and on average, we can accommodate 6 wheelchairs.' These are vessel/dock claims with no schema key (not entrance/restroom/parking), so zero attributes recorded. Office/mailing address is 90 North Drive, Buffalo NY 14216. Status caveat: current weekday schedule is posted but the newest first-party news item is from 2020 — confirm 2026 season by phone before import."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "general_accessible_flag_only",
+   "org_status_unconfirmed"
+  ],
+  "source_url": "https://excaliburls.com/boating-excursions/",
+  "source_notes": "Org website (fetched 2026-07-10). Self-description: 'Dedicated to providing adaptive boating and fishing opportunities for developmentally challenged and disadvantaged persons.' Site states the vessel 'Richard A. Smith' 'is moored at the Wheelchair Access Dock. Address: 1111 Fuhrmann Blvd. Buffalo, New York, 14203' and 'It is wheelchair accessible, and on average, we can accommodate 6 wheelchairs.' These are vessel/dock claims with no schema key (not entrance/restroom/parking), so zero attributes recorded. Office/mailing address is 90 North Drive, Buffalo NY 14216. Status caveat: current weekday schedule is posted but the newest first-party news item is from 2020 \u2014 confirm 2026 season by phone before import."
+ },
+ {
+  "candidate_id": "fitnessability-inc",
+  "kind": "provider",
+  "name": "FitnessAbility, Inc.",
+  "street": "1940 Kenmore Ave",
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14217",
+  "lat": null,
+  "lng": null,
+  "summary": "Not-for-profit universally integrated fitness facility offering inclusive fitness and recreation programming, including Special Olympics programs.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "fitnessability-inc",
-    "kind": "provider",
-    "name": "FitnessAbility, Inc.",
-    "street": "1940 Kenmore Ave",
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14217",
-    "lat": null,
-    "lng": null,
-    "summary": "Not-for-profit universally integrated fitness facility offering inclusive fitness and recreation programming, including Special Olympics programs.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes"
-    ],
-    "source_url": "https://www.fitnessability.org",
-    "source_notes": "Org website (fetched 2026-07-10, site dated 2026). Describes itself as a 'universally integrated fitness facility' and a not-for-profit with the mission 'We will serve our participants with the Highest Quality client experience in a safe, clean, friendly, and fun environment. No man, woman, or child left behind.' Lists Special Olympics programming. disability_literate=true rests on the universally-integrated/special-needs programming focus; the mission statement itself is general. No physical-access statements; no disability-led wording."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes"
+  ],
+  "source_url": "https://www.fitnessability.org",
+  "source_notes": "Org website (fetched 2026-07-10, site dated 2026). Describes itself as a 'universally integrated fitness facility' and a not-for-profit with the mission 'We will serve our participants with the Highest Quality client experience in a safe, clean, friendly, and fun environment. No man, woman, or child left behind.' Lists Special Olympics programming. disability_literate=true rests on the universally-integrated/special-needs programming focus; the mission statement itself is general. No physical-access statements; no disability-led wording."
+ },
+ {
+  "candidate_id": "goodwill-of-western-new-york",
+  "kind": "provider",
+  "name": "Goodwill of Western New York",
+  "street": "1119 William St.",
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14206",
+  "lat": null,
+  "lng": null,
+  "summary": "A nonprofit provider of education, training, and career services for people with barriers to employment, including the Goodskills Career Builder program, headquartered on William Street in Buffalo.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": false,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "goodwill-of-western-new-york",
-    "kind": "provider",
-    "name": "Goodwill of Western New York",
-    "street": "1119 William St.",
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14206",
-    "lat": null,
-    "lng": null,
-    "summary": "A nonprofit provider of education, training, and career services for people with barriers to employment, including the Goodskills Career Builder program, headquartered on William Street in Buffalo.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": false,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes"
-    ],
-    "source_url": "https://www.goodwillwny.org/about",
-    "source_notes": "First-party site (fetched OK); active, current 2025 news. Mission wording: 'Goodwill empowers people to achieve their fullest potential through the power of work'; 'a nonprofit provider of education, training, and career services for people with barriers to employment' that assists 'people with all types of vocational challenges and barriers to employment.' NOT in either seed batch (checked — no Goodwill overlap). disability_literate left FALSE conservatively: fetched pages say 'barriers to employment,' never disability-specific mission wording — confirm at onboarding (historically a vocational-rehabilitation provider). No physical-access statements found."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes"
+  ],
+  "source_url": "https://www.goodwillwny.org/about",
+  "source_notes": "First-party site (fetched OK); active, current 2025 news. Mission wording: 'Goodwill empowers people to achieve their fullest potential through the power of work'; 'a nonprofit provider of education, training, and career services for people with barriers to employment' that assists 'people with all types of vocational challenges and barriers to employment.' NOT in either seed batch (checked \u2014 no Goodwill overlap). disability_literate left FALSE conservatively: fetched pages say 'barriers to employment,' never disability-specific mission wording \u2014 confirm at onboarding (historically a vocational-rehabilitation provider). No physical-access statements found."
+ },
+ {
+  "candidate_id": "high-hurdles-therapeutic-riding",
+  "kind": "provider",
+  "name": "High Hurdles Therapeutic Riding Program (SASi)",
+  "street": "13339 Route 39",
+  "city": "Sardinia",
+  "region": "Erie County",
+  "postal_code": "14134",
+  "lat": null,
+  "lng": null,
+  "summary": "Therapeutic horseback riding program of SASi for individuals age 3+ with intellectual and developmental disabilities, with a 2026 season that began March 2026.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "high-hurdles-therapeutic-riding",
-    "kind": "provider",
-    "name": "High Hurdles Therapeutic Riding Program (SASi)",
-    "street": "13339 Route 39",
-    "city": "Sardinia",
-    "region": "Erie County",
-    "postal_code": "14134",
-    "lat": null,
-    "lng": null,
-    "summary": "Therapeutic horseback riding program of SASi for individuals age 3+ with intellectual and developmental disabilities, with a 2026 season that began March 2026.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "source_fetch_403_reverify"
-    ],
-    "source_url": "https://highhurdlestrc.org/",
-    "source_notes": "First-party site exists (note: no 'www' — www.highhurdlestrc.org does not resolve) but returned empty content to automated fetch (JS-rendered); flag used to mark fetch-reverify need. Details corroborated via search excerpts of highhurdlestrc.org, sasinc.org (which 301-redirects its High Hurdles page to highhurdlestrc.org, confirming SASi affiliation), and 211wny.org provider 4512. Search-excerpt wording: 'High Hurdles seeks to provide a unique opportunity for people with special needs through the horse-human bond'; address 13339 Rt 39, Sardinia NY 14134; 2026 registration opened with first session March 2, 2026 (operating). Sardinia is in southern Erie County. No physical-access statements found."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "source_fetch_403_reverify"
+  ],
+  "source_url": "https://highhurdlestrc.org/",
+  "source_notes": "First-party site exists (note: no 'www' \u2014 www.highhurdlestrc.org does not resolve) but returned empty content to automated fetch (JS-rendered); flag used to mark fetch-reverify need. Details corroborated via search excerpts of highhurdlestrc.org, sasinc.org (which 301-redirects its High Hurdles page to highhurdlestrc.org, confirming SASi affiliation), and 211wny.org provider 4512. Search-excerpt wording: 'High Hurdles seeks to provide a unique opportunity for people with special needs through the horse-human bond'; address 13339 Rt 39, Sardinia NY 14134; 2026 registration opened with first session March 2, 2026 (operating). Sardinia is in southern Erie County. No physical-access statements found."
+ },
+ {
+  "candidate_id": "inclusive-theater-of-wny",
+  "kind": "provider",
+  "name": "Inclusive Theater of WNY (ITOWNY)",
+  "street": "The Foundry, 298 Northampton St",
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14208",
+  "lat": null,
+  "lng": null,
+  "summary": "Community theater company producing original scripts with casts chosen solely on ability, whether or not the actor has a disability.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "inclusive-theater-of-wny",
-    "kind": "provider",
-    "name": "Inclusive Theater of WNY (ITOWNY)",
-    "street": "The Foundry, 298 Northampton St",
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14208",
-    "lat": null,
-    "lng": null,
-    "summary": "Community theater company producing original scripts with casts chosen solely on ability, whether or not the actor has a disability.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "disabled_led_needs_confirmation",
-      "org_status_unconfirmed"
-    ],
-    "source_url": "https://www.inclusivetheaterofwny.com",
-    "source_notes": "Org website (fetched 2026-07-10). Exact self-description: 'Inclusive Theater of WNY seeks to reimagine our society through producing original scripts in our ongoing writing group and writing workshops, and through the production and performance of those scripts with actors who are chosen solely on their ability—whether they have a disability or not.' Also: 'ITOWNY is committed to diversity at all levels: on our stage, in our audience, on our staff, and within our leadership.' Address per site: 'The Foundry, 298 Northampton Street, Buffalo, NY. 14208' (matches lead); some performances at St. Mary's HS, Lancaster. The lead's 'disability-led' claim is NOT stated first-party — disabled_led left false; NEEDS SELF-ATTESTATION AT ONBOARDING. Status caveat: newest listed performances ran through December 2025; confirm 2026 season activity. No physical-access statements."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "disabled_led_needs_confirmation",
+   "org_status_unconfirmed"
+  ],
+  "source_url": "https://www.inclusivetheaterofwny.com",
+  "source_notes": "Org website (fetched 2026-07-10). Exact self-description: 'Inclusive Theater of WNY seeks to reimagine our society through producing original scripts in our ongoing writing group and writing workshops, and through the production and performance of those scripts with actors who are chosen solely on their ability\u2014whether they have a disability or not.' Also: 'ITOWNY is committed to diversity at all levels: on our stage, in our audience, on our staff, and within our leadership.' Address per site: 'The Foundry, 298 Northampton Street, Buffalo, NY. 14208' (matches lead); some performances at St. Mary's HS, Lancaster. The lead's 'disability-led' claim is NOT stated first-party \u2014 disabled_led left false; NEEDS SELF-ATTESTATION AT ONBOARDING. Status caveat: newest listed performances ran through December 2025; confirm 2026 season activity. No physical-access statements. ORG-STATUS RE-VERIFY 2026-07-10: not defunct, but the newest first-party activity is 2025 (It's a Wonderful Life, Dec 5-14 2025; most recent post Nov 15 2025) \u2014 NO 2026 season is posted. Present as awaiting-2026-season; re-verify before surfacing as currently producing."
+ },
+ {
+  "candidate_id": "indicatorart",
+  "kind": "provider",
+  "name": "IndicatorArt",
+  "street": null,
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": null,
+  "lat": null,
+  "lng": null,
+  "summary": "501(c)(3) art-education nonprofit offering painting workshops and gallery shows, online and in person, for people with developmental disabilities.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "indicatorart",
-    "kind": "provider",
-    "name": "IndicatorArt",
-    "street": null,
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": null,
-    "lat": null,
-    "lng": null,
-    "summary": "501(c)(3) art-education nonprofit offering painting workshops and gallery shows, online and in person, for people with developmental disabilities.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "missing_street_address"
-    ],
-    "source_url": "https://www.indicatorart.org",
-    "source_notes": "Org website (fetched 2026-07-10). Exact self-description: 'Enriching the lives of people with developmental disabilities through the creative arts.' Registered 501(c)(3); actively operating with current classes and galleries. Based in Buffalo but no fixed public street address published (programs are online and in-person at varying locations) — street null per rules. No physical-access statements; no disability-led wording."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "missing_street_address"
+  ],
+  "source_url": "https://www.indicatorart.org",
+  "source_notes": "Org website (fetched 2026-07-10). Exact self-description: 'Enriching the lives of people with developmental disabilities through the creative arts.' Registered 501(c)(3); actively operating with current classes and galleries. Based in Buffalo but no fixed public street address published (programs are online and in-person at varying locations) \u2014 street null per rules. No physical-access statements; no disability-led wording."
+ },
+ {
+  "candidate_id": "innovative-placements-wny",
+  "kind": "provider",
+  "name": "Innovative Placements",
+  "street": null,
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14201",
+  "lat": null,
+  "lng": null,
+  "summary": "A WNY-based job-placement service specializing in employment for people with disabilities as a partner of ACCES-VR and the New York State Commission for the Blind.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "innovative-placements-wny",
-    "kind": "provider",
-    "name": "Innovative Placements",
-    "street": null,
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14201",
-    "lat": null,
-    "lng": null,
-    "summary": "A WNY-based job-placement service specializing in employment for people with disabilities as a partner of ACCES-VR and the New York State Commission for the Blind.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "missing_street_address"
-    ],
-    "source_url": "https://www.ipswny.com",
-    "source_notes": "First-party site (fetched OK). Exact wording: 'Innovative Placements specializes in job placement for people with disabilities and is a partner of Adult Career and Continuing Education Services-Vocational Rehabilitation (ACCES-VR) and the New York State Commission for the Blind (NYSCB)'; tagline 'Jobs for people with disabilities.' Only a PO Box (PO Box 801, Buffalo, NY 14201) is published — no public street address, services delivered in the community. 20+ years serving WNY per site. No physical-access statements found."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "missing_street_address"
+  ],
+  "source_url": "https://www.ipswny.com",
+  "source_notes": "First-party site (fetched OK). Exact wording: 'Innovative Placements specializes in job placement for people with disabilities and is a partner of Adult Career and Continuing Education Services-Vocational Rehabilitation (ACCES-VR) and the New York State Commission for the Blind (NYSCB)'; tagline 'Jobs for people with disabilities.' Only a PO Box (PO Box 801, Buffalo, NY 14201) is published \u2014 no public street address, services delivered in the community. 20+ years serving WNY per site. No physical-access statements found."
+ },
+ {
+  "candidate_id": "link-buffalo-jewish-federation",
+  "kind": "provider",
+  "name": "LiNK \u2014 Buffalo Jewish Federation (disability inclusion, now branded 'Belonging')",
+  "street": "338 Harris Hill Rd., Suite 108B",
+  "city": "Williamsville",
+  "region": "Erie County",
+  "postal_code": "14221",
+  "lat": null,
+  "lng": null,
+  "summary": "The Buffalo Jewish Federation's disability-inclusion effort (LiNK Inclusion Planning Team, work now branded 'Belonging') providing outreach, advocacy, and program support so people with disabilities are fully included in Jewish community life.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "link-buffalo-jewish-federation",
-    "kind": "provider",
-    "name": "LiNK — Buffalo Jewish Federation (disability inclusion, now branded 'Belonging')",
-    "street": "338 Harris Hill Rd., Suite 108B",
-    "city": "Williamsville",
-    "region": "Erie County",
-    "postal_code": "14221",
-    "lat": null,
-    "lng": null,
-    "summary": "The Buffalo Jewish Federation's disability-inclusion effort (LiNK Inclusion Planning Team, work now branded 'Belonging') providing outreach, advocacy, and program support so people with disabilities are fully included in Jewish community life.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "source_fetch_403_reverify",
-      "org_status_unconfirmed"
-    ],
-    "source_url": "https://buffalojewishfederation.org/belonging/",
-    "source_notes": "First-party page returned HTTP 403 to fetching (both /link and /belonging/) — details from search excerpts of the Belonging page: the 'LiNK Inclusion Planning Team' expanded 'in alignment with the Buffalo Jewish Federation's mission of creating a welcoming and thriving network of communities'; the Federation 'changed the name of its work from Inclusion to Belonging' and is 'inclusive of all abilities.' Program-name transition (LiNK → Belonging) unconfirmed on a live fetch — reverify name at import. Address 338 Harris Hill Rd., Suite 108B is the Federation office per search results; program has no separate site. No physical-access statements found."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "source_fetch_403_reverify",
+   "org_status_unconfirmed"
+  ],
+  "source_url": "https://buffalojewishfederation.org/belonging/",
+  "source_notes": "First-party page returned HTTP 403 to fetching (both /link and /belonging/) \u2014 details from search excerpts of the Belonging page: the 'LiNK Inclusion Planning Team' expanded 'in alignment with the Buffalo Jewish Federation's mission of creating a welcoming and thriving network of communities'; the Federation 'changed the name of its work from Inclusion to Belonging' and is 'inclusive of all abilities.' Program-name transition (LiNK \u2192 Belonging) unconfirmed on a live fetch \u2014 reverify name at import. Address 338 Harris Hill Rd., Suite 108B is the Federation office per search results; program has no separate site. No physical-access statements found."
+ },
+ {
+  "candidate_id": "lothlorien-therapeutic-riding-center",
+  "kind": "provider",
+  "name": "Lothlorien Therapeutic Riding Center",
+  "street": "15 Reiter Rd",
+  "city": "East Aurora",
+  "region": "Erie County",
+  "postal_code": "14052",
+  "lat": null,
+  "lng": null,
+  "summary": "Therapeutic riding center offering equine-assisted activities for individuals with special needs, veterans, and anxiety support groups, just outside the Village of East Aurora.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "lothlorien-therapeutic-riding-center",
-    "kind": "provider",
-    "name": "Lothlorien Therapeutic Riding Center",
-    "street": "15 Reiter Rd",
-    "city": "East Aurora",
-    "region": "Erie County",
-    "postal_code": "14052",
-    "lat": null,
-    "lng": null,
-    "summary": "Therapeutic riding center offering equine-assisted activities for individuals with special needs, veterans, and anxiety support groups, just outside the Village of East Aurora.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes"
-    ],
-    "source_url": "https://www.lothlorientrc.com",
-    "source_notes": "Org website (fetched 2026-07-10, site dated through 2026). Exact self-description: 'Assisting individuals to develop their highest potential through therapeutically based equine activities'; serves 'individuals with special needs' with horses chosen for 'ability to support riders of all abilities.' Homepage gives location only as 'just outside of the Village of East Aurora, New York'; street address 15 Reiter Rd, East Aurora NY 14052 corroborated by the site's own contact page URL in search results plus 211wny.org and Yelp. No physical-access statements."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes"
+  ],
+  "source_url": "https://www.lothlorientrc.com",
+  "source_notes": "Org website (fetched 2026-07-10, site dated through 2026). Exact self-description: 'Assisting individuals to develop their highest potential through therapeutically based equine activities'; serves 'individuals with special needs' with horses chosen for 'ability to support riders of all abilities.' Homepage gives location only as 'just outside of the Village of East Aurora, New York'; street address 15 Reiter Rd, East Aurora NY 14052 corroborated by the site's own contact page URL in search results plus 211wny.org and Yelp. No physical-access statements."
+ },
+ {
+  "candidate_id": "miracle-league-of-wny",
+  "kind": "provider",
+  "name": "Miracle League of Western New York",
+  "street": "Veterans Park, 1717 Bedell Rd",
+  "city": "Grand Island",
+  "region": "Erie County",
+  "postal_code": "14072",
+  "lat": null,
+  "lng": null,
+  "summary": "Adaptive baseball league for individuals with adaptive needs, played on a custom-designed rubberized field at Veterans Park in Grand Island.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "miracle-league-of-wny",
-    "kind": "provider",
-    "name": "Miracle League of Western New York",
-    "street": "Veterans Park, 1717 Bedell Rd",
-    "city": "Grand Island",
-    "region": "Erie County",
-    "postal_code": "14072",
-    "lat": null,
-    "lng": null,
-    "summary": "Adaptive baseball league for individuals with adaptive needs, played on a custom-designed rubberized field at Veterans Park in Grand Island.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "general_accessible_flag_only"
-    ],
-    "source_url": "https://www.miracleleaguewny.org/contact/",
-    "source_notes": "Org website (fetched 2026-07-10). Self-description from homepage: provides 'individuals with adaptive needs the opportunity to play baseball on a custom-designed, rubberized field, removing barriers and fostering inclusivity, joy, and community'; eligibility: 'Anyone with an adaptive need that cannot be accommodated in a traditional league.' Operating (season starts the Sunday after Memorial Day). Field address from first-party contact page: 'Veterans Park, 1717 Bedell Rd, Grand Island, NY 14072' (a search snippet said 1715 — the first-party page's 1717 is used); mailing address PO Box 833, Grand Island NY 14072. The rubberized-field claim is an adaptive feature with no schema key — no attributes recorded. Note: the lead also listed wnychallengersports.com (Challenger Sports, Lockport) — that is a separate org in Niagara County and was NOT recorded."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "general_accessible_flag_only"
+  ],
+  "source_url": "https://www.miracleleaguewny.org/contact/",
+  "source_notes": "Org website (fetched 2026-07-10). Self-description from homepage: provides 'individuals with adaptive needs the opportunity to play baseball on a custom-designed, rubberized field, removing barriers and fostering inclusivity, joy, and community'; eligibility: 'Anyone with an adaptive need that cannot be accommodated in a traditional league.' Operating (season starts the Sunday after Memorial Day). Field address from first-party contact page: 'Veterans Park, 1717 Bedell Rd, Grand Island, NY 14072' (a search snippet said 1715 \u2014 the first-party page's 1717 is used); mailing address PO Box 833, Grand Island NY 14072. The rubberized-field claim is an adaptive feature with no schema key \u2014 no attributes recorded. Note: the lead also listed wnychallengersports.com (Challenger Sports, Lockport) \u2014 that is a separate org in Niagara County and was NOT recorded."
+ },
+ {
+  "candidate_id": "opwdd-wny-ddro-region-1",
+  "kind": "provider",
+  "name": "OPWDD Western New York Developmental Disabilities Regional Office (Region 1, West Seneca)",
+  "street": "1200 East and West Road",
+  "city": "West Seneca",
+  "region": "Erie County",
+  "postal_code": "14224",
+  "lat": null,
+  "lng": null,
+  "summary": "The NYS Office for People With Developmental Disabilities regional office and Front Door access point for developmental-disability services in Region 1, with on-site clinical services including nursing, occupational therapy, physical therapy, psychology, social work, and speech pathology.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "opwdd-wny-ddro-region-1",
-    "kind": "provider",
-    "name": "OPWDD Western New York Developmental Disabilities Regional Office (Region 1, West Seneca)",
-    "street": "1200 East and West Road",
-    "city": "West Seneca",
-    "region": "Erie County",
-    "postal_code": "14224",
-    "lat": null,
-    "lng": null,
-    "summary": "The NYS Office for People With Developmental Disabilities regional office and Front Door access point for developmental-disability services in Region 1, with on-site clinical services including nursing, occupational therapy, physical therapy, psychology, social work, and speech pathology.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [
-      {
-        "attribute_key": "entrance_step_free",
-        "asserted_value": true,
-        "source_url": "https://www.211wny.org/provider/8613/",
-        "note": "211WNY directory field 'Handicap Accessible? Yes' with no further detail — mapped to a single conservative entrance claim only (general_accessible_flag_only). Needs first-person confirmation."
-      }
-    ],
-    "flags": [
-      "general_accessible_flag_only"
-    ],
-    "source_url": "https://opwdd.ny.gov/location/western-new-york-ddso-west-seneca",
-    "source_notes": "First-party opwdd.ny.gov location page (fetched OK) confirms name and 1200 East and West Road, West Seneca, NY 14224; identifies clinical services offered. Search-corroborated: office serves Allegany, Cattaraugus, Chautauqua, Erie, Genesee, Niagara, and Orleans Counties; Front Door 866-946-9733, main (716) 674-6300. State agency office, not a community org. Attribute is a bare 211WNY 'Handicap Accessible? Yes' flag — one conservative entrance_step_free claim per rules."
+  "attributes": [
+   {
+    "attribute_key": "entrance_step_free",
+    "asserted_value": true,
+    "source_url": "https://www.211wny.org/provider/8613/",
+    "note": "211WNY directory field 'Handicap Accessible? Yes' with no further detail \u2014 mapped to a single conservative entrance claim only (general_accessible_flag_only). Needs first-person confirmation."
+   }
+  ],
+  "flags": [
+   "general_accessible_flag_only"
+  ],
+  "source_url": "https://opwdd.ny.gov/location/western-new-york-ddso-west-seneca",
+  "source_notes": "First-party opwdd.ny.gov location page (fetched OK) confirms name and 1200 East and West Road, West Seneca, NY 14224; identifies clinical services offered. Search-corroborated: office serves Allegany, Cattaraugus, Chautauqua, Erie, Genesee, Niagara, and Orleans Counties; Front Door 866-946-9733, main (716) 674-6300. State agency office, not a community org. Attribute is a bare 211WNY 'Handicap Accessible? Yes' flag \u2014 one conservative entrance_step_free claim per rules."
+ },
+ {
+  "candidate_id": "paracliffhangers-adaptive-climbing-crg-buffalo",
+  "kind": "provider",
+  "name": "ParaCliffHangers Adaptive Climbing Meetup at Central Rock Gym Buffalo",
+  "street": "55 Chicago St",
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14204",
+  "lat": null,
+  "lng": null,
+  "summary": "Recurring adaptive rock climbing meetup (first and third Mondays monthly) run with the nonprofit ParaCliffHangers at the Central Rock Gym Buffalo climbing facility.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "paracliffhangers-adaptive-climbing-crg-buffalo",
-    "kind": "provider",
-    "name": "ParaCliffHangers Adaptive Climbing Meetup at Central Rock Gym Buffalo",
-    "street": "55 Chicago St",
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14204",
-    "lat": null,
-    "lng": null,
-    "summary": "Recurring adaptive rock climbing meetup (first and third Mondays monthly) run with the nonprofit ParaCliffHangers at the Central Rock Gym Buffalo climbing facility.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes"
-    ],
-    "source_url": "https://centralrockgym.com/buffalo/climbing/adaptive-climbing-training-practice/",
-    "source_notes": "First-party Central Rock Gym Buffalo program page (fetched 2026-07-10). Exact wording: 'ParaCliffHangers is a nonprofit organization that fosters community, adventure, strength, and equity through adaptive rock climbing'; meets 'First and Third Mondays Each Month'; 'The use of some adaptive equipment requires setup by trained staff, so advance notice is needed if interested in using it.' Recorded as the disability-specific program, not the gym itself — the host venue is a general commercial climbing gym whose mission is not disability-focused. Lead's original claims about sensory-friendly sessions were NOT found first-party. A third-party directory calls the gym wheelchair accessible, but no first-party physical-access statement exists, so zero attributes. disability_literate applies to the adaptive program, not the gym; the gym should self-attest at onboarding."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes"
+  ],
+  "source_url": "https://centralrockgym.com/buffalo/climbing/adaptive-climbing-training-practice/",
+  "source_notes": "First-party Central Rock Gym Buffalo program page (fetched 2026-07-10). Exact wording: 'ParaCliffHangers is a nonprofit organization that fosters community, adventure, strength, and equity through adaptive rock climbing'; meets 'First and Third Mondays Each Month'; 'The use of some adaptive equipment requires setup by trained staff, so advance notice is needed if interested in using it.' Recorded as the disability-specific program, not the gym itself \u2014 the host venue is a general commercial climbing gym whose mission is not disability-focused. Lead's original claims about sensory-friendly sessions were NOT found first-party. A third-party directory calls the gym wheelchair accessible, but no first-party physical-access statement exists, so zero attributes. disability_literate applies to the adaptive program, not the gym; the gym should self-attest at onboarding."
+ },
+ {
+  "candidate_id": "people-inc-emod-adaptive-technologies",
+  "kind": "provider",
+  "name": "People Inc. - Environmental Modifications (EMOD) & Adaptive Technologies",
+  "street": "1219 North Forest Rd",
+  "city": "Williamsville",
+  "region": "Erie County",
+  "postal_code": "14221",
+  "lat": null,
+  "lng": null,
+  "summary": "Nonprofit program providing project management for OPWDD-funded home modifications (ramps, lifts, barrier-free showers, widened doorways), adaptive technology devices and vehicle modifications, delivered in clients' homes across Western New York.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "people-inc-emod-adaptive-technologies",
-    "kind": "provider",
-    "name": "People Inc. - Environmental Modifications (EMOD) & Adaptive Technologies",
-    "street": "1219 North Forest Rd",
-    "city": "Williamsville",
-    "region": "Erie County",
-    "postal_code": "14221",
-    "lat": null,
-    "lng": null,
-    "summary": "Nonprofit program providing project management for OPWDD-funded home modifications (ramps, lifts, barrier-free showers, widened doorways), adaptive technology devices and vehicle modifications, delivered in clients' homes across Western New York.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "no_public_premises"
-    ],
-    "source_url": "https://www.people-inc.org/press-releases/increasing-independence-and-safety-is-at-the-heart-of-people-inc-4227480/",
-    "source_notes": "First-party press release page (people-inc.org): the EMOD Department provides 'project management and oversight services that help eligible people with intellectual and developmental disabilities work through safety and other issues in their living area'; modifications include ramps, wheelchair lifts, lowered countertops, barrier-free showers, widened doorways, grab bars, door openers, ceiling tracks; also assistive technology devices and vehicle modifications. WNY address 1219 North Forest Rd, Williamsville NY 14221 (org HQ - the service itself is in-home; no showroom). The lead's dedicated program URL 404s; the org's main services URL structure changed, so re-link at import if a dedicated service page reappears. disability_literate reflects OPWDD disability-services nonprofit status per its own materials; formal self-attestation still needed. No premises-access statements - zero attribute claims."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "no_public_premises"
+  ],
+  "source_url": "https://www.people-inc.org/press-releases/increasing-independence-and-safety-is-at-the-heart-of-people-inc-4227480/",
+  "source_notes": "First-party press release page (people-inc.org): the EMOD Department provides 'project management and oversight services that help eligible people with intellectual and developmental disabilities work through safety and other issues in their living area'; modifications include ramps, wheelchair lifts, lowered countertops, barrier-free showers, widened doorways, grab bars, door openers, ceiling tracks; also assistive technology devices and vehicle modifications. WNY address 1219 North Forest Rd, Williamsville NY 14221 (org HQ - the service itself is in-home; no showroom). The lead's dedicated program URL 404s; the org's main services URL structure changed, so re-link at import if a dedicated service page reappears. disability_literate reflects OPWDD disability-services nonprofit status per its own materials; formal self-attestation still needed. No premises-access statements - zero attribute claims."
+ },
+ {
+  "candidate_id": "starlight-studio-and-art-gallery",
+  "kind": "provider",
+  "name": "Starlight Studio and Art Gallery (a division of Beyond Support Network)",
+  "street": "340 Delaware Ave",
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14202",
+  "lat": null,
+  "lng": null,
+  "summary": "A downtown Buffalo cooperative art studio and gallery that supports adults with intellectual and developmental disabilities in their artistic development and careers in art.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "starlight-studio-and-art-gallery",
-    "kind": "provider",
-    "name": "Starlight Studio and Art Gallery (a division of Beyond Support Network)",
-    "street": "340 Delaware Ave",
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14202",
-    "lat": null,
-    "lng": null,
-    "summary": "A downtown Buffalo cooperative art studio and gallery that supports adults with intellectual and developmental disabilities in their artistic development and careers in art.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "duplicate_of_parent_check"
-    ],
-    "source_url": "https://www.starlightstudio.org/about",
-    "source_notes": "First-party site (fetched OK). Exact wording: 'a cooperative environment that supports adults with intellectual and developmental disabilities in their artistic development'; goal 'Support Artists with disabilities to have careers in art.' AFFILIATION CORRECTED: lead said 'via CEPA Foundation' — the site states 'Starlight Studio & Art Gallery is a division of Beyond Support Network.' Parent Beyond Support Network is already seeded (Depew campus), but Starlight has its own public location (340 Delaware Ave) and own site, so recorded as the distinct program site per dedupe rule. No physical-access statements found."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "duplicate_of_parent_check"
+  ],
+  "source_url": "https://www.starlightstudio.org/about",
+  "source_notes": "First-party site (fetched OK). Exact wording: 'a cooperative environment that supports adults with intellectual and developmental disabilities in their artistic development'; goal 'Support Artists with disabilities to have careers in art.' AFFILIATION CORRECTED: lead said 'via CEPA Foundation' \u2014 the site states 'Starlight Studio & Art Gallery is a division of Beyond Support Network.' Parent Beyond Support Network is already seeded (Depew campus), but Starlight has its own public location (340 Delaware Ave) and own site, so recorded as the distinct program site per dedupe rule. No physical-access statements found."
+ },
+ {
+  "candidate_id": "ub-center-for-assistive-technology",
+  "kind": "provider",
+  "name": "Center for Assistive Technology - University at Buffalo",
+  "street": "210 John Glenn Drive, Suite 14",
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14228",
+  "lat": null,
+  "lng": null,
+  "summary": "University-based assistive technology center providing assessment, training, demonstration and device-loan services for Western New York.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "ub-center-for-assistive-technology",
-    "kind": "provider",
-    "name": "Center for Assistive Technology - University at Buffalo",
-    "street": "210 John Glenn Drive, Suite 14",
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14228",
-    "lat": null,
-    "lng": null,
-    "summary": "University-based assistive technology center providing assessment, training, demonstration and device-loan services for Western New York.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes"
-    ],
-    "source_url": "https://publichealth.buffalo.edu/cat.html",
-    "source_notes": "First-party UB page (client-services section updated 2/20/26): describes 'assessment, training, demonstration and loan services' and 'computer assessment and training services in the use of AT in Western New York.' Address as printed on the page: 210 John Glenn Drive, Suite 14, Buffalo, NY 14228 (Erie County; physically in the Amherst/Audubon area - site's own city wording kept). The lead's 'Regional TRAID Center' designation and five-county list were NOT confirmed on this page - corroborate against the Erie County OPD agency directory before surfacing that claim. Suite-based center; whether walk-in visits vs. appointments are expected is not stated. No statements about their own premises' physical access - zero attribute claims."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes"
+  ],
+  "source_url": "https://publichealth.buffalo.edu/cat.html",
+  "source_notes": "First-party UB page (client-services section updated 2/20/26): describes 'assessment, training, demonstration and loan services' and 'computer assessment and training services in the use of AT in Western New York.' Address as printed on the page: 210 John Glenn Drive, Suite 14, Buffalo, NY 14228 (Erie County; physically in the Amherst/Audubon area - site's own city wording kept). The lead's 'Regional TRAID Center' designation and five-county list were NOT confirmed on this page - corroborate against the Erie County OPD agency directory before surfacing that claim. Suite-based center; whether walk-in visits vs. appointments are expected is not stated. No statements about their own premises' physical access - zero attribute claims."
+ },
+ {
+  "candidate_id": "unique-theatre-company",
+  "kind": "provider",
+  "name": "Unique Theatre Company",
+  "street": "99 Hartwell Rd",
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14216",
+  "lat": null,
+  "lng": null,
+  "summary": "Theater company of playwrights and actors focused on giving voice to persons with disabilities through inclusive original productions.",
+  "category": "disability_services",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "unique-theatre-company",
-    "kind": "provider",
-    "name": "Unique Theatre Company",
-    "street": "99 Hartwell Rd",
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14216",
-    "lat": null,
-    "lng": null,
-    "summary": "Theater company of playwrights and actors focused on giving voice to persons with disabilities through inclusive original productions.",
-    "category": "disability_services",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "source_fetch_403_reverify",
-      "disabled_led_needs_confirmation"
-    ],
-    "source_url": "https://www.uniquetheatre.org/",
-    "source_notes": "Org website blocks automated fetch (HTTP 403); the site is live and indexed (e.g., uniquetheatre.org/community-resources/). Search-excerpt self-description: 'comprised of aspiring and/or working playwrights and actors who have an interest in giving voice to persons with disabilities, as well as changing current cultural perceptions of what it means to be a person with disabilities.' Address 99 Hartwell Rd, Buffalo NY 14216 corroborated by directory listings; recent local news coverage (WKBW) confirms active inclusive productions with casts of professional actors and actors with disabilities. The lead's 'led by artists with disabilities' claim was not confirmable first-party — disabled_led false; NEEDS SELF-ATTESTATION AT ONBOARDING. Re-verify site content manually. No physical-access statements found."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "source_fetch_403_reverify",
+   "disabled_led_needs_confirmation"
+  ],
+  "source_url": "https://www.uniquetheatre.org/",
+  "source_notes": "Org website blocks automated fetch (HTTP 403); the site is live and indexed (e.g., uniquetheatre.org/community-resources/). Search-excerpt self-description: 'comprised of aspiring and/or working playwrights and actors who have an interest in giving voice to persons with disabilities, as well as changing current cultural perceptions of what it means to be a person with disabilities.' Address 99 Hartwell Rd, Buffalo NY 14216 corroborated by directory listings; recent local news coverage (WKBW) confirms active inclusive productions with casts of professional actors and actors with disabilities. The lead's 'led by artists with disabilities' claim was not confirmable first-party \u2014 disabled_led false; NEEDS SELF-ATTESTATION AT ONBOARDING. Re-verify site content manually. No physical-access statements found."
+ },
+ {
+  "candidate_id": "advance-physical-therapy-buffalo",
+  "kind": "provider",
+  "name": "Advance Physical Therapy (Buffalo)",
+  "street": "2633 Main Street",
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14214",
+  "lat": null,
+  "lng": null,
+  "summary": "Outpatient physical therapy clinic on Main Street in Buffalo, part of a New York practice with Buffalo and Long Island locations, offering orthopedic rehab, sports rehab, and balance-disorder treatment.",
+  "category": "healthcare",
+  "provider_profile": {
+   "disability_literate": false,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "advance-physical-therapy-buffalo",
-    "kind": "provider",
-    "name": "Advance Physical Therapy (Buffalo)",
-    "street": "2633 Main Street",
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14214",
-    "lat": null,
-    "lng": null,
-    "summary": "Outpatient physical therapy clinic on Main Street in Buffalo, part of a New York practice with Buffalo and Long Island locations, offering orthopedic rehab, sports rehab, and balance-disorder treatment.",
-    "category": "healthcare",
-    "provider_profile": {
-      "disability_literate": false,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "mde_recruit_pt_ot"
-    ],
-    "source_url": "https://advance-pt.com/locations/",
-    "source_notes": "Provider website (locations page + Buffalo location page, fetched 2026-07-10). Site lists exactly: '2633 Main Street, Buffalo, NY 14214' — the lead's 330 Delaware Ave address does NOT exist on the site and was corrected; lead phone 716-342-1100 matches the site's Buffalo page. Services quoted: 'Orthopedic Rehab', 'Sports Rehab', 'Balance Disorders', McKenzie Method. No physical-access or MDE statements published — outreach target for ADA MDE attestation (height-adjustable table, accessible scale; HHS deadline passed 7/8/2026, Title II 8/9/2026). Generic ortho/sports practice, no disability-specific program: disability_literate false."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "mde_recruit_pt_ot"
+  ],
+  "source_url": "https://advance-pt.com/locations/",
+  "source_notes": "Provider website (locations page + Buffalo location page, fetched 2026-07-10). Site lists exactly: '2633 Main Street, Buffalo, NY 14214' \u2014 the lead's 330 Delaware Ave address does NOT exist on the site and was corrected; lead phone 716-342-1100 matches the site's Buffalo page. Services quoted: 'Orthopedic Rehab', 'Sports Rehab', 'Balance Disorders', McKenzie Method. No physical-access or MDE statements published \u2014 outreach target for ADA MDE attestation (height-adjustable table, accessible scale; HHS deadline passed 7/8/2026, Title II 8/9/2026). Generic ortho/sports practice, no disability-specific program: disability_literate false."
+ },
+ {
+  "candidate_id": "advanced-care-physical-therapy-buffalo",
+  "kind": "provider",
+  "name": "Advanced Care Physical Therapy (Buffalo)",
+  "street": "1091 Main Street, Suite 120",
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14209",
+  "lat": null,
+  "lng": null,
+  "summary": "Buffalo clinic of a nine-location WNY outpatient physical therapy practice treating sports injuries, accident injuries, and post-surgical conditions.",
+  "category": "healthcare",
+  "provider_profile": {
+   "disability_literate": false,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "advanced-care-physical-therapy-buffalo",
-    "kind": "provider",
-    "name": "Advanced Care Physical Therapy (Buffalo)",
-    "street": "1091 Main Street, Suite 120",
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14209",
-    "lat": null,
-    "lng": null,
-    "summary": "Buffalo clinic of a nine-location WNY outpatient physical therapy practice treating sports injuries, accident injuries, and post-surgical conditions.",
-    "category": "healthcare",
-    "provider_profile": {
-      "disability_literate": false,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "mde_recruit_pt_ot"
-    ],
-    "source_url": "https://www.advancedcarephysicaltherapy.com",
-    "source_notes": "Provider website (fetched 2026-07-10) confirms lead address verbatim: 'Buffalo: 1091 Main Street, Suite 120, Buffalo, NY 14209'; 9 locations total (chain — this record is the Buffalo site per the lead). Services quoted: treats 'sports injuries', 'accident injuries', 'effects of surgery'; 'aquatic therapy, orthotics, soft-tissue mobilization'. No physical-access or MDE statements published — ADA MDE recruitment target (hi-lo tables/accessible scale unstated). No disability-specific programs found: disability_literate false."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "mde_recruit_pt_ot"
+  ],
+  "source_url": "https://www.advancedcarephysicaltherapy.com",
+  "source_notes": "Provider website (fetched 2026-07-10) confirms lead address verbatim: 'Buffalo: 1091 Main Street, Suite 120, Buffalo, NY 14209'; 9 locations total (chain \u2014 this record is the Buffalo site per the lead). Services quoted: treats 'sports injuries', 'accident injuries', 'effects of surgery'; 'aquatic therapy, orthotics, soft-tissue mobilization'. No physical-access or MDE statements published \u2014 ADA MDE recruitment target (hi-lo tables/accessible scale unstated). No disability-specific programs found: disability_literate false."
+ },
+ {
+  "candidate_id": "apnea-care-cheektowaga",
+  "kind": "provider",
+  "name": "Apnea Care Inc",
+  "street": "156 Sonwil Dr",
+  "city": "Cheektowaga",
+  "region": "Erie County",
+  "postal_code": "14225",
+  "lat": null,
+  "lng": null,
+  "summary": "Durable medical equipment provider specializing in sleep and respiratory care (CPAP/BiPAP, home oxygen, nebulizers) with a patient-visitable Buffalo-area location open weekdays 8:30-5.",
+  "category": "healthcare",
+  "provider_profile": {
+   "disability_literate": false,
+   "disabled_owned": true,
+   "disabled_led": true
   },
-  {
-    "candidate_id": "apnea-care-cheektowaga",
-    "kind": "provider",
-    "name": "Apnea Care Inc",
-    "street": "156 Sonwil Dr",
-    "city": "Cheektowaga",
-    "region": "Erie County",
-    "postal_code": "14225",
-    "lat": null,
-    "lng": null,
-    "summary": "Durable medical equipment provider specializing in sleep and respiratory care (CPAP/BiPAP, home oxygen, nebulizers) with a patient-visitable Buffalo-area location open weekdays 8:30-5.",
-    "category": "healthcare",
-    "provider_profile": {
-      "disability_literate": false,
-      "disabled_owned": true,
-      "disabled_led": true
-    },
-    "attributes": [],
-    "flags": [
-      "sdvosb_federal_cert",
-      "sdvob_veteran_subset",
-      "disabled_owned_needs_attestation"
-    ],
-    "source_url": "https://search.certifications.sba.gov/profile/KGABNQ2V7P35/6NJF3",
-    "source_notes": "Federal SBA VetCert SDVOSB, active since 05/21/2025 (UEI KGABNQ2V7P35, CAGE 6NJF3; cert basis: >=51% service-disabled-veteran ownership + day-to-day control). Not in the NYS OGS SDVOB directory. Business site apneacare.com confirms patients visit the 156 Sonwil Dr Cheektowaga NY 14225 location (one of 7 NY locations), Mon-Fri 8:30-5. SBA record lists city as Buffalo, site says Cheektowaga - same address, both Erie County. No accessibility features stated on the site, so no attribute claims. NEEDS OWNER SELF-ATTESTATION AT ONBOARDING."
+  "attributes": [],
+  "flags": [
+   "sdvosb_federal_cert",
+   "sdvob_veteran_subset",
+   "disabled_owned_needs_attestation"
+  ],
+  "source_url": "https://search.certifications.sba.gov/profile/KGABNQ2V7P35/6NJF3",
+  "source_notes": "Federal SBA VetCert SDVOSB, active since 05/21/2025 (UEI KGABNQ2V7P35, CAGE 6NJF3; cert basis: >=51% service-disabled-veteran ownership + day-to-day control). Not in the NYS OGS SDVOB directory. Business site apneacare.com confirms patients visit the 156 Sonwil Dr Cheektowaga NY 14225 location (one of 7 NY locations), Mon-Fri 8:30-5. SBA record lists city as Buffalo, site says Cheektowaga - same address, both Erie County. No accessibility features stated on the site, so no attribute claims. NEEDS OWNER SELF-ATTESTATION AT ONBOARDING."
+ },
+ {
+  "candidate_id": "awaken-performance-rehab-amherst",
+  "kind": "provider",
+  "name": "Awaken Performance Rehab",
+  "street": "4476 Main Street, Suite 110",
+  "city": "Amherst",
+  "region": "Erie County",
+  "postal_code": "14226",
+  "lat": null,
+  "lng": null,
+  "summary": "Boutique one-on-one orthopedic and sports physical therapy clinic in Amherst led by a board-certified Doctor of Physical Therapy.",
+  "category": "healthcare",
+  "provider_profile": {
+   "disability_literate": false,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "awaken-performance-rehab-amherst",
-    "kind": "provider",
-    "name": "Awaken Performance Rehab",
-    "street": "4476 Main Street, Suite 110",
-    "city": "Amherst",
-    "region": "Erie County",
-    "postal_code": "14226",
-    "lat": null,
-    "lng": null,
-    "summary": "Boutique one-on-one orthopedic and sports physical therapy clinic in Amherst led by a board-certified Doctor of Physical Therapy.",
-    "category": "healthcare",
-    "provider_profile": {
-      "disability_literate": false,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "mde_recruit_pt_ot"
-    ],
-    "source_url": "https://awakenperformancerehab.com",
-    "source_notes": "Provider website (fetched 2026-07-10). Site address is '4476 Main St. Suite 110 Amherst, NY 14226' — lead's 3980 Sheridan Dr corrected; phone 716-246-4806 matches. Services quoted: 'Orthopedic & Sports Physical Therapy', 'Individualized, One-on-One Care with a Board Certified Doctor of Physical Therapy in a Boutique Setting'. No physical-access or MDE statements — ADA MDE recruitment target. Generic sports-PT clinic: disability_literate false."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "mde_recruit_pt_ot"
+  ],
+  "source_url": "https://awakenperformancerehab.com",
+  "source_notes": "Provider website (fetched 2026-07-10). Site address is '4476 Main St. Suite 110 Amherst, NY 14226' \u2014 lead's 3980 Sheridan Dr corrected; phone 716-246-4806 matches. Services quoted: 'Orthopedic & Sports Physical Therapy', 'Individualized, One-on-One Care with a Board Certified Doctor of Physical Therapy in a Boutique Setting'. No physical-access or MDE statements \u2014 ADA MDE recruitment target. Generic sports-PT clinic: disability_literate false."
+ },
+ {
+  "candidate_id": "buffalo-physical-therapy-sports-rehabilitation",
+  "kind": "provider",
+  "name": "Buffalo Physical Therapy (Paragon Physical Therapy Group)",
+  "street": "192 Park Club Lane, Suite 110",
+  "city": "Williamsville",
+  "region": "Erie County",
+  "postal_code": "14221",
+  "lat": null,
+  "lng": null,
+  "summary": "Williamsville outpatient physical therapy clinic, part of Paragon Physical Therapy Group, offering balance and fall prevention, osteoporosis management, and post-concussion rehabilitation.",
+  "category": "healthcare",
+  "provider_profile": {
+   "disability_literate": false,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "buffalo-physical-therapy-sports-rehabilitation",
-    "kind": "provider",
-    "name": "Buffalo Physical Therapy & Sports Rehabilitation",
-    "street": "192 Park Club Lane, Suite 110",
-    "city": "Williamsville",
-    "region": "Erie County",
-    "postal_code": "14221",
-    "lat": null,
-    "lng": null,
-    "summary": "Williamsville outpatient physical therapy clinic, now part of Paragon Physical Therapy Group, offering balance and fall prevention, osteoporosis management, and post-concussion rehabilitation.",
-    "category": "healthcare",
-    "provider_profile": {
-      "disability_literate": false,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "org_status_unconfirmed",
-      "mde_recruit_pt_ot"
-    ],
-    "source_url": "https://paragonptgroup.com/location/buffalo-physical-therapy-sports-rehabilitation-pc/",
-    "source_notes": "Parent-group website (Paragon Physical Therapy Group, fetched 2026-07-10) lists '192 Park Club Lane Suite 110, Williamsville, NY 14221', phone 716-632-9200 (matches lead). Lead's website (buffalophysicaltherapy.com) serves an empty page and buffalopt.com is domain-parked; lead street 5500 Main St not corroborated anywhere — corrected to Paragon's listed address. Services quoted: 'Balance and Fall Prevention', 'Osteoporosis Management', 'Post Concussion Rehabilitation'. org_status_unconfirmed: practice appears absorbed into Paragon PT Group — confirm current branding before import. No physical-access/MDE statements — ADA MDE recruitment target. disability_literate false."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "mde_recruit_pt_ot"
+  ],
+  "source_url": "https://paragonptgroup.com/location/buffalo-physical-therapy-sports-rehabilitation-pc/",
+  "source_notes": "Parent-group website (Paragon Physical Therapy Group) verified live 2026-07-10: page header 'Buffalo Physical Therapy - Paragon Physical Therapy Group', address '192 Park Club Lane Suite 110, Williamsville, NY 14221', phone 716-632-9200. The legacy '& Sports Rehabilitation' suffix no longer appears \u2014 renamed accordingly. Services: 'Balance and Fall Prevention', 'Osteoporosis Management', 'Post Concussion Rehabilitation'. No physical-access/MDE statements \u2014 ADA MDE recruitment target. disability_literate false."
+ },
+ {
+  "candidate_id": "buffalo-rehab-group-depew",
+  "kind": "provider",
+  "name": "Buffalo Rehab Group Physical & Occupational Therapy (Depew)",
+  "street": "5190 Transit Road",
+  "city": "Depew",
+  "region": "Erie County",
+  "postal_code": "14043",
+  "lat": null,
+  "lng": null,
+  "summary": "Depew clinic of a 16-location WNY physical and occupational therapy group whose specialties include neurologic therapy and post-operative rehabilitation.",
+  "category": "healthcare",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "buffalo-rehab-group-depew",
-    "kind": "provider",
-    "name": "Buffalo Rehab Group Physical & Occupational Therapy (Depew)",
-    "street": "5190 Transit Road",
-    "city": "Depew",
-    "region": "Erie County",
-    "postal_code": "14043",
-    "lat": null,
-    "lng": null,
-    "summary": "Depew clinic of a 16-location WNY physical and occupational therapy group whose specialties include neurologic therapy and post-operative rehabilitation.",
-    "category": "healthcare",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "mde_recruit_pt_ot"
-    ],
-    "source_url": "https://buffalorehab.com/physicaltherapylocations/depew-ny/",
-    "source_notes": "Provider website (Depew location page + homepage, fetched 2026-07-10). Depew address quoted: '5190 Transit Rd, Depew, NY 14043'. Lead gave no street (chain: 16 WNY sites) — Depew chosen as the concrete Erie County site matching a lead-named town. disability_literate true on the site's named Neurologic Therapy specialty: 'Improve mobility, balance, and function following neurological conditions or injuries.' Lead copy claimed 'ADA-accessible facilities' but the site publishes no such statement — no attribute claimed (only 'our Depew clinic has a convenient parking lot available', which is not an accessibility statement). ADA MDE recruitment target."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "mde_recruit_pt_ot"
+  ],
+  "source_url": "https://buffalorehab.com/physicaltherapylocations/depew-ny/",
+  "source_notes": "Provider website (Depew location page + homepage, fetched 2026-07-10). Depew address quoted: '5190 Transit Rd, Depew, NY 14043'. Lead gave no street (chain: 16 WNY sites) \u2014 Depew chosen as the concrete Erie County site matching a lead-named town. disability_literate true on the site's named Neurologic Therapy specialty: 'Improve mobility, balance, and function following neurological conditions or injuries.' Lead copy claimed 'ADA-accessible facilities' but the site publishes no such statement \u2014 no attribute claimed (only 'our Depew clinic has a convenient parking lot available', which is not an accessibility statement). ADA MDE recruitment target."
+ },
+ {
+  "candidate_id": "buffalo-therapy-services-kaleida-mfsh",
+  "kind": "provider",
+  "name": "Buffalo Therapy Services - Millard Fillmore Suburban Hospital (Kaleida Health)",
+  "street": "705 Maple Road, Suite 100",
+  "city": "Williamsville",
+  "region": "Erie County",
+  "postal_code": "14221",
+  "lat": null,
+  "lng": null,
+  "summary": "Kaleida Health hospital-affiliated outpatient center providing physical therapy, occupational therapy, and speech-language pathology, including rehabilitative care for neurological disorders.",
+  "category": "healthcare",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "buffalo-therapy-services-kaleida-mfsh",
-    "kind": "provider",
-    "name": "Buffalo Therapy Services - Millard Fillmore Suburban Hospital (Kaleida Health)",
-    "street": "705 Maple Road, Suite 100",
-    "city": "Williamsville",
-    "region": "Erie County",
-    "postal_code": "14221",
-    "lat": null,
-    "lng": null,
-    "summary": "Kaleida Health hospital-affiliated outpatient center providing physical therapy, occupational therapy, and speech-language pathology, including rehabilitative care for neurological disorders.",
-    "category": "healthcare",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [
-      {
-        "attribute_key": "entrance_step_free",
-        "asserted_value": true,
-        "source_url": "https://www.211wny.org/provider/5177/",
-        "note": "Handicap Accessible? Yes"
-      }
-    ],
-    "flags": [
-      "general_accessible_flag_only",
-      "mde_recruit_pt_ot"
-    ],
-    "source_url": "https://www.kaleidahealth.org/care/Buffalo-Therapy-Services",
-    "source_notes": "Health-system website (URL loads but renders only summary/location content server-side) corroborated by 211WNY provider page 5177 (fetched 2026-07-10), which lists 'Buffalo Therapy Services - Millard Fillmore Suburban Hospital, 705 Maple Road Suite 100' (211 says Amherst NY 14221; postal locality is Williamsville), phone 716-580-7360 matching the lead. 211 services quote: 'Occupational Therapy, Physical Therapy, Speech and Language Pathology' offering 'rehabilitative care for a variety of orthopedic problems including spine injuries... joint replacements, and neurological disorders' — basis for disability_literate true. Access claim is the bare 211 flag 'Handicap Accessible? Yes' → single conservative entrance_step_free claim only (general_accessible_flag_only). Lead's driver-evaluation/vision-rehab claims could not be verified first-party — not asserted. No MDE statements — strong hospital-affiliated ADA MDE recruitment target."
+  "attributes": [
+   {
+    "attribute_key": "entrance_step_free",
+    "asserted_value": true,
+    "source_url": "https://www.211wny.org/provider/5177/",
+    "note": "Handicap Accessible? Yes"
+   }
+  ],
+  "flags": [
+   "general_accessible_flag_only",
+   "mde_recruit_pt_ot"
+  ],
+  "source_url": "https://www.kaleidahealth.org/care/Buffalo-Therapy-Services",
+  "source_notes": "Health-system website (URL loads but renders only summary/location content server-side) corroborated by 211WNY provider page 5177 (fetched 2026-07-10), which lists 'Buffalo Therapy Services - Millard Fillmore Suburban Hospital, 705 Maple Road Suite 100' (211 says Amherst NY 14221; postal locality is Williamsville), phone 716-580-7360 matching the lead. 211 services quote: 'Occupational Therapy, Physical Therapy, Speech and Language Pathology' offering 'rehabilitative care for a variety of orthopedic problems including spine injuries... joint replacements, and neurological disorders' \u2014 basis for disability_literate true. Access claim is the bare 211 flag 'Handicap Accessible? Yes' \u2192 single conservative entrance_step_free claim only (general_accessible_flag_only). Lead's driver-evaluation/vision-rehab claims could not be verified first-party \u2014 not asserted. No MDE statements \u2014 strong hospital-affiliated ADA MDE recruitment target."
+ },
+ {
+  "candidate_id": "ecmc-center-for-rehabilitation-services-outpatient",
+  "kind": "provider",
+  "name": "ECMC Center for Rehabilitation Services - Outpatient Therapy",
+  "street": "462 Grider Street",
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14215",
+  "lat": null,
+  "lng": null,
+  "summary": "Hospital-based outpatient rehabilitation center at ECMC with specialty programs in spinal cord injury, amputation, stroke/neuro rehabilitation, wheelchair seating evaluations, and driver rehabilitation.",
+  "category": "healthcare",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "ecmc-center-for-rehabilitation-services-outpatient",
-    "kind": "provider",
-    "name": "ECMC Center for Rehabilitation Services - Outpatient Therapy",
-    "street": "462 Grider Street",
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14215",
-    "lat": null,
-    "lng": null,
-    "summary": "Hospital-based outpatient rehabilitation center at ECMC with specialty programs in spinal cord injury, amputation, stroke/neuro rehabilitation, wheelchair seating evaluations, and driver rehabilitation.",
-    "category": "healthcare",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [
-      {
-        "attribute_key": "entrance_step_free",
-        "asserted_value": true,
-        "source_url": "https://www.211wny.org/provider/7410/",
-        "note": "Handicap Accessible? Yes"
-      }
-    ],
-    "flags": [
-      "general_accessible_flag_only",
-      "mde_recruit_pt_ot"
-    ],
-    "source_url": "https://www.ecmc.edu/health-services/rehabilitation-services/outpatient-therapy-services/",
-    "source_notes": "Hospital website (fetched 2026-07-10): 'Center for Rehabilitation Services, ECMC Main Building, 462 Grider Street, Buffalo, NY 14215'. disability_literate true on multiple explicit programs, quoted: 'comprehensive, skilled outpatient program for both traumatic and non-traumatic spinal cord injury'; amputation rehab with 'specialized, interdisciplinary services for patients with upper or lower extremity limb loss'; 'comprehensive seating and positioning evaluations for individuals who require the use of manual wheelchairs, power wheelchairs, or scooters'; the only 'medical-based evaluation program in WNY' for driver rehabilitation. Access claim: 211WNY page 7410 (ECMC OT Driver Evaluation, same 462 Grider St address) shows bare 'Handicap Accessible? Yes' → one conservative entrance_step_free claim (general_accessible_flag_only); 211 also notes 'Vehicle equipped with modifications to address multiple levels of ability' (no matching attribute key — noted only). No published MDE (exam table/scale) statements — flagship ADA MDE recruitment target."
+  "attributes": [
+   {
+    "attribute_key": "entrance_step_free",
+    "asserted_value": true,
+    "source_url": "https://www.211wny.org/provider/7410/",
+    "note": "Handicap Accessible? Yes"
+   }
+  ],
+  "flags": [
+   "general_accessible_flag_only",
+   "mde_recruit_pt_ot"
+  ],
+  "source_url": "https://www.ecmc.edu/health-services/rehabilitation-services/outpatient-therapy-services/",
+  "source_notes": "Hospital website (fetched 2026-07-10): 'Center for Rehabilitation Services, ECMC Main Building, 462 Grider Street, Buffalo, NY 14215'. disability_literate true on multiple explicit programs, quoted: 'comprehensive, skilled outpatient program for both traumatic and non-traumatic spinal cord injury'; amputation rehab with 'specialized, interdisciplinary services for patients with upper or lower extremity limb loss'; 'comprehensive seating and positioning evaluations for individuals who require the use of manual wheelchairs, power wheelchairs, or scooters'; the only 'medical-based evaluation program in WNY' for driver rehabilitation. Access claim: 211WNY page 7410 (ECMC OT Driver Evaluation, same 462 Grider St address) shows bare 'Handicap Accessible? Yes' \u2192 one conservative entrance_step_free claim (general_accessible_flag_only); 211 also notes 'Vehicle equipped with modifications to address multiple levels of ability' (no matching attribute key \u2014 noted only). No published MDE (exam table/scale) statements \u2014 flagship ADA MDE recruitment target."
+ },
+ {
+  "candidate_id": "excelsior-orthopaedics-pt-ot-amherst",
+  "kind": "provider",
+  "name": "Excelsior Orthopaedics Physical & Occupational Therapy",
+  "street": "3925 Sheridan Drive, Suite 110",
+  "city": "Amherst",
+  "region": "Erie County",
+  "postal_code": "14226",
+  "lat": null,
+  "lng": null,
+  "summary": "Physical and occupational therapy center on the Excelsior Orthopaedics campus in Amherst, with hand, foot and ankle, and spine specialty centers.",
+  "category": "healthcare",
+  "provider_profile": {
+   "disability_literate": false,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "excelsior-orthopaedics-pt-ot-amherst",
-    "kind": "provider",
-    "name": "Excelsior Orthopaedics Physical & Occupational Therapy",
-    "street": "3925 Sheridan Drive, Suite 110",
-    "city": "Amherst",
-    "region": "Erie County",
-    "postal_code": "14226",
-    "lat": null,
-    "lng": null,
-    "summary": "Physical and occupational therapy center on the Excelsior Orthopaedics campus in Amherst, with hand, foot and ankle, and spine specialty centers.",
-    "category": "healthcare",
-    "provider_profile": {
-      "disability_literate": false,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "source_fetch_403_reverify",
-      "mde_recruit_pt_ot"
-    ],
-    "source_url": "https://www.excelsiorortho.com/location/amherst/",
-    "source_notes": "Provider website returned HTTP 403 to automated fetch (2026-07-10) — details from search excerpts of excelsiorortho.com and directory listings: '3925 Sheridan Dr Ste 110, Amherst, NY 14226', phone (716) 250-6500 (matches lead); Amherst is the practice HQ campus; 'PT/OT patients should use Door #14, located to the right of the main entrance' (wayfinding note, not an accessibility claim — no attribute asserted). Services per excerpts: 'General Orthopaedic evaluation and treatment, Physical & Occupational Therapy', Hand/Foot and Ankle/Spine centers. Re-verify page content manually. Ortho practice, no disability-specific program found: disability_literate false. ADA MDE recruitment target."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "source_fetch_403_reverify",
+   "mde_recruit_pt_ot"
+  ],
+  "source_url": "https://www.excelsiorortho.com/location/amherst/",
+  "source_notes": "Provider website returned HTTP 403 to automated fetch (2026-07-10) \u2014 details from search excerpts of excelsiorortho.com and directory listings: '3925 Sheridan Dr Ste 110, Amherst, NY 14226', phone (716) 250-6500 (matches lead); Amherst is the practice HQ campus; 'PT/OT patients should use Door #14, located to the right of the main entrance' (wayfinding note, not an accessibility claim \u2014 no attribute asserted). Services per excerpts: 'General Orthopaedic evaluation and treatment, Physical & Occupational Therapy', Hand/Foot and Ankle/Spine centers. Re-verify page content manually. Ortho practice, no disability-specific program found: disability_literate false. ADA MDE recruitment target."
+ },
+ {
+  "candidate_id": "family-care-physical-therapy-buffalo",
+  "kind": "provider",
+  "name": "Family Care Physical Therapy",
+  "street": "1515 Kensington Avenue",
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14215",
+  "lat": null,
+  "lng": null,
+  "summary": "Outpatient physical therapy practice with clinics on Kensington Avenue in Buffalo and on Sheridan Drive in Williamsville.",
+  "category": "healthcare",
+  "provider_profile": {
+   "disability_literate": false,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "family-care-physical-therapy-buffalo",
-    "kind": "provider",
-    "name": "Family Care Physical Therapy",
-    "street": "1515 Kensington Avenue",
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14215",
-    "lat": null,
-    "lng": null,
-    "summary": "Outpatient physical therapy practice with clinics on Kensington Avenue in Buffalo and on Sheridan Drive in Williamsville.",
-    "category": "healthcare",
-    "provider_profile": {
-      "disability_literate": false,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "source_fetch_403_reverify",
-      "mde_recruit_pt_ot"
-    ],
-    "source_url": "https://familycarept.com/",
-    "source_notes": "Provider website is live (indexed pages: /about-us, /our-services, /appointments) but presented an expired TLS certificate at fetch time (2026-07-10) — treated per the 403 rule: details from search excerpts; re-verify. Excerpts of familycarept.com/appointments list two locations: '1515 Kensington Ave, Buffalo, NY 14215' and '5225 Sheridan Dr #21, Williamsville, NY 14221' (lead phone 716-565-0818 matches the Williamsville listing). Lead's '777 Hopkins Rd' address appears nowhere — replaced with the corroborated Buffalo site. Lead's stroke-recovery claim not verifiable first-party: disability_literate false pending site re-fetch. No access/MDE statements found — ADA MDE recruitment target."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "source_fetch_403_reverify",
+   "mde_recruit_pt_ot"
+  ],
+  "source_url": "https://familycarept.com/",
+  "source_notes": "Provider website is live (indexed pages: /about-us, /our-services, /appointments) but presented an expired TLS certificate at fetch time (2026-07-10) \u2014 treated per the 403 rule: details from search excerpts; re-verify. Excerpts of familycarept.com/appointments list two locations: '1515 Kensington Ave, Buffalo, NY 14215' and '5225 Sheridan Dr #21, Williamsville, NY 14221' (lead phone 716-565-0818 matches the Williamsville listing). Lead's '777 Hopkins Rd' address appears nowhere \u2014 replaced with the corroborated Buffalo site. Lead's stroke-recovery claim not verifiable first-party: disability_literate false pending site re-fetch. No access/MDE statements found \u2014 ADA MDE recruitment target."
+ },
+ {
+  "candidate_id": "first-step-physical-therapy-cheektowaga",
+  "kind": "provider",
+  "name": "First Step Physical Therapy",
+  "street": "2564 Walden Avenue, Suite 105",
+  "city": "Cheektowaga",
+  "region": "Erie County",
+  "postal_code": "14225",
+  "lat": null,
+  "lng": null,
+  "summary": "One-on-one physical therapy clinic in Cheektowaga specializing in neurological rehabilitation for spinal cord injury, stroke, Parkinson's disease, and traumatic brain injury.",
+  "category": "healthcare",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "first-step-physical-therapy-cheektowaga",
-    "kind": "provider",
-    "name": "First Step Physical Therapy",
-    "street": "2564 Walden Avenue, Suite 105",
-    "city": "Cheektowaga",
-    "region": "Erie County",
-    "postal_code": "14225",
-    "lat": null,
-    "lng": null,
-    "summary": "One-on-one physical therapy clinic in Cheektowaga specializing in neurological rehabilitation for spinal cord injury, stroke, Parkinson's disease, and traumatic brain injury.",
-    "category": "healthcare",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "mde_recruit_pt_ot"
-    ],
-    "source_url": "https://firststeppt.com",
-    "source_notes": "Provider website (fetched 2026-07-10) confirms lead verbatim: 'First Step Physical Therapy, 2564 Walden Ave., Suite 105, Cheektowaga, NY 14225', phone (716) 288-7427. disability_literate true on explicit neuro-rehab programs: dedicated condition pages for spinal cord injury, stroke, Parkinson's ('tremors, stiffness, slowness, and balance problems'), and TBI; model quoted: '1 on 1 Physical Therapy... True Individualized Care: Just You and Your Therapist, Every Session.' No physical-access or MDE statements published — priority ADA MDE recruitment target given its wheelchair-using patient population."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "mde_recruit_pt_ot"
+  ],
+  "source_url": "https://firststeppt.com",
+  "source_notes": "Provider website (fetched 2026-07-10) confirms lead verbatim: 'First Step Physical Therapy, 2564 Walden Ave., Suite 105, Cheektowaga, NY 14225', phone (716) 288-7427. disability_literate true on explicit neuro-rehab programs: dedicated condition pages for spinal cord injury, stroke, Parkinson's ('tremors, stiffness, slowness, and balance problems'), and TBI; model quoted: '1 on 1 Physical Therapy... True Individualized Care: Just You and Your Therapist, Every Session.' No physical-access or MDE statements published \u2014 priority ADA MDE recruitment target given its wheelchair-using patient population."
+ },
+ {
+  "candidate_id": "glover-physical-therapy-cheektowaga",
+  "kind": "provider",
+  "name": "Glover Physical Therapy and Pain Rehabilitation",
+  "street": "3620 Harlem Road, Suite 2",
+  "city": "Cheektowaga",
+  "region": "Erie County",
+  "postal_code": "14215",
+  "lat": null,
+  "lng": null,
+  "summary": "Outpatient physical therapy and pain rehabilitation clinic in Cheektowaga, operating since 2003, focused on chronic pain and orthopedic post-surgical care.",
+  "category": "healthcare",
+  "provider_profile": {
+   "disability_literate": false,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "glover-physical-therapy-cheektowaga",
-    "kind": "provider",
-    "name": "Glover Physical Therapy and Pain Rehabilitation",
-    "street": "3620 Harlem Road, Suite 2",
-    "city": "Cheektowaga",
-    "region": "Erie County",
-    "postal_code": "14215",
-    "lat": null,
-    "lng": null,
-    "summary": "Outpatient physical therapy and pain rehabilitation clinic in Cheektowaga, operating since 2003, focused on chronic pain and orthopedic post-surgical care.",
-    "category": "healthcare",
-    "provider_profile": {
-      "disability_literate": false,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "mde_recruit_pt_ot"
-    ],
-    "source_url": "https://glovertherapy.com",
-    "source_notes": "Provider website (homepage fetched 2026-07-10; address corroborated by the site's own /aboutus.html excerpt): '3620 Harlem Rd - Suite 2 Cheektowaga NY 14215', phone (716) 446-9500 matching lead; city corrected Buffalo→Cheektowaga. Services quoted: 'chronic pain syndromes; pain related to orthopedic injuries; general medical and orthopedic post-surgical pain'; treats 'neuromuscular disabilities, balance and gait abnormalities' (condition-list mention, not a named program — disability_literate kept false conservatively). No access/MDE statements — ADA MDE recruitment target."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "mde_recruit_pt_ot"
+  ],
+  "source_url": "https://glovertherapy.com",
+  "source_notes": "Provider website (homepage fetched 2026-07-10; address corroborated by the site's own /aboutus.html excerpt): '3620 Harlem Rd - Suite 2 Cheektowaga NY 14215', phone (716) 446-9500 matching lead; city corrected Buffalo\u2192Cheektowaga. Services quoted: 'chronic pain syndromes; pain related to orthopedic injuries; general medical and orthopedic post-surgical pain'; treats 'neuromuscular disabilities, balance and gait abnormalities' (condition-list mention, not a named program \u2014 disability_literate kept false conservatively). No access/MDE statements \u2014 ADA MDE recruitment target."
+ },
+ {
+  "candidate_id": "northtown-buffalo-physical-therapy-williamsville",
+  "kind": "provider",
+  "name": "Northtown Buffalo Physical Therapy",
+  "street": "5225 Sheridan Drive, Suite 21 (Georgetown Square)",
+  "city": "Williamsville",
+  "region": "Erie County",
+  "postal_code": "14221",
+  "lat": null,
+  "lng": null,
+  "summary": "Hands-on outpatient physical therapy clinic in Georgetown Square, Williamsville, also offering personal training and a preventative stretch program.",
+  "category": "healthcare",
+  "provider_profile": {
+   "disability_literate": false,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "northtown-buffalo-physical-therapy-williamsville",
-    "kind": "provider",
-    "name": "Northtown Buffalo Physical Therapy",
-    "street": "5225 Sheridan Drive, Suite 21 (Georgetown Square)",
-    "city": "Williamsville",
-    "region": "Erie County",
-    "postal_code": "14221",
-    "lat": null,
-    "lng": null,
-    "summary": "Hands-on outpatient physical therapy clinic in Georgetown Square, Williamsville, also offering personal training and a preventative stretch program.",
-    "category": "healthcare",
-    "provider_profile": {
-      "disability_literate": false,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "mde_recruit_pt_ot"
-    ],
-    "source_url": "https://www.northtownphysicaltherapy.com/",
-    "source_notes": "Provider website (fetched 2026-07-10): 'Georgetown Square, 5225 Sheridan Dr. Suite #21, Williamsville, NY 14221'; phone 716-631-2626 matches lead. Lead's address (1515 Kensington Ave) actually belongs to Family Care Physical Therapy — corrected; lead's domain northtownpt.com shows only 'We're under construction' (replaced with the practice's live domain). Services quoted: 'Individualized Treatment' with a 'hands on approach to identify the source of your problem'; 'Stretch Out Program' for 'Preventative Care'. Caveat: Family Care PT's Williamsville listing cites the same suite — confirm current occupancy during outreach. No access/MDE statements — ADA MDE recruitment target. disability_literate false."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "mde_recruit_pt_ot"
+  ],
+  "source_url": "https://www.northtownphysicaltherapy.com/",
+  "source_notes": "Provider website (fetched 2026-07-10): 'Georgetown Square, 5225 Sheridan Dr. Suite #21, Williamsville, NY 14221'; phone 716-631-2626 matches lead. Lead's address (1515 Kensington Ave) actually belongs to Family Care Physical Therapy \u2014 corrected; lead's domain northtownpt.com shows only 'We're under construction' (replaced with the practice's live domain). Services quoted: 'Individualized Treatment' with a 'hands on approach to identify the source of your problem'; 'Stretch Out Program' for 'Preventative Care'. Caveat: Family Care PT's Williamsville listing cites the same suite \u2014 confirm current occupancy during outreach. No access/MDE statements \u2014 ADA MDE recruitment target. disability_literate false."
+ },
+ {
+  "candidate_id": "nurse-practitioner-adult-health-pc",
+  "kind": "provider",
+  "name": "Nurse Practitioner-Adult Health PC (Adult Health DNP)",
+  "street": "2234 Seneca St",
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14210",
+  "lat": null,
+  "lng": null,
+  "summary": "Adult-health nurse practitioner practice specializing in medical cannabis certification and management, seeing patients in person at its Seneca Street office weekdays 9-5 with telehealth follow-ups.",
+  "category": "healthcare",
+  "provider_profile": {
+   "disability_literate": false,
+   "disabled_owned": true,
+   "disabled_led": true
   },
-  {
-    "candidate_id": "nurse-practitioner-adult-health-pc",
-    "kind": "provider",
-    "name": "Nurse Practitioner-Adult Health PC (Adult Health DNP)",
-    "street": "2234 Seneca St",
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14210",
-    "lat": null,
-    "lng": null,
-    "summary": "Adult-health nurse practitioner practice specializing in medical cannabis certification and management, seeing patients in person at its Seneca Street office weekdays 9-5 with telehealth follow-ups.",
-    "category": "healthcare",
-    "provider_profile": {
-      "disability_literate": false,
-      "disabled_owned": true,
-      "disabled_led": true
-    },
-    "attributes": [],
-    "flags": [
-      "sdvob_veteran_subset",
-      "disabled_owned_needs_attestation"
-    ],
-    "source_url": "https://sdves.ogs.ny.gov/business-search/77bb9c73-7e83-42f5-9e33-8568bd81f09d",
-    "source_notes": "NYS OGS SDVOB certified, control number 232083; state API record shows physical address 2234 Seneca St Buffalo 14210, owner 100% ownership, isServiceDisabled=true (cert basis: >=51% ownership + day-to-day control by service-disabled veteran(s)). Practice site cannabisdoctorbuffalo.com confirms in-person patients at this address, Mon-Fri 9am-5pm, and describes the practice as veteran owned and operated. No accessibility features stated on the site, so no attribute claims. NEEDS OWNER SELF-ATTESTATION AT ONBOARDING."
+  "attributes": [],
+  "flags": [
+   "sdvob_veteran_subset",
+   "disabled_owned_needs_attestation"
+  ],
+  "source_url": "https://sdves.ogs.ny.gov/business-search/77bb9c73-7e83-42f5-9e33-8568bd81f09d",
+  "source_notes": "NYS OGS SDVOB certified, control number 232083; state API record shows physical address 2234 Seneca St Buffalo 14210, owner 100% ownership, isServiceDisabled=true (cert basis: >=51% ownership + day-to-day control by service-disabled veteran(s)). Practice site cannabisdoctorbuffalo.com confirms in-person patients at this address, Mon-Fri 9am-5pm, and describes the practice as veteran owned and operated. No accessibility features stated on the site, so no attribute claims. NEEDS OWNER SELF-ATTESTATION AT ONBOARDING."
+ },
+ {
+  "candidate_id": "performance-sports-physical-therapy-cheektowaga",
+  "kind": "provider",
+  "name": "Performance Sports Physical Therapy, PC",
+  "street": "1317 Harlem Road",
+  "city": "Cheektowaga",
+  "region": "Erie County",
+  "postal_code": "14206",
+  "lat": null,
+  "lng": null,
+  "summary": "Manual-therapy-based outpatient physical therapy clinic on Harlem Road, founded in 1995, treating surgical, sports, vestibular, and gait-instability conditions.",
+  "category": "healthcare",
+  "provider_profile": {
+   "disability_literate": false,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "performance-sports-physical-therapy-cheektowaga",
-    "kind": "provider",
-    "name": "Performance Sports Physical Therapy, PC",
-    "street": "1317 Harlem Road",
-    "city": "Cheektowaga",
-    "region": "Erie County",
-    "postal_code": "14206",
-    "lat": null,
-    "lng": null,
-    "summary": "Manual-therapy-based outpatient physical therapy clinic on Harlem Road, founded in 1995, treating surgical, sports, vestibular, and gait-instability conditions.",
-    "category": "healthcare",
-    "provider_profile": {
-      "disability_literate": false,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "mde_recruit_pt_ot"
-    ],
-    "source_url": "https://www.performsportspt.com/",
-    "source_notes": "Provider website (directions + treatment-services pages fetched 2026-07-10): 'Performance Sports Physical Therapy, PC, 1317 Harlem Road, Cheektowaga, NY 14206' (lead said Buffalo — corrected to Cheektowaga per the site); phone 716-674-1509 matches. Lead's domain performancesportstherapy.com is parked for sale — replaced with the live first-party domain. Services quoted: 'Vestibular and Balance Impairments', 'Neurological Disorders', 'Gait Instability and Difficulty Walking', 'Total Joint Replacements' (condition list on a manual/sports practice — disability_literate false conservatively). No access/MDE statements — ADA MDE recruitment target."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "mde_recruit_pt_ot"
+  ],
+  "source_url": "https://www.performsportspt.com/",
+  "source_notes": "Provider website (directions + treatment-services pages fetched 2026-07-10): 'Performance Sports Physical Therapy, PC, 1317 Harlem Road, Cheektowaga, NY 14206' (lead said Buffalo \u2014 corrected to Cheektowaga per the site); phone 716-674-1509 matches. Lead's domain performancesportstherapy.com is parked for sale \u2014 replaced with the live first-party domain. Services quoted: 'Vestibular and Balance Impairments', 'Neurological Disorders', 'Gait Instability and Difficulty Walking', 'Total Joint Replacements' (condition list on a manual/sports practice \u2014 disability_literate false conservatively). No access/MDE statements \u2014 ADA MDE recruitment target."
+ },
+ {
+  "candidate_id": "phoenix-physical-therapy-amherst",
+  "kind": "provider",
+  "name": "Phoenix Physical Therapy (Amherst)",
+  "street": "4498 Main Street, Suite 24",
+  "city": "Amherst",
+  "region": "Erie County",
+  "postal_code": "14226",
+  "lat": null,
+  "lng": null,
+  "summary": "Therapist-owned physical therapy clinic in Amherst (with a second Clarence location) delivering individualized manual therapy and therapeutic exercise.",
+  "category": "healthcare",
+  "provider_profile": {
+   "disability_literate": false,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "phoenix-physical-therapy-amherst",
-    "kind": "provider",
-    "name": "Phoenix Physical Therapy (Amherst)",
-    "street": "4498 Main Street, Suite 24",
-    "city": "Amherst",
-    "region": "Erie County",
-    "postal_code": "14226",
-    "lat": null,
-    "lng": null,
-    "summary": "Therapist-owned physical therapy clinic in Amherst (with a second Clarence location) delivering individualized manual therapy and therapeutic exercise.",
-    "category": "healthcare",
-    "provider_profile": {
-      "disability_literate": false,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "mde_recruit_pt_ot"
-    ],
-    "source_url": "https://www.phoenixptny.com/locations/",
-    "source_notes": "Provider website (fetched 2026-07-10): 'Amherst: 4498 Main Street, Suite #24, Amherst, New York 14226' plus Clarence at 8865 Sheridan Drive (both Erie County); phone (716) 839-1550 matches lead. Lead's website (phoenixphysicaltherapy.com) is an unrelated national chain with no Erie County sites, and lead street 60 N Maple Rd unverified — both corrected to the local practice's own site. Quoted: 'a therapist owned clinic designed to deliver high quality Physical Therapy treatments that are individualized and integrated with manual therapy techniques and therapeutic exercise prescription.' No access/MDE statements — ADA MDE recruitment target. disability_literate false."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "mde_recruit_pt_ot"
+  ],
+  "source_url": "https://www.phoenixptny.com/locations/",
+  "source_notes": "Provider website (fetched 2026-07-10): 'Amherst: 4498 Main Street, Suite #24, Amherst, New York 14226' plus Clarence at 8865 Sheridan Drive (both Erie County); phone (716) 839-1550 matches lead. Lead's website (phoenixphysicaltherapy.com) is an unrelated national chain with no Erie County sites, and lead street 60 N Maple Rd unverified \u2014 both corrected to the local practice's own site. Quoted: 'a therapist owned clinic designed to deliver high quality Physical Therapy treatments that are individualized and integrated with manual therapy techniques and therapeutic exercise prescription.' No access/MDE statements \u2014 ADA MDE recruitment target. disability_literate false."
+ },
+ {
+  "candidate_id": "prescribed-motion-williamsville",
+  "kind": "provider",
+  "name": "Prescribed Motion - Physical Therapy & Exercise",
+  "street": "5501 Main Street",
+  "city": "Williamsville",
+  "region": "Erie County",
+  "postal_code": "14221",
+  "lat": null,
+  "lng": null,
+  "summary": "One-on-one physical therapy, functional exercise, and Pilates studio in Williamsville run by Doctors of Physical Therapy.",
+  "category": "healthcare",
+  "provider_profile": {
+   "disability_literate": false,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "prescribed-motion-williamsville",
-    "kind": "provider",
-    "name": "Prescribed Motion - Physical Therapy & Exercise",
-    "street": "5501 Main Street",
-    "city": "Williamsville",
-    "region": "Erie County",
-    "postal_code": "14221",
-    "lat": null,
-    "lng": null,
-    "summary": "One-on-one physical therapy, functional exercise, and Pilates studio in Williamsville run by Doctors of Physical Therapy.",
-    "category": "healthcare",
-    "provider_profile": {
-      "disability_literate": false,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "mde_recruit_pt_ot"
-    ],
-    "source_url": "https://prescribedmotion.com",
-    "source_notes": "Provider website (fetched 2026-07-10) lists '5501 Main Street, Williamsville, New York 14221' — lead's 1630 Maple Rd Ste 100 does not appear on the site (apparent relocation; site address used). Services quoted: 'Physical Therapy' delivered 'privately... 1-on-1 with your therapist'; 'carefully designed training sessions developed by a Doctor of Physical Therapy'; Running Gait Analysis. No access/MDE statements — ADA MDE recruitment target. Generic PT/fitness studio: disability_literate false."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "mde_recruit_pt_ot"
+  ],
+  "source_url": "https://prescribedmotion.com",
+  "source_notes": "Provider website (fetched 2026-07-10) lists '5501 Main Street, Williamsville, New York 14221' \u2014 lead's 1630 Maple Rd Ste 100 does not appear on the site (apparent relocation; site address used). Services quoted: 'Physical Therapy' delivered 'privately... 1-on-1 with your therapist'; 'carefully designed training sessions developed by a Doctor of Physical Therapy'; Running Gait Analysis. No access/MDE statements \u2014 ADA MDE recruitment target. Generic PT/fitness studio: disability_literate false."
+ },
+ {
+  "candidate_id": "res-physical-medicine-rehab-buffalo",
+  "kind": "provider",
+  "name": "RES Physical Medicine & Rehab",
+  "street": "3871 Harlem Road, Suite 1",
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14215",
+  "lat": null,
+  "lng": null,
+  "summary": "Family-owned pain management and physical medicine clinic on Harlem Road specializing in NY State no-fault auto-accident injury rehabilitation.",
+  "category": "healthcare",
+  "provider_profile": {
+   "disability_literate": false,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "res-physical-medicine-rehab-buffalo",
-    "kind": "provider",
-    "name": "RES Physical Medicine & Rehab",
-    "street": "3871 Harlem Road, Suite 1",
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14215",
-    "lat": null,
-    "lng": null,
-    "summary": "Family-owned pain management and physical medicine clinic on Harlem Road specializing in NY State no-fault auto-accident injury rehabilitation.",
-    "category": "healthcare",
-    "provider_profile": {
-      "disability_literate": false,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "mde_recruit_pt_ot"
-    ],
-    "source_url": "https://respmr.com",
-    "source_notes": "Provider website (fetched 2026-07-10): 'RES PHYSICAL MEDICINE & REHAB, 3871 HARLEM ROAD, SUITE 1 BUFFALO, NY 14215'; phone 716-681-4088 matches lead. Lead's '80 Maple Rd Ste 2' address appears nowhere (site + search) — corrected to the site's Harlem Road address. Services quoted: 'pain management' for 'acute or chronic pain from an auto injury'; also an Opioid Use Disorder program. Lead's 'on-site adaptive equipment' claim not found on the site — no attribute asserted. No access/MDE statements — ADA MDE recruitment target (physiatry practice: exam tables/scales directly in scope). disability_literate false."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "mde_recruit_pt_ot"
+  ],
+  "source_url": "https://respmr.com",
+  "source_notes": "Provider website (fetched 2026-07-10): 'RES PHYSICAL MEDICINE & REHAB, 3871 HARLEM ROAD, SUITE 1 BUFFALO, NY 14215'; phone 716-681-4088 matches lead. Lead's '80 Maple Rd Ste 2' address appears nowhere (site + search) \u2014 corrected to the site's Harlem Road address. Services quoted: 'pain management' for 'acute or chronic pain from an auto injury'; also an Opioid Use Disorder program. Lead's 'on-site adaptive equipment' claim not found on the site \u2014 no attribute asserted. No access/MDE statements \u2014 ADA MDE recruitment target (physiatry practice: exam tables/scales directly in scope). disability_literate false."
+ },
+ {
+  "candidate_id": "trilogy-physical-therapy-mog-amherst",
+  "kind": "provider",
+  "name": "Trilogy Physical Therapy and the Medically Oriented Gym (Amherst)",
+  "street": "3970 Harlem Road",
+  "city": "Amherst",
+  "region": "Erie County",
+  "postal_code": "14226",
+  "lat": null,
+  "lng": null,
+  "summary": "Amherst clinic combining outpatient physical therapy with a Medically Oriented Gym offering medical fitness, aquatic therapy, chronic pain treatment, and fall-prevention programming.",
+  "category": "healthcare",
+  "provider_profile": {
+   "disability_literate": false,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "trilogy-physical-therapy-mog-amherst",
-    "kind": "provider",
-    "name": "Trilogy Physical Therapy and the Medically Oriented Gym (Amherst)",
-    "street": "3970 Harlem Road",
-    "city": "Amherst",
-    "region": "Erie County",
-    "postal_code": "14226",
-    "lat": null,
-    "lng": null,
-    "summary": "Amherst clinic combining outpatient physical therapy with a Medically Oriented Gym offering medical fitness, aquatic therapy, chronic pain treatment, and fall-prevention programming.",
-    "category": "healthcare",
-    "provider_profile": {
-      "disability_literate": false,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "mde_recruit_pt_ot"
-    ],
-    "source_url": "https://mytrilogy.org/physical-therapy-clinic/amherst-ny/",
-    "source_notes": "Provider website (fetched 2026-07-10): 'Trilogy Physical Therapy is located at 3970 Harlem Rd, Amherst, NY 14226', phone (716) 839-3705. Lead's domain trilogymog.com is dead (DNS) and lead street 3500 Sheridan Dr is wrong — the Sheridan Drive site is their Kenmore clinic (1491 Sheridan Dr); corrected to the Amherst location per the lead's Amherst address. Services quoted: 'physical therapy', 'Medically Oriented GYM', aquatic therapy, treatments for 'chronic pain and fall prevention'. Lead copy's 'ADA-accessible environment' not stated on site — no attribute asserted. No MDE statements — ADA MDE recruitment target. disability_literate false (medical-fitness programming is general-population)."
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "mde_recruit_pt_ot"
+  ],
+  "source_url": "https://mytrilogy.org/physical-therapy-clinic/amherst-ny/",
+  "source_notes": "Provider website (fetched 2026-07-10): 'Trilogy Physical Therapy is located at 3970 Harlem Rd, Amherst, NY 14226', phone (716) 839-3705. Lead's domain trilogymog.com is dead (DNS) and lead street 3500 Sheridan Dr is wrong \u2014 the Sheridan Drive site is their Kenmore clinic (1491 Sheridan Dr); corrected to the Amherst location per the lead's Amherst address. Services quoted: 'physical therapy', 'Medically Oriented GYM', aquatic therapy, treatments for 'chronic pain and fall prevention'. Lead copy's 'ADA-accessible environment' not stated on site \u2014 no attribute asserted. No MDE statements \u2014 ADA MDE recruitment target. disability_literate false (medical-fitness programming is general-population)."
+ },
+ {
+  "candidate_id": "wny-physical-occupational-therapy-group-depew",
+  "kind": "provider",
+  "name": "Western New York Physical & Occupational Therapy Group PLLC (Depew)",
+  "street": "6301 Transit Road, Suite A",
+  "city": "Depew",
+  "region": "Erie County",
+  "postal_code": "14043",
+  "lat": null,
+  "lng": null,
+  "summary": "Depew headquarters of a large therapist-founded WNY physical and occupational therapy practice offering orthopedic, pre/post-surgical, vestibular, and neurological therapy.",
+  "category": "healthcare",
+  "provider_profile": {
+   "disability_literate": true,
+   "disabled_owned": false,
+   "disabled_led": false
   },
-  {
-    "candidate_id": "wny-physical-occupational-therapy-group-depew",
-    "kind": "provider",
-    "name": "Western New York Physical & Occupational Therapy Group PLLC (Depew)",
-    "street": "6301 Transit Road, Suite A",
-    "city": "Depew",
-    "region": "Erie County",
-    "postal_code": "14043",
-    "lat": null,
-    "lng": null,
-    "summary": "Depew headquarters of a large therapist-founded WNY physical and occupational therapy practice offering orthopedic, pre/post-surgical, vestibular, and neurological therapy.",
-    "category": "healthcare",
-    "provider_profile": {
-      "disability_literate": true,
-      "disabled_owned": false,
-      "disabled_led": false
-    },
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes",
-      "mde_recruit_pt_ot"
-    ],
-    "source_url": "https://www.wnyptot.com",
-    "source_notes": "Provider website (fetched 2026-07-10) confirms 'Corporate Office: 6301 Transit Road, Suite A, Depew, NY 14043' (the only Erie County site listed; Chaffee and Salamanca branches are outside Erie County — this record is the Depew site per the lead). Founder/CEO Walter R. Szymanski is a Physical Therapist. Services quoted: 'Physical Therapy' for 'orthopedic injuries, low back, and neck pain', 'pre & post-surgical rehabilitation', 'Vestibular Therapy' and 'Neurological Therapy' — the named neurological/vestibular service lines are the basis for disability_literate true. No access/MDE statements — ADA MDE recruitment target (OT services make exam-table/scale attestation directly relevant)."
-  },
-  {
-    "candidate_id": "buffalo-arts-studio",
-    "kind": "place",
-    "name": "Buffalo Arts Studio",
-    "street": "2495 Main St, Suite 500 (Tri-Main Center)",
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14214",
-    "lat": null,
-    "lng": null,
-    "summary": "Nonprofit arts center in the Tri-Main Center offering exhibitions, affordable studio space, and community arts education, with a published facility accessibility page.",
-    "category": "arts_culture",
-    "attributes": [
-      {
-        "attribute_key": "accessible_restroom",
-        "asserted_value": true,
-        "source_url": "https://buffaloartsstudio.org/accessibility/",
-        "note": "All public restrooms are handicap accessible."
-      },
-      {
-        "attribute_key": "accessible_parking",
-        "asserted_value": true,
-        "source_url": "https://buffaloartsstudio.org/accessibility/",
-        "note": "Mobility accessible parking spots are available in the Visitor and Access parking lots on Halbert between Phelps and Jewett Ave."
-      }
-    ],
-    "flags": [
-      "general_accessible_flag_only"
-    ],
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes",
+   "mde_recruit_pt_ot"
+  ],
+  "source_url": "https://www.wnyptot.com",
+  "source_notes": "Provider website (fetched 2026-07-10) confirms 'Corporate Office: 6301 Transit Road, Suite A, Depew, NY 14043' (the only Erie County site listed; Chaffee and Salamanca branches are outside Erie County \u2014 this record is the Depew site per the lead). Founder/CEO Walter R. Szymanski is a Physical Therapist. Services quoted: 'Physical Therapy' for 'orthopedic injuries, low back, and neck pain', 'pre & post-surgical rehabilitation', 'Vestibular Therapy' and 'Neurological Therapy' \u2014 the named neurological/vestibular service lines are the basis for disability_literate true. No access/MDE statements \u2014 ADA MDE recruitment target (OT services make exam-table/scale attestation directly relevant)."
+ },
+ {
+  "candidate_id": "buffalo-arts-studio",
+  "kind": "place",
+  "name": "Buffalo Arts Studio",
+  "street": "2495 Main St, Suite 500 (Tri-Main Center)",
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14214",
+  "lat": null,
+  "lng": null,
+  "summary": "Nonprofit arts center in the Tri-Main Center offering exhibitions, affordable studio space, and community arts education, with a published facility accessibility page.",
+  "category": "arts_culture",
+  "attributes": [
+   {
+    "attribute_key": "accessible_restroom",
+    "asserted_value": true,
     "source_url": "https://buffaloartsstudio.org/accessibility/",
-    "source_notes": "Org website + dedicated first-party accessibility page (fetched 2026-07-10; note www subdomain does not resolve — use apex domain). Mission: 'Buffalo Arts Studio believes that artists and curators can effect change through purposeful collaborations that balance community needs, artistic insight, and educational impact.' Two attributes are explicit on the accessibility page (quotes recorded per attribute). Entrance is NOT claimed step-free: page says 'Visitors can access our space via accessible entrances, elevators, and reserved parking' and 'A wheelchair lift is available directly to your left upon entering the TriMain building' — general/lift-dependent wording, so no entrance_step_free claim; general_accessible_flag_only covers it. Honest caveat also on page: 'Visitors will encounter industrial concrete floors that may have uneven surfaces and raised transitions in the lobby and hallways.' Correct address is 2495 Main St Suite 500 (the lead said 2495 Main St; Suite 443 next door is Arts for Learning WNY — different org). Not a disability-mission org; recorded as an arts venue. Operating; site notes a temporary closure June 28-July 6, 2026 (passed)."
-  },
-  {
-    "candidate_id": "es-and-es-enterprises-49-express-pit-stop",
-    "kind": "place",
-    "name": "ES & ES Enterprises, LLC (49 Express Pit Stop)",
-    "street": "409 Bloomingdale Rd",
-    "city": "Akron",
-    "region": "Genesee County",
-    "postal_code": "14001",
-    "lat": null,
-    "lng": null,
-    "summary": "Full-service gas station and convenience store (49 Express Pit Stop) selling fuel, bottled water, gifts, souvenirs, and camping supplies at 409 Bloomingdale Rd.",
-    "category": "business",
-    "disabled_owned": true,
-    "disabled_led": true,
-    "attributes": [],
-    "flags": [
-      "outside_erie_county",
-      "sdvosb_federal_cert",
-      "sdvob_veteran_subset",
-      "disabled_owned_needs_attestation",
-      "storefront_status_unconfirmed"
-    ],
-    "source_url": "https://search.certifications.sba.gov/profile/P4NPNZZLWGB2/4TXK8",
-    "source_notes": "Federal SBA VetCert SDVOSB, active since 08/01/2024 (UEI P4NPNZZLWGB2, CAGE 4TXK8; cert basis: >=51% service-disabled-veteran ownership + control; also identifies as Native American owned). SBA capabilities narrative states 'Bottled Water, Gas Station, Gifts, Novelties, Souvenirs, Camping Survival Supplies'; Yelp confirms the 49 Express Pit Stop gas station operates at the same 409 Bloomingdale Rd address. CAVEAT (reason for storefront_status_unconfirmed): the company's own site esandesenterprises.com presents only B2B first-responder/tactical equipment distribution - confirm the certified entity operates the retail station before import. SBA lists Genesee County (some registries give Basom NY 14013); zip 14001 is Akron. NEEDS OWNER SELF-ATTESTATION AT ONBOARDING."
-  },
-  {
-    "candidate_id": "escarpment-arms",
-    "kind": "place",
-    "name": "Escarpment Arms, Inc.",
-    "street": "3580 Lockport-Olcott Rd",
-    "city": "Lockport",
-    "region": "Niagara County",
-    "postal_code": "14094",
-    "lat": null,
-    "lng": null,
-    "summary": "Retail firearms and ammunition store offering gunsmithing and NYS pistol-permit and live-fire training classes at a visitable storefront in Lockport.",
-    "category": "business",
-    "disabled_owned": true,
-    "disabled_led": true,
-    "attributes": [],
-    "flags": [
-      "outside_erie_county",
-      "sdvob_veteran_subset",
-      "sdvosb_federal_cert",
-      "disabled_owned_needs_attestation"
-    ],
-    "source_url": "https://sdves.ogs.ny.gov/business-search/73218d62-1ad0-4d74-bcd9-3f0aebe40521",
-    "source_notes": "Dual-certified: NYS OGS SDVOB control number 221378 AND federal SBA SDVOSB active since 01/28/2022 (UEI EDPVJKD8R338, CAGE 8H3C5, profile https://search.certifications.sba.gov/profile/EDPVJKD8R338/8H3C5). Both certs require >=51% service-disabled-veteran ownership + control. Business site escarpmentarms.com confirms storefront hours (Tue-Fri 10-6, Sat 10-4). No accessibility features stated on the site, so no attribute claims. NEEDS OWNER SELF-ATTESTATION AT ONBOARDING."
-  },
-  {
-    "candidate_id": "la-ffoca-dispensary",
-    "kind": "place",
-    "name": "LA FFOCA (L A FFOCA LLC)",
-    "street": "1618 18th St",
-    "city": "Niagara Falls",
-    "region": "Niagara County",
-    "postal_code": "14305",
-    "lat": null,
-    "lng": null,
-    "summary": "NYS-licensed adult-use retail cannabis dispensary with a walk-in storefront and posted daily hours in Niagara Falls.",
-    "category": "business",
-    "disabled_owned": true,
-    "disabled_led": true,
-    "attributes": [],
-    "flags": [
-      "outside_erie_county",
-      "sdvob_veteran_subset",
-      "disabled_owned_needs_attestation"
-    ],
-    "source_url": "https://sdves.ogs.ny.gov/business-search/ceee007c-83f6-461f-9861-47f52f2631f8",
-    "source_notes": "NYS OGS SDVOB certified, control number 242227; state API shows owner at 100% ownership with isServiceDisabled=true (cert basis: >=51% ownership + control). Also holds one of NY's first service-connected disabled veteran (SCDV) OCM cannabis retail licenses (OCM-RETL-24-000261 per findweedny.com). Storefront operation confirmed via laffoca.com and Leafly (posted retail hours, in-store pickup). EDITORIAL NOTE: prior sweep reviewed and excluded Combat Vet Cannabis (Erie) for unstated reasons - apply the same editorial standard here before import. NEEDS OWNER SELF-ATTESTATION AT ONBOARDING."
-  },
-  {
-    "candidate_id": "national-seating-mobility-west-seneca",
-    "kind": "place",
-    "name": "National Seating & Mobility - Buffalo (West Seneca)",
-    "street": "19 Ransier Dr, Ste 5B",
-    "city": "West Seneca",
-    "region": "Erie County",
-    "postal_code": "14224",
-    "lat": null,
-    "lng": null,
-    "summary": "Erie County branch of a national complex rehab technology supplier offering custom wheelchairs, seating, stairlifts, ramps, medical supplies and equipment service and repair, with posted business hours.",
-    "category": "business",
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes"
-    ],
-    "source_url": "https://locations.nsm-seating.com/ny/west-seneca/19b-ransier-drive",
-    "source_notes": "First-party branch page: address '19 Ransier Dr Ste 5B, West Seneca, NY 14224', phone (716) 674-0783. Exact wording: 'Custom Accessible Wheelchairs, Stairlifts & Ramps'; services listed include power and manual wheelchairs, cushions, custom molds, accessibility solutions, medical supplies, and service & repair. Posted opening time (8:30 AM) indicates a visitable branch, though CRT branches typically run scheduled evaluations rather than retail browsing - kept as a place on the posted-hours basis. Important: 'Accessibility' on their page is a PRODUCT category (things they sell), not a statement about their own premises - no attribute claims inferred. No premises-access statements found."
-  },
-  {
-    "candidate_id": "pro2-llc-cpap-center-williamsville",
-    "kind": "place",
-    "name": "Pro2 LLC - CPAP Center (Williamsville)",
-    "street": "5759 Main St, Suite 200",
-    "city": "Williamsville",
-    "region": "Erie County",
-    "postal_code": "14221",
-    "lat": null,
-    "lng": null,
-    "summary": "Walk-in Williamsville location of a Western New York respiratory equipment supplier providing CPAP/BiPAP fitting, setup and supplies plus home oxygen therapy, open to visitors during posted business hours.",
-    "category": "business",
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes"
-    ],
-    "source_url": "https://pro2llc.com/locations/",
-    "source_notes": "First-party locations page confirms '5759 Main St, Suite 200, Williamsville NY 14221' with posted hours (Mon-Fri 8:30am-1pm, 2pm-5pm) and states all three WNY locations are open to visitors during business hours - visitable retail-style premises, hence a place. Homepage self-description: 'Expert fitting, setup, and ongoing supply management for sleep apnea therapy' and 'reliable oxygen therapy equipment and regular tank refills.' Two sibling locations exist (1120 Youngs Rd Suite 100, Williamsville; 3586 California Rd, Orchard Park - both also Erie County) if the directory wants them as separate places later. Lead address confirmed as-is. No statements about the premises' own physical access - zero attribute claims."
-  },
-  {
-    "candidate_id": "sheridan-surgical",
-    "kind": "place",
-    "name": "Sheridan Surgical",
-    "street": "4513 Bailey Ave",
-    "city": "Buffalo",
-    "region": "Erie County",
-    "postal_code": "14226",
-    "lat": null,
-    "lng": null,
-    "summary": "Retail home medical equipment store supplying mobility aids, bathroom safety items and compression garments, with posted walk-in hours six days a week.",
-    "category": "business",
-    "attributes": [],
-    "flags": [
-      "coverage_only_no_attributes"
-    ],
-    "source_url": "https://sheridansurgical.com/",
-    "source_notes": "First-party site: self-description 'Supplying home medical equipment and compression' and 'been serving the home healthcare needs for all of western New York.' ADDRESS CORRECTED from the lead: the site lists 4513 Bailey Ave, Buffalo, NY 14226 - not the lead's 3316 Sheridan Dr, Amherst (apparent relocation; use the site's address). Posted retail hours (Mon-Fri 9am-5pm, Sat 9am-3pm) indicate a walk-in storefront, hence a place. No statements about the store's own physical access (entrance, parking, restroom) - zero attribute claims."
-  },
-  {
-    "candidate_id": "valley-motorsports-and-service",
-    "kind": "place",
-    "name": "Valley Motorsports and Service",
-    "street": "6974 Charlotte Center Rd",
-    "city": "Sinclairville",
-    "region": "Chautauqua County",
-    "postal_code": "14782",
-    "lat": null,
-    "lng": null,
-    "summary": "Retail dealership and repair shop for lawn and outdoor power equipment (Ferris, Snapper, Simplicity, Shindaiwa, Snowdog) that customers visit in person, established 2003.",
-    "category": "business",
-    "disabled_owned": true,
-    "disabled_led": true,
-    "attributes": [],
-    "flags": [
-      "outside_erie_county",
-      "sdvob_veteran_subset",
-      "disabled_owned_needs_attestation"
-    ],
-    "source_url": "https://sdves.ogs.ny.gov/business-search/eaf86732-1c91-48b2-9bb5-54e67bece2cb",
-    "source_notes": "NYS OGS SDVOB certified (legal name 'David F. Richir dba Valley Motorsports and Service'), control number 141071; owner flagged isServiceDisabled=true in the state API (cert basis: >=51% ownership + control). Business site valleymotorsportsny.com confirms a visitable storefront with posted hours (Tue-Fri 9-5, Sat 9-1). No accessibility features stated on the site, so no attribute claims. NEEDS OWNER SELF-ATTESTATION AT ONBOARDING."
-  }
+    "note": "All public restrooms are handicap accessible."
+   },
+   {
+    "attribute_key": "accessible_parking",
+    "asserted_value": true,
+    "source_url": "https://buffaloartsstudio.org/accessibility/",
+    "note": "Mobility accessible parking spots are available in the Visitor and Access parking lots on Halbert between Phelps and Jewett Ave."
+   }
+  ],
+  "flags": [
+   "general_accessible_flag_only"
+  ],
+  "source_url": "https://buffaloartsstudio.org/accessibility/",
+  "source_notes": "Org website + dedicated first-party accessibility page (fetched 2026-07-10; note www subdomain does not resolve \u2014 use apex domain). Mission: 'Buffalo Arts Studio believes that artists and curators can effect change through purposeful collaborations that balance community needs, artistic insight, and educational impact.' Two attributes are explicit on the accessibility page (quotes recorded per attribute). Entrance is NOT claimed step-free: page says 'Visitors can access our space via accessible entrances, elevators, and reserved parking' and 'A wheelchair lift is available directly to your left upon entering the TriMain building' \u2014 general/lift-dependent wording, so no entrance_step_free claim; general_accessible_flag_only covers it. Honest caveat also on page: 'Visitors will encounter industrial concrete floors that may have uneven surfaces and raised transitions in the lobby and hallways.' Correct address is 2495 Main St Suite 500 (the lead said 2495 Main St; Suite 443 next door is Arts for Learning WNY \u2014 different org). Not a disability-mission org; recorded as an arts venue. Operating; site notes a temporary closure June 28-July 6, 2026 (passed)."
+ },
+ {
+  "candidate_id": "es-and-es-enterprises-49-express-pit-stop",
+  "kind": "place",
+  "name": "ES & ES Enterprises, LLC (49 Express Pit Stop)",
+  "street": "409 Bloomingdale Rd",
+  "city": "Akron",
+  "region": "Genesee County",
+  "postal_code": "14001",
+  "lat": null,
+  "lng": null,
+  "summary": "Full-service gas station and convenience store (49 Express Pit Stop) selling fuel, bottled water, gifts, souvenirs, and camping supplies at 409 Bloomingdale Rd.",
+  "category": "business",
+  "disabled_owned": true,
+  "disabled_led": true,
+  "attributes": [],
+  "flags": [
+   "outside_erie_county",
+   "sdvosb_federal_cert",
+   "sdvob_veteran_subset",
+   "disabled_owned_needs_attestation"
+  ],
+  "source_url": "https://search.certifications.sba.gov/profile/P4NPNZZLWGB2/4TXK8",
+  "source_notes": "Federal SBA VetCert SDVOSB, active since 08/01/2024 (UEI P4NPNZZLWGB2, CAGE 4TXK8; cert basis: >=51% service-disabled-veteran ownership + control; also identifies as Native American owned). SBA capabilities narrative states 'Bottled Water, Gas Station, Gifts, Novelties, Souvenirs, Camping Survival Supplies'; Yelp confirms the 49 Express Pit Stop gas station operates at the same 409 Bloomingdale Rd address. CAVEAT (reason for storefront_status_unconfirmed): the company's own site esandesenterprises.com presents only B2B first-responder/tactical equipment distribution - confirm the certified entity operates the retail station before import. SBA lists Genesee County (some registries give Basom NY 14013); zip 14001 is Akron. NEEDS OWNER SELF-ATTESTATION AT ONBOARDING. STOREFRONT LINK CONFIRMED 2026-07-10 (owner policy: include once a real operating location is verified): the certified SDVOSB LLC's federal SAM.gov entity registration lists 'ES & ES Enterprises, LLC' at 409 Bloomingdale Rd (Basom/Akron) with NAICS 'Gasoline Stations with Convenience Stores' + 'Gift/Novelty/Souvenir Stores', owner Eric W Smith; Yelp confirms the 49 Express Pit Stop operates at that address. The certified entity therefore operates the visitable retail station (the tactical B2B site is a separate line under the same LLC). Ownership remains SELF-ATTESTED per \u00a712 (needs onboarding attestation); the entity-to-storefront link rests on federal SAM registration, not a single first-party statement."
+ },
+ {
+  "candidate_id": "escarpment-arms",
+  "kind": "place",
+  "name": "Escarpment Arms, Inc.",
+  "street": "3580 Lockport-Olcott Rd",
+  "city": "Lockport",
+  "region": "Niagara County",
+  "postal_code": "14094",
+  "lat": null,
+  "lng": null,
+  "summary": "Retail firearms and ammunition store offering gunsmithing and NYS pistol-permit and live-fire training classes at a visitable storefront in Lockport.",
+  "category": "business",
+  "disabled_owned": true,
+  "disabled_led": true,
+  "attributes": [],
+  "flags": [
+   "outside_erie_county",
+   "sdvob_veteran_subset",
+   "sdvosb_federal_cert",
+   "disabled_owned_needs_attestation"
+  ],
+  "source_url": "https://sdves.ogs.ny.gov/business-search/73218d62-1ad0-4d74-bcd9-3f0aebe40521",
+  "source_notes": "Dual-certified: NYS OGS SDVOB control number 221378 AND federal SBA SDVOSB active since 01/28/2022 (UEI EDPVJKD8R338, CAGE 8H3C5, profile https://search.certifications.sba.gov/profile/EDPVJKD8R338/8H3C5). Both certs require >=51% service-disabled-veteran ownership + control. Business site escarpmentarms.com confirms storefront hours (Tue-Fri 10-6, Sat 10-4). No accessibility features stated on the site, so no attribute claims. NEEDS OWNER SELF-ATTESTATION AT ONBOARDING."
+ },
+ {
+  "candidate_id": "la-ffoca-dispensary",
+  "kind": "place",
+  "name": "LA FFOCA (L A FFOCA LLC)",
+  "street": "1618 18th St",
+  "city": "Niagara Falls",
+  "region": "Niagara County",
+  "postal_code": "14305",
+  "lat": null,
+  "lng": null,
+  "summary": "NYS-licensed adult-use retail cannabis dispensary with a walk-in storefront and posted daily hours in Niagara Falls.",
+  "category": "business",
+  "disabled_owned": true,
+  "disabled_led": true,
+  "attributes": [],
+  "flags": [
+   "outside_erie_county",
+   "sdvob_veteran_subset",
+   "disabled_owned_needs_attestation"
+  ],
+  "source_url": "https://sdves.ogs.ny.gov/business-search/ceee007c-83f6-461f-9861-47f52f2631f8",
+  "source_notes": "NYS OGS SDVOB certified, control number 242227; state API shows owner at 100% ownership with isServiceDisabled=true (cert basis: >=51% ownership + control). Also holds one of NY's first service-connected disabled veteran (SCDV) OCM cannabis retail licenses (OCM-RETL-24-000261 per findweedny.com). Storefront operation confirmed via laffoca.com and Leafly (posted retail hours, in-store pickup). EDITORIAL NOTE: prior sweep reviewed and excluded Combat Vet Cannabis (Erie) for unstated reasons - apply the same editorial standard here before import. NEEDS OWNER SELF-ATTESTATION AT ONBOARDING."
+ },
+ {
+  "candidate_id": "national-seating-mobility-west-seneca",
+  "kind": "place",
+  "name": "National Seating & Mobility - Buffalo (West Seneca)",
+  "street": "19 Ransier Dr, Ste 5B",
+  "city": "West Seneca",
+  "region": "Erie County",
+  "postal_code": "14224",
+  "lat": null,
+  "lng": null,
+  "summary": "Erie County branch of a national complex rehab technology supplier offering custom wheelchairs, seating, stairlifts, ramps, medical supplies and equipment service and repair, with posted business hours.",
+  "category": "business",
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes"
+  ],
+  "source_url": "https://locations.nsm-seating.com/ny/west-seneca/19b-ransier-drive",
+  "source_notes": "First-party branch page: address '19 Ransier Dr Ste 5B, West Seneca, NY 14224', phone (716) 674-0783. Exact wording: 'Custom Accessible Wheelchairs, Stairlifts & Ramps'; services listed include power and manual wheelchairs, cushions, custom molds, accessibility solutions, medical supplies, and service & repair. Posted opening time (8:30 AM) indicates a visitable branch, though CRT branches typically run scheduled evaluations rather than retail browsing - kept as a place on the posted-hours basis. Important: 'Accessibility' on their page is a PRODUCT category (things they sell), not a statement about their own premises - no attribute claims inferred. No premises-access statements found."
+ },
+ {
+  "candidate_id": "pro2-llc-cpap-center-williamsville",
+  "kind": "place",
+  "name": "Pro2 LLC - CPAP Center (Williamsville)",
+  "street": "5759 Main St, Suite 200",
+  "city": "Williamsville",
+  "region": "Erie County",
+  "postal_code": "14221",
+  "lat": null,
+  "lng": null,
+  "summary": "Walk-in Williamsville location of a Western New York respiratory equipment supplier providing CPAP/BiPAP fitting, setup and supplies plus home oxygen therapy, open to visitors during posted business hours.",
+  "category": "business",
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes"
+  ],
+  "source_url": "https://pro2llc.com/locations/",
+  "source_notes": "First-party locations page confirms '5759 Main St, Suite 200, Williamsville NY 14221' with posted hours (Mon-Fri 8:30am-1pm, 2pm-5pm) and states all three WNY locations are open to visitors during business hours - visitable retail-style premises, hence a place. Homepage self-description: 'Expert fitting, setup, and ongoing supply management for sleep apnea therapy' and 'reliable oxygen therapy equipment and regular tank refills.' Two sibling locations exist (1120 Youngs Rd Suite 100, Williamsville; 3586 California Rd, Orchard Park - both also Erie County) if the directory wants them as separate places later. Lead address confirmed as-is. No statements about the premises' own physical access - zero attribute claims."
+ },
+ {
+  "candidate_id": "sheridan-surgical",
+  "kind": "place",
+  "name": "Sheridan Surgical",
+  "street": "4513 Bailey Ave",
+  "city": "Buffalo",
+  "region": "Erie County",
+  "postal_code": "14226",
+  "lat": null,
+  "lng": null,
+  "summary": "Retail home medical equipment store supplying mobility aids, bathroom safety items and compression garments, with posted walk-in hours six days a week.",
+  "category": "business",
+  "attributes": [],
+  "flags": [
+   "coverage_only_no_attributes"
+  ],
+  "source_url": "https://sheridansurgical.com/",
+  "source_notes": "First-party site: self-description 'Supplying home medical equipment and compression' and 'been serving the home healthcare needs for all of western New York.' ADDRESS CORRECTED from the lead: the site lists 4513 Bailey Ave, Buffalo, NY 14226 - not the lead's 3316 Sheridan Dr, Amherst (apparent relocation; use the site's address). Posted retail hours (Mon-Fri 9am-5pm, Sat 9am-3pm) indicate a walk-in storefront, hence a place. No statements about the store's own physical access (entrance, parking, restroom) - zero attribute claims."
+ },
+ {
+  "candidate_id": "valley-motorsports-and-service",
+  "kind": "place",
+  "name": "Valley Motorsports and Service",
+  "street": "6974 Charlotte Center Rd",
+  "city": "Sinclairville",
+  "region": "Chautauqua County",
+  "postal_code": "14782",
+  "lat": null,
+  "lng": null,
+  "summary": "Retail dealership and repair shop for lawn and outdoor power equipment (Ferris, Snapper, Simplicity, Shindaiwa, Snowdog) that customers visit in person, established 2003.",
+  "category": "business",
+  "disabled_owned": true,
+  "disabled_led": true,
+  "attributes": [],
+  "flags": [
+   "outside_erie_county",
+   "sdvob_veteran_subset",
+   "disabled_owned_needs_attestation"
+  ],
+  "source_url": "https://sdves.ogs.ny.gov/business-search/eaf86732-1c91-48b2-9bb5-54e67bece2cb",
+  "source_notes": "NYS OGS SDVOB certified (legal name 'David F. Richir dba Valley Motorsports and Service'), control number 141071; owner flagged isServiceDisabled=true in the state API (cert basis: >=51% ownership + control). Business site valleymotorsportsny.com confirms a visitable storefront with posted hours (Tue-Fri 9-5, Sat 9-1). No accessibility features stated on the site, so no attribute claims. NEEDS OWNER SELF-ATTESTATION AT ONBOARDING."
+ }
 ]

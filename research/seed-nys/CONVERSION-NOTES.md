@@ -24,6 +24,18 @@ Validate shape (no DB): `npm run seed:import -- research/seed-nys/wny-2026-07.se
 | Promoted `accessible_parking` | Gap B fixed — providers can hold parking | People Inc., Jericho Road — Doat St |
 | Mapped | `candidate_id`→`source_ref`, `attribute_key`→`key`, ownership read from top-level **or** `provider_profile` | all |
 
+## Safety correction — 2026-07-10 (Canalside Station)
+
+`nfta-canalside-station` shipped an `entrance_step_free` claim. On 2026-07-10 the
+batch-3 review confirmed NFTA is still single-tracking Church→Canalside with the
+**inbound platform CLOSED** and Church St construction running through 2026. A
+closed platform is a credible current barrier (§4), so the step-free claim was
+**frozen**: flags `project_in_progress_reverify` + `partial_accessibility_caution`
+added, the claim now drops at reconversion (33→32 batch-1 claims), the stale claim
+was deleted from the local DB, and the summary now states the disruption. **Batch 1
+no longer re-converts byte-identical** — this is an intentional correction, not a
+regression. Re-confirm and restore the claim once single-tracking ends.
+
 ## Review pass — completed 2026-07-08
 
 1. **BUG FIXED — representation was being lost.** The raw batch stored ownership

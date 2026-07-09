@@ -1026,7 +1026,7 @@
       "source_url": "https://metro.nfta.com/special-services/accessibility",
       "kind": "place",
       "name": "NFTA Metro Rail — Canalside Station",
-      "summary": "Above-ground downtown terminus of Metro Rail with an elevated platform and handrails for accessible boarding.",
+      "summary": "Above-ground downtown terminus of Metro Rail; as of July 2026 it is under a service disruption — single-tracking Church→Canalside with the inbound platform CLOSED (construction through 2026), so accessible boarding is not currently assured.",
       "street": "Main Street at Marine Drive",
       "city": "Buffalo",
       "region": "Erie County",
@@ -1038,18 +1038,13 @@
       "disabled_led": false,
       "_review": {
         "flags": [
-          "system_wide_claim_not_per_station"
+          "system_wide_claim_not_per_station",
+          "project_in_progress_reverify",
+          "partial_accessibility_caution"
         ],
-        "source_notes": "First-party NFTA-Metro accessibility page (system-wide statement). High reliability for the system-wide claim; per-station specifics not detailed. Restroom/parking omitted."
+        "source_notes": "First-party NFTA-Metro accessibility page (system-wide statement). High reliability for the system-wide claim; per-station specifics not detailed. Restroom/parking omitted. UPDATED 2026-07-10: NFTA route page confirms single-tracking above ground from Church to Canalside since 2026-06-07 with inbound platforms closed (board the outbound/University platform) and Church St construction through 2026. The prior entrance_step_free claim is FROZEN pending re-verification after the disruption ends (§4 — a closed platform is a credible current barrier; never imply step-free access that isn't currently available)."
       },
-      "attributes": [
-        {
-          "key": "entrance_step_free",
-          "asserted_value": true,
-          "source_url": "https://metro.nfta.com/special-services/accessibility",
-          "note": "'All Metro Rail trains and stations are accessible to riders with disabilities.' Elevated platforms with handrails at each above-ground station. CAUTION: board the frontmost car; system-wide claim."
-        }
-      ]
+      "attributes": []
     },
     {
       "source_ref": "wny:place:nfta-fountain-plaza-station",
