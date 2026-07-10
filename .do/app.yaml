@@ -1,0 +1,126 @@
+# DigitalOcean App Platform spec — Access Atlas full stack.
+# Apply with:  doctl apps create --spec .do/app.yaml
+# Update with: doctl apps update <app-id> --spec .do/app.yaml
+#
+# Three components: the Astro web app (Dockerfile), a Keycloak identity service,
+# and a managed Postgres for Keycloak. DATA lives in a Supabase CLOUD project you
+# create separately (supabase.com) — App Platform can't provision that; its URL +
+# keys are injected below as env/secrets. See docs/deploy-digitalocean.md.
+#
+# SECRETS are NOT stored in this file. Values marked `type: SECRET` with no value
+# are supplied at `doctl apps create` time (encrypted at rest by App Platform).
+name: access-atlas
+region: nyc
+
+# Both the app and Keycloak are publicly reachable on ONE app domain, split by
+# path: Keycloak under /auth (with KC_HTTP_RELATIVE_PATH=/auth so its issuer is
+# https://<app>/auth/realms/bas), everything else to the web app. Order matters —
+# the more specific /auth rule comes first.
+ingress:
+  rules:
+    - match:
+        path:
+          prefix: /auth
+      component:
+        name: keycloak
+    - match:
+        path:
+          prefix: /
+      component:
+        name: web
+
+services:
+  # ---- The Astro app (zero-JS browsing + contributor BFF) ------------------
+  - name: web
+    github:
+      repo: Beaudoin0zach/access-atlas
+      branch: main
+      deploy_on_push: true
+    dockerfile_path: Dockerfile
+    http_port: 8080
+    instance_size_slug: apps-s-1vcpu-0.5gb # ~$5/mo; bump if builds/sharp need more
+    instance_count: 1
+    health_check:
+      http_path: / # homepage renders without any backend — a true liveness probe
+      initial_delay_seconds: 20
+    envs:
+      - key: HOST
+        value: "0.0.0.0"
+        scope: RUN_TIME
+      # --- Supabase CLOUD (created by you at supabase.com) ---
+      - key: PUBLIC_SUPABASE_URL
+        scope: RUN_TIME
+        value: "" # e.g. https://<ref>.supabase.co  (set at create time)
+      - key: PUBLIC_SUPABASE_ANON_KEY
+        scope: RUN_TIME
+        type: SECRET
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        scope: RUN_TIME
+        type: SECRET
+      # --- Keycloak (the sibling component below) ---
+      # The app's own callback URL and the Keycloak issuer, resolved from the
+      # platform-assigned URLs so no rebuild is needed (config is runtime now).
+      - key: KEYCLOAK_ISSUER
+        scope: RUN_TIME
+        value: "${APP_URL}/auth/realms/bas"
+      - key: KEYCLOAK_CLIENT_ID
+        scope: RUN_TIME
+        value: "access-atlas"
+      - key: KEYCLOAK_REDIRECT_URI
+        scope: RUN_TIME
+        value: "${APP_URL}/api/auth/callback"
+      # Provisional contribution stays OFF in prod — real Keycloak gates writes.
+      - key: ALLOW_PROVISIONAL_CONTRIBUTIONS
+        scope: RUN_TIME
+        value: "false"
+
+  # ---- Keycloak identity service ------------------------------------------
+  # NOTE: verify live. Keycloak's OIDC hostname handling on App Platform is the
+  # fiddly part — KC_HOSTNAME must equal the assigned public URL and the realm's
+  # client redirect URI must match ${APP_URL}. First deploy uses a wildcard
+  # redirect in the realm import; tighten to the exact URL once it's known.
+  - name: keycloak
+    image:
+      registry_type: DOCKER_HUB
+      registry: quay.io
+      repository: keycloak/keycloak
+      tag: "26.1"
+    http_port: 8080
+    instance_size_slug: apps-s-1vcpu-1gb # Keycloak wants ~1GB
+    instance_count: 1
+    run_command: >
+      /opt/keycloak/bin/kc.sh start --import-realm
+      --proxy-headers=xforwarded --http-enabled=true
+    health_check:
+      http_path: /auth/realms/bas/.well-known/openid-configuration
+      initial_delay_seconds: 60
+    envs:
+      - key: KC_DB
+        value: "postgres"
+        scope: RUN_TIME
+      - key: KC_DB_URL
+        scope: RUN_TIME
+        value: "${keycloak-db.DATABASE_URL}"
+      # Served under /auth so the OIDC issuer is https://<app>/auth/realms/bas.
+      - key: KC_HTTP_RELATIVE_PATH
+        value: "/auth"
+        scope: RUN_TIME
+      - key: KC_HOSTNAME
+        scope: RUN_TIME
+        value: "${APP_URL}"
+      - key: KC_BOOTSTRAP_ADMIN_USERNAME
+        scope: RUN_TIME
+        type: SECRET
+      - key: KC_BOOTSTRAP_ADMIN_PASSWORD
+        scope: RUN_TIME
+        type: SECRET
+      - key: KC_HEALTH_ENABLED
+        value: "true"
+        scope: RUN_TIME
+
+databases:
+  # Managed Postgres for Keycloak only (NOT app data — that's Supabase cloud).
+  - name: keycloak-db
+    engine: PG
+    version: "16"
+    production: false # dev database, ~$7/mo; make true for a real cluster

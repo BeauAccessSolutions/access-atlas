@@ -1,0 +1,20 @@
+# Keep the build context small and secrets out of the image.
+.git
+.github
+node_modules
+dist
+.env
+.env.*
+!.env.example
+supabase/.branches
+supabase/.temp
+docker/
+docker-compose*.yml
+research/
+docs/
+tests/
+mobile/
+ios/
+*.md
+sba_main.js
+.claude
