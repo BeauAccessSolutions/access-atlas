@@ -371,6 +371,25 @@ strong { font-weight: 650; }
   transform: translateY(-2px);
   border-color: color-mix(in srgb, var(--brand) 35%, var(--color-border));
 }
+/* Whole-card tap target (WCAG 2.2 §2.5.8; a real-device TestFlight finding).
+   The heading anchor's ::after is stretched over the card via position:
+   absolute, so a click/tap anywhere on the card follows that one link — zero
+   JS. Semantics are untouched: the accessible name stays the listing name, the
+   h3 stays an h3, and no other interactive content lives inside a card, so
+   nothing is swallowed. The card cursor signals the affordance. */
+.listing-card { cursor: pointer; }
+.listing-card h3 a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+/* Echo the hover ring when the card's link takes keyboard focus, so switch/
+   keyboard users see the whole card is the target (the anchor keeps its own
+   focus-visible outline — we never remove it, §5). */
+.listing-card:focus-within {
+  box-shadow: var(--shadow-hover);
+  border-color: color-mix(in srgb, var(--brand) 35%, var(--color-border));
+}
 /* Category chip: an icon + its text label (never icon alone, §5). */
 .category-tag {
   display: inline-flex;
