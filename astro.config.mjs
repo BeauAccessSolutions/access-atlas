@@ -1,7 +1,16 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import { loadEnv } from 'vite';
 import react from '@astrojs/react';
 import node from '@astrojs/node';
+
+// Server-only config (Keycloak, the Supabase service-role key, the provisional
+// gate) is read from process.env at RUNTIME so secrets never inline into the
+// build — Vite only inlines import.meta.env, so a service-role key read that way
+// would ship inside the container image. For local dev + build, mirror .env into
+// process.env here. This config file does NOT run in the production standalone
+// server (it gets real env from its host), so this affects local tooling only.
+Object.assign(process.env, loadEnv(process.env.NODE_ENV ?? 'development', process.cwd(), ''));
 
 // Astro is chosen (§9) to ship near-zero JS by default: static list/table
 // views render as pure HTML, and React islands hydrate ONLY where a

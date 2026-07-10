@@ -8,8 +8,12 @@
 // IdP lands, writes move to an authenticated contributor and this narrows.
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
-const url = import.meta.env.PUBLIC_SUPABASE_URL;
-const serviceKey = import.meta.env.SUPABASE_SERVICE_ROLE_KEY;
+// Read at RUNTIME from process.env, never import.meta.env: Vite statically
+// inlines import.meta.env into the build, which would bake the service-role key
+// (it bypasses RLS) into the server bundle and ship it inside any container
+// image. process.env.* is a runtime Node read and is never inlined.
+const url = process.env.PUBLIC_SUPABASE_URL;
+const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 export const isWriteBackendConfigured = Boolean(url && serviceKey);
 

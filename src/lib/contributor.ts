@@ -24,7 +24,8 @@ export const PROVISIONAL_COOKIE = 'aa_contributor';
 const COOKIE = PROVISIONAL_COOKIE;
 
 export function provisionalContributionsAllowed(): boolean {
-  return import.meta.env.ALLOW_PROVISIONAL_CONTRIBUTIONS === 'true';
+  // Runtime read (see supabase-server.ts) — a per-deploy gate, not a build const.
+  return process.env.ALLOW_PROVISIONAL_CONTRIBUTIONS === 'true';
 }
 
 export interface Contributor {

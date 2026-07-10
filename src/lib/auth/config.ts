@@ -18,9 +18,12 @@ export interface OidcConfig {
 
 /** The validated OIDC config, or null when any var is missing (= not configured). */
 export function getOidcConfig(): OidcConfig | null {
-  const issuer = import.meta.env.KEYCLOAK_ISSUER?.trim();
-  const clientId = import.meta.env.KEYCLOAK_CLIENT_ID?.trim();
-  const redirectUri = import.meta.env.KEYCLOAK_REDIRECT_URI?.trim();
+  // Runtime process.env reads (not import.meta.env): these are set per-deploy on
+  // the host, so the redirect URI can match the deployed origin without a
+  // rebuild, and nothing is inlined into the build. See supabase-server.ts.
+  const issuer = process.env.KEYCLOAK_ISSUER?.trim();
+  const clientId = process.env.KEYCLOAK_CLIENT_ID?.trim();
+  const redirectUri = process.env.KEYCLOAK_REDIRECT_URI?.trim();
   if (!issuer || !clientId || !redirectUri) return null;
   return {
     // Normalize: no trailing slash, so `${issuer}/.well-known/...` is clean.
