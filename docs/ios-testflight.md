@@ -48,8 +48,10 @@ without the native toolchain.
 
 ## Phase 2 — Build the binary (on a Mac with Xcode + CocoaPods)
 
-1. Set the real hosted origin in `capacitor.config.ts` → `server.url` (https).
-   **This depends on the open hosting decision (§13).**
+1. ~~Set the real hosted origin in `capacitor.config.ts` → `server.url` (https).~~
+   ✅ **Done (2026-07-10):** `server.url` = `https://access-atlas-qd464.ondigitalocean.app`
+   (§13 resolved — App Platform + Supabase cloud + shared Keycloak, live). Update
+   it if a custom domain is added later.
 2. Install Capacitor (adds them to `package.json` + lockfile on the Mac):
    ```
    npm install @capacitor/core@^6 @capacitor/ios@^6 @capacitor/camera@^6

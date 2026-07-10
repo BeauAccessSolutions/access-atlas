@@ -16,10 +16,10 @@ const config: CapacitorConfig = {
   // Offline fallback assets only (mobile/www). NOT the app itself.
   webDir: 'mobile/www',
   server: {
-    // TODO(hosting §13): set this to the real hosted origin before building for
-    // TestFlight. Must be https. Until hosting is decided this is a placeholder
-    // and the app will show the offline fallback.
-    url: 'https://REPLACE-WITH-HOSTED-ORIGIN.example',
+    // The live DigitalOcean App Platform origin (deployed 2026-07-10, §13
+    // resolved: App Platform + Supabase cloud + shared Keycloak). Must stay
+    // https. If a custom domain is added later, point this at it and rebuild.
+    url: 'https://access-atlas-qd464.ondigitalocean.app',
     // Never allow cleartext — the CSP + privacy stance demand https only (§6).
     cleartext: false,
   },
