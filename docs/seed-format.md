@@ -78,6 +78,19 @@ is intentional and non-negotiable (§2, §4, §14).
   unsourced; if you can't cite it, omit the attribute rather than guess (§4).
 - **`disabled_owned` / `disabled_led`** — top-level booleans, valid on either
   kind. Self-attested ownership (≥51%) / leadership per §12.
+  - **Government-certification proxy (seed only).** §12 defines these as
+    self-attested with no proof ever required. A seed record may set
+    `disabled_owned` from a government disabled-veteran certification — NYS OGS
+    **SDVOB** or federal SBA **VetCert** — because obtaining that certification
+    *required the owner to attest their disabled-veteran status to a government
+    body*. That prior attestation is a defensible proxy for the §12
+    self-attestation, and it is a stricter basis than an unsourced flag, not a
+    looser one. Rules that keep it honest: (1) the certifying registry is the
+    listing's `source_url`, so the basis is checkable (§7); (2) it is a proxy
+    for *ownership*, never a community-verified access claim (§4) — attribute
+    claims still import `self_reported`; (3) it is still reconciled with the
+    owner's own attestation at onboarding (§12). Records carrying this basis are
+    flagged (e.g. `sdvob_veteran_subset`) in the batch conversion notes.
 - **`category`** (optional) — a coarse scannability category (icon + label), one
   of: `healthcare`, `disability_services`, `business`, `library`, `arts_culture`,
   `parks_recreation`, `transit`. NULL/omitted = uncategorised. Not part of the
