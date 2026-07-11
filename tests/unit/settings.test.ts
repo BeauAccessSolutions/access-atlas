@@ -57,3 +57,41 @@ describe('settings: colour theme', () => {
     expect(isDefaultSettings({ ...DEFAULT_SETTINGS, theme: 'dark' })).toBe(false);
   });
 });
+
+// Reading supports (§5; parity with KindredAccess focus_mode / simplified_layout
+// + WCAG 1.4.1 link underlines). Both are off by default and are plain booleans.
+describe('settings: reading mode + underline links', () => {
+  it('default off, and map to the right <html> classes when on', () => {
+    expect(DEFAULT_SETTINGS.readingMode).toBe(false);
+    expect(DEFAULT_SETTINGS.underlineLinks).toBe(false);
+    const off = settingsToRootAttrs(DEFAULT_SETTINGS).class;
+    expect(off).not.toContain('reading-mode');
+    expect(off).not.toContain('underline-links');
+    const on = settingsToRootAttrs({
+      ...DEFAULT_SETTINGS,
+      readingMode: true,
+      underlineLinks: true,
+    }).class;
+    expect(on).toContain('reading-mode');
+    expect(on).toContain('underline-links');
+  });
+
+  it('round-trip through the cookie and read from the form', () => {
+    const s = { ...DEFAULT_SETTINGS, readingMode: true, underlineLinks: true };
+    const parsed = parseSettings(serializeSettings(s));
+    expect(parsed.readingMode).toBe(true);
+    expect(parsed.underlineLinks).toBe(true);
+
+    const form = new FormData();
+    form.set('readingMode', 'on');
+    // underlineLinks intentionally absent -> unchecked -> false.
+    const fromForm = settingsFromForm(form);
+    expect(fromForm.readingMode).toBe(true);
+    expect(fromForm.underlineLinks).toBe(false);
+  });
+
+  it('either one makes settings non-default (reset link shows)', () => {
+    expect(isDefaultSettings({ ...DEFAULT_SETTINGS, readingMode: true })).toBe(false);
+    expect(isDefaultSettings({ ...DEFAULT_SETTINGS, underlineLinks: true })).toBe(false);
+  });
+});

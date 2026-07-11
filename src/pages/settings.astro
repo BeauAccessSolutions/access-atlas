@@ -39,7 +39,7 @@ const THEME_LABELS: Record<(typeof THEMES)[number], string> = {
 
 <Base
   title="Accessibility settings"
-  description="Adjust colour theme, text size, contrast, motion, spacing, and target size. Saved on this device only, with no account and no tracking."
+  description="Adjust colour theme, text size, contrast, motion, spacing, reading mode, link underlines, and target size. Saved on this device only, with no account and no tracking."
 >
   {
     status === 'saved' && (
@@ -149,6 +149,26 @@ const THEME_LABELS: Record<(typeof THEMES)[number], string> = {
         <label for="motion">
           Reduce motion
           <span class="field-hint">— turn off transitions and animated movement</span>
+        </label>
+      </p>
+    </fieldset>
+
+    <fieldset>
+      <legend>Reading</legend>
+
+      <p>
+        <input type="checkbox" id="readingMode" name="readingMode" checked={current.readingMode} />
+        <label for="readingMode">
+          Reading mode
+          <span class="field-hint">— a calmer, simpler page: narrower text, flat surfaces, less decoration</span>
+        </label>
+      </p>
+
+      <p>
+        <input type="checkbox" id="underlineLinks" name="underlineLinks" checked={current.underlineLinks} />
+        <label for="underlineLinks">
+          Always underline links
+          <span class="field-hint">— underline every link, not just links in text</span>
         </label>
       </p>
     </fieldset>

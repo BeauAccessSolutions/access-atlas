@@ -284,6 +284,27 @@ header.site nav a,
   min-height: 44px;
 }
 
+/* User setting: always underline links (WCAG 1.4.1 — don't rely on colour
+   alone). Forces the underline back onto the links we style without one (nav,
+   card titles, the brand wordmark stays exempt via :not). Buttons-that-look-
+   like-buttons (.btn*) are not text links, so they're excluded. */
+:root.underline-links a:not(.btn):not(.btn-primary):not(.btn-secondary):not(.skip-link) {
+  text-decoration: underline;
+}
+
+/* User setting: reading mode — a calmer, simpler page (WAI-COGA Obj. 5; our
+   zero-JS take on KindredAccess's focus_mode + simplified_layout). Nothing is
+   hidden — only quietened: narrower measure, flat surfaces, and the decorative
+   header/CTA tints dropped so content leads. */
+:root.reading-mode {
+  --measure: 60ch;             /* a calmer line length */
+  --shadow-sm: none;           /* flattening the tokens flattens every surface */
+  --shadow: none;              /* that references them — cards, hero, buttons */
+  --shadow-hover: none;
+}
+:root.reading-mode .hero { background: var(--color-surface); } /* drop the decorative gradient */
+:root.reading-mode .listing-card:hover { transform: none; }    /* no lift on hover */
+
 main { display: block; }
 main.container { padding-block: 2rem 3rem; }
 

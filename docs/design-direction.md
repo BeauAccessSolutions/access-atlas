@@ -104,9 +104,8 @@ opposite of an overlay. `[high 3-0 / the "vs overlay" framing is synthesis, 2-1]
 | Line spacing (normal/roomy/loose) | ✅ Have | ✅ `line_spacing` | 1.4.12 Text Spacing | ✅ `--line-scale` |
 | Larger targets (44px) | ✅ Have — **exceeds** | ✅ `large_targets` | 2.5.8 AA (24px floor); **44px = AAA 2.5.5** | ✅ `.large-targets` |
 | **Colour theme (system/light/dark)** | ✅ **Shipped here** | ✅ `color_theme` | 1.4.3 / 1.4.8 | ✅ `.theme-light`/`.theme-dark` + cookie |
-| Focus / reading mode | ❌ Missing | ✅ `focus_mode` | WAI-COGA Obj. 5 | ⚠️ server-rendered simplified layout ✅; interactive focus bar needs JS |
-| Simplified layout | ❌ Missing | ✅ `simplified_layout` | WAI-COGA (Adaptation) | ✅ another cookie-stamped layout mode |
-| Link-underline toggle | ❌ Missing | — | 1.4.1 Use of Colour | ✅ CSS-only |
+| Reading mode (focus + simplified) | ✅ **Shipped** | ✅ `focus_mode` + `simplified_layout` | WAI-COGA Obj. 5 / Adaptation | ✅ `.reading-mode` cookie mode (calmer layout; no content hidden) |
+| Link-underline toggle | ✅ **Shipped** | — | 1.4.1 Use of Colour | ✅ `.underline-links`, CSS-only |
 | Flash/sound/vibration/autoplay/timeout controls | N/A | ✅ (native/app) | 2.2.x / 2.3.x | N/A on a zero-JS static page |
 
 **Colour theme — why it's a choice, never a forced default.** Dark mode causes
@@ -148,8 +147,11 @@ tune with dyslexic co-designers" is the correct posture. `[high, 3-0]`
    `.theme-*` classes in `global.css`, control in `settings.astro`, unit tests,
    all four combos verified in the browser).
 2. **Filter-a-list** pattern when search/filters land (native controls + Apply).
-3. **Link-underline toggle** (CSS-only) + **server-rendered reading/simplified
-   mode** (`focus_mode`/`simplified_layout` parity with KA) as further cookie modes.
+3. **Link-underline toggle** + **reading mode** — ✅ done. "Always underline
+   links" (`.underline-links`, WCAG 1.4.1) and "Reading mode" (`.reading-mode`:
+   narrower measure, flat surfaces, decorative chrome dropped — our single
+   zero-JS control covering KA's `focus_mode` + `simplified_layout`; nothing is
+   hidden, only quietened). Both cookie-backed, verified in the browser.
 4. **Accessible-map contract** documented *before* the map is built.
 5. **Manual AT testing plan** — automated tools catch only ~30–40%
    (GOV.UK cites ~30%; our own docs say ~40%; CI currently runs only

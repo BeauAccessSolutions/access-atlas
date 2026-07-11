@@ -75,6 +75,15 @@ export interface Settings {
   motion: boolean; // -> .reduce-motion (force reduced regardless of OS)
   largeTargets: boolean; // -> .large-targets (WCAG 2.2 §2.5.8: 44px hit areas)
   font: FontChoice; // -> .readable-font / .dyslexic-font (or neither)
+  // Force an underline on every link, including the ones we style without one
+  // (nav, card titles). Some people can't rely on colour alone to see a link
+  // (WCAG 1.4.1 Use of Color). -> .underline-links
+  underlineLinks: boolean;
+  // A calmer, simpler presentation: narrower measure, flat surfaces, decorative
+  // page chrome removed — nothing is hidden, only quietened (WAI-COGA Objective
+  // 5 "help users maintain focus"). Our zero-JS, server-rendered version of
+  // KindredAccess's focus_mode + simplified_layout. -> .reading-mode
+  readingMode: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -85,6 +94,8 @@ export const DEFAULT_SETTINGS: Settings = {
   motion: false,
   largeTargets: false,
   font: 'system',
+  underlineLinks: false,
+  readingMode: false,
 };
 
 function isTextSize(v: string | null): v is TextSize {
@@ -127,6 +138,8 @@ export function parseSettings(raw: string | undefined | null): Settings {
     motion: bool(p.get('m')),
     largeTargets: bool(p.get('g')),
     font: isFontChoice(f) ? f : DEFAULT_SETTINGS.font,
+    underlineLinks: bool(p.get('u')),
+    readingMode: bool(p.get('r')),
   };
 }
 
@@ -140,6 +153,8 @@ export function serializeSettings(s: Settings): string {
   p.set('m', s.motion ? '1' : '0');
   p.set('g', s.largeTargets ? '1' : '0');
   p.set('f', s.font);
+  p.set('u', s.underlineLinks ? '1' : '0');
+  p.set('r', s.readingMode ? '1' : '0');
   return p.toString();
 }
 
@@ -166,6 +181,8 @@ export function settingsFromForm(form: FormData): Settings {
     contrast: form.get('contrast') != null,
     motion: form.get('motion') != null,
     largeTargets: form.get('largeTargets') != null,
+    underlineLinks: form.get('underlineLinks') != null,
+    readingMode: form.get('readingMode') != null,
   };
 }
 
@@ -177,7 +194,9 @@ export function isDefaultSettings(s: Settings): boolean {
     s.font === DEFAULT_SETTINGS.font &&
     !s.contrast &&
     !s.motion &&
-    !s.largeTargets
+    !s.largeTargets &&
+    !s.underlineLinks &&
+    !s.readingMode
   );
 }
 
@@ -197,6 +216,8 @@ export function settingsToRootAttrs(s: Settings): { class: string; style: string
   if (s.largeTargets) classes.push('large-targets');
   if (s.font === 'readable') classes.push('readable-font');
   else if (s.font === 'dyslexic') classes.push('dyslexic-font');
+  if (s.underlineLinks) classes.push('underline-links');
+  if (s.readingMode) classes.push('reading-mode');
 
   const style = `--font-scale:${TEXT_SIZES[s.textSize]};--line-scale:${LINE_SPACINGS[s.lineSpacing]}`;
   return { class: classes.join(' '), style };

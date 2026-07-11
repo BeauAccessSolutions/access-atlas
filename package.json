@@ -21,7 +21,8 @@
     "db:reset": "npx supabase db reset",
     "db:stop": "npx supabase stop",
     "seed:import": "node scripts/seed-import.mjs",
-    "data-rights": "node scripts/data-rights.mjs"
+    "data-rights": "node scripts/data-rights.mjs",
+    "moderate:photo": "node scripts/moderate-photo.mjs"
   },
   "dependencies": {
     "@astrojs/node": "^9.5.5",
