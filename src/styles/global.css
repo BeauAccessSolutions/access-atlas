@@ -53,48 +53,76 @@
   --header-focus: #ffffff;    /* focus ring color that shows on the teal header */
 }
 
-/* Dark theme — respects the OS preference (§5: user-customizable). Tokens are
-   re-pointed; every downstream rule keeps working unchanged. */
+/* Dark theme — the OS preference by default, OR an explicit `.theme-dark`
+   choice that overrides the OS (§5: user-customizable; settings.ts). Tokens are
+   re-pointed; every downstream rule keeps working unchanged.
+   The dark token set is DUPLICATED across the explicit class and the OS media
+   query on purpose — a plain selector and an @media rule can't be comma-joined
+   — so KEEP THE TWO BLOCKS IN SYNC. `.theme-light` needs no token block: it
+   just excludes itself from the media query and falls back to the :root light
+   defaults. */
+:root.theme-dark {
+  --color-bg: #0f1513;
+  --color-surface: #161d1b;
+  --color-surface-2: #1c2422;
+  --color-fg: #e9ece9;
+  --color-muted: #aeb6b3;
+  --color-link: #77b6f2;
+  --color-link-hover: #9cccff;
+  --brand: #0e6b70;
+  --brand-strong: #0b585c;
+  --brand-ink: #7fd7dc;
+  --brand-wash: #12312f;
+  --color-border: #2b3330;
+  --field-border: #8c9591;
+  --color-focus: #7fd7dc;
+  --tone-verified: #74d69a;
+  --tone-sourced: #8dbcff;
+  --tone-partial: #e2bd6b;
+  --tone-unverified: #c2ccc8;
+  --tone-disputed: #ff9090;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow: 0 2px 6px rgba(0, 0, 0, 0.4), 0 10px 28px rgba(0, 0, 0, 0.45);
+  --shadow-hover: 0 4px 10px rgba(0, 0, 0, 0.45), 0 16px 40px rgba(0, 0, 0, 0.5);
+}
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.theme-light):not(.theme-dark) {
     --color-bg: #0f1513;
     --color-surface: #161d1b;
     --color-surface-2: #1c2422;
-    --color-fg: #e9ece9;
-    --color-muted: #aeb6b3;   /* ~8:1 on the dark canvas */
-    --color-link: #77b6f2;    /* ~7:1 on the dark canvas */
+    --color-fg: #e9ece9;        /* light on the dark canvas */
+    --color-muted: #aeb6b3;     /* ~8:1 */
+    --color-link: #77b6f2;      /* ~7:1 */
     --color-link-hover: #9cccff;
-
-    --brand: #0e6b70;         /* a touch brighter so the header reads as teal */
+    --brand: #0e6b70;
     --brand-strong: #0b585c;
     --brand-ink: #7fd7dc;
     --brand-wash: #12312f;
-
     --color-border: #2b3330;
-    --field-border: #8c9591;  /* >=3:1 on the dark surface */
+    --field-border: #8c9591;    /* >=3:1 */
     --color-focus: #7fd7dc;
-
     --tone-verified: #74d69a;
     --tone-sourced: #8dbcff;
     --tone-partial: #e2bd6b;
     --tone-unverified: #c2ccc8;
     --tone-disputed: #ff9090;
-
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
     --shadow: 0 2px 6px rgba(0, 0, 0, 0.4), 0 10px 28px rgba(0, 0, 0, 0.45);
     --shadow-hover: 0 4px 10px rgba(0, 0, 0, 0.45), 0 16px 40px rgba(0, 0, 0, 0.5);
   }
-  /* Dark + high-contrast: push foreground/borders to pure white. */
-  @media (prefers-contrast: more) {
-    :root { --color-fg: #ffffff; --color-border: #ffffff; --field-border: #ffffff; }
-  }
 }
 
-/* High-contrast (light): OS preference OR the manual .contrast-high toggle.
-   NOTE: these must be separate rules — a selector and an @media can't be
-   comma-joined (that was silently dropping the whole block). */
+/* High contrast is an INDEPENDENT axis from light/dark (§15: we keep it separate
+   so a person can run dark AND high-contrast at once). Each rule is scoped to
+   the effective scheme so contrast never paints black-on-dark or white-on-light.
+   Trigger = OS prefers-contrast OR the manual .contrast-high toggle.
+   NOTE: a selector and an @media can't be comma-joined (that silently drops the
+   block), so the two triggers are written as separate rules. */
+
+/* LIGHT + high contrast → black on white. Excluded whenever dark is in effect. */
 @media (prefers-contrast: more) {
-  :root {
+  :root:not(.theme-dark):not(.theme-light),
+  :root.theme-light {
     --color-fg: #000000;
     --color-muted: #1a1a1a;
     --color-link: #003a99;
@@ -102,12 +130,36 @@
     --field-border: #000000;
   }
 }
-:root.contrast-high {
+:root.contrast-high:not(.theme-dark) {
   --color-fg: #000000;
   --color-muted: #1a1a1a;
   --color-link: #003a99;
   --color-border: #000000;
   --field-border: #000000;
+}
+
+/* DARK + high contrast → pure white. Placed AFTER the light rules so it wins at
+   equal specificity for the OS-dark + manual-toggle case. */
+:root.theme-dark.contrast-high {
+  --color-fg: #ffffff;
+  --color-border: #ffffff;
+  --field-border: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  /* OS-dark + manual toggle (no forced light): override the black rule above. */
+  :root.contrast-high:not(.theme-light) {
+    --color-fg: #ffffff;
+    --color-border: #ffffff;
+    --field-border: #ffffff;
+  }
+  /* OS-dark + OS prefers-contrast. */
+  @media (prefers-contrast: more) {
+    :root:not(.theme-light):not(.theme-dark) {
+      --color-fg: #ffffff;
+      --color-border: #ffffff;
+      --field-border: #ffffff;
+    }
+  }
 }
 
 * { box-sizing: border-box; }

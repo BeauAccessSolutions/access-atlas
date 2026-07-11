@@ -51,9 +51,26 @@ export type LineSpacing = keyof typeof LINE_SPACINGS;
 export const FONT_CHOICES = ['system', 'readable', 'dyslexic'] as const;
 export type FontChoice = (typeof FONT_CHOICES)[number];
 
+// Colour theme. An EXPLICIT choice that can override the OS — Access Atlas used
+// to only follow prefers-color-scheme, which meant a person on an OS that
+// doesn't match their need (or a shared/kiosk device) had no way to pick (§5;
+// aligns with the platform/KindredAccess canonical suite, which offers a
+// selectable theme). 'system' keeps the old behaviour (follow the OS) as the
+// default, so nobody who relied on it regresses.
+//   system — follow the OS (prefers-color-scheme), the default.
+//   light  — force light even if the OS is dark.
+//   dark   — force the (already-shipped) dark palette even if the OS is light.
+// NOTE: theme is a SEPARATE axis from `contrast`. KindredAccess folds
+// high-contrast INTO one theme enum; we keep contrast independent so a person
+// can run dark AND high-contrast at once — the more-accessible option wins
+// (CLAUDE.md §15). global.css handles the dark+contrast combination.
+export const THEMES = ['system', 'light', 'dark'] as const;
+export type Theme = (typeof THEMES)[number];
+
 export interface Settings {
   textSize: TextSize; // -> --font-scale
   lineSpacing: LineSpacing; // -> --line-scale
+  theme: Theme; // -> .theme-light / .theme-dark (or neither = follow OS)
   contrast: boolean; // -> .contrast-high
   motion: boolean; // -> .reduce-motion (force reduced regardless of OS)
   largeTargets: boolean; // -> .large-targets (WCAG 2.2 §2.5.8: 44px hit areas)
@@ -63,6 +80,7 @@ export interface Settings {
 export const DEFAULT_SETTINGS: Settings = {
   textSize: '100',
   lineSpacing: 'normal',
+  theme: 'system',
   contrast: false,
   motion: false,
   largeTargets: false,
@@ -77,6 +95,9 @@ function isLineSpacing(v: string | null): v is LineSpacing {
 }
 function isFontChoice(v: string | null): v is FontChoice {
   return v != null && (FONT_CHOICES as readonly string[]).includes(v);
+}
+function isTheme(v: string | null): v is Theme {
+  return v != null && (THEMES as readonly string[]).includes(v);
 }
 // Cookie/form values are strings; only "1" is truthy, everything else is off.
 const bool = (v: string | null): boolean => v === '1';
@@ -97,9 +118,11 @@ export function parseSettings(raw: string | undefined | null): Settings {
   const t = p.get('t');
   const l = p.get('l');
   const f = p.get('f');
+  const h = p.get('h');
   return {
     textSize: isTextSize(t) ? t : DEFAULT_SETTINGS.textSize,
     lineSpacing: isLineSpacing(l) ? l : DEFAULT_SETTINGS.lineSpacing,
+    theme: isTheme(h) ? h : DEFAULT_SETTINGS.theme,
     contrast: bool(p.get('c')),
     motion: bool(p.get('m')),
     largeTargets: bool(p.get('g')),
@@ -112,6 +135,7 @@ export function serializeSettings(s: Settings): string {
   const p = new URLSearchParams();
   p.set('t', s.textSize);
   p.set('l', s.lineSpacing);
+  p.set('h', s.theme);
   p.set('c', s.contrast ? '1' : '0');
   p.set('m', s.motion ? '1' : '0');
   p.set('g', s.largeTargets ? '1' : '0');
@@ -124,6 +148,7 @@ export function settingsFromForm(form: FormData): Settings {
   const t = form.get('textSize');
   const l = form.get('lineSpacing');
   const f = form.get('font');
+  const h = form.get('theme');
   return {
     textSize: isTextSize(typeof t === 'string' ? t : null)
       ? (t as TextSize)
@@ -131,6 +156,9 @@ export function settingsFromForm(form: FormData): Settings {
     lineSpacing: isLineSpacing(typeof l === 'string' ? l : null)
       ? (l as LineSpacing)
       : DEFAULT_SETTINGS.lineSpacing,
+    theme: isTheme(typeof h === 'string' ? h : null)
+      ? (h as Theme)
+      : DEFAULT_SETTINGS.theme,
     font: isFontChoice(typeof f === 'string' ? f : null)
       ? (f as FontChoice)
       : DEFAULT_SETTINGS.font,
@@ -145,6 +173,7 @@ export function isDefaultSettings(s: Settings): boolean {
   return (
     s.textSize === DEFAULT_SETTINGS.textSize &&
     s.lineSpacing === DEFAULT_SETTINGS.lineSpacing &&
+    s.theme === DEFAULT_SETTINGS.theme &&
     s.font === DEFAULT_SETTINGS.font &&
     !s.contrast &&
     !s.motion &&
@@ -160,6 +189,9 @@ export function isDefaultSettings(s: Settings): boolean {
  */
 export function settingsToRootAttrs(s: Settings): { class: string; style: string } {
   const classes: string[] = [];
+  // 'system' adds no class — the page falls through to prefers-color-scheme.
+  if (s.theme === 'light') classes.push('theme-light');
+  else if (s.theme === 'dark') classes.push('theme-dark');
   if (s.contrast) classes.push('contrast-high');
   if (s.motion) classes.push('reduce-motion');
   if (s.largeTargets) classes.push('large-targets');

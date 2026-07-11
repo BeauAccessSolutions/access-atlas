@@ -6,7 +6,7 @@
 export const prerender = false;
 
 import Base from '../layouts/Base.astro';
-import { SETTINGS_COOKIE, TEXT_SIZES, FONT_CHOICES, parseSettings } from '../lib/settings';
+import { SETTINGS_COOKIE, TEXT_SIZES, FONT_CHOICES, THEMES, parseSettings } from '../lib/settings';
 
 const current = parseSettings(Astro.cookies.get(SETTINGS_COOKIE)?.value);
 const status = Astro.url.searchParams.get('status');
@@ -30,11 +30,16 @@ const FONT_LABELS: Record<(typeof FONT_CHOICES)[number], string> = {
   readable: 'Readable (wider, more legible — no download)',
   dyslexic: 'OpenDyslexic (downloads a font designed for dyslexia)',
 };
+const THEME_LABELS: Record<(typeof THEMES)[number], string> = {
+  system: 'Match my device',
+  light: 'Light',
+  dark: 'Dark',
+};
 ---
 
 <Base
   title="Accessibility settings"
-  description="Adjust text size, contrast, motion, spacing, and target size. Saved on this device only, with no account and no tracking."
+  description="Adjust colour theme, text size, contrast, motion, spacing, and target size. Saved on this device only, with no account and no tracking."
 >
   {
     status === 'saved' && (
@@ -115,10 +120,27 @@ const FONT_LABELS: Record<(typeof FONT_CHOICES)[number], string> = {
       <legend>Colour &amp; motion</legend>
 
       <p>
+        <label for="theme">Colour theme</label><br />
+        <select id="theme" name="theme">
+          {
+            THEMES.map((choice) => (
+              <option value={choice} selected={current.theme === choice}>
+                {THEME_LABELS[choice]}
+              </option>
+            ))
+          }
+        </select>
+        <span class="field-hint">
+          — “Match my device” follows your device’s light or dark setting. Dark
+          is not better for everyone, so it’s your choice.
+        </span>
+      </p>
+
+      <p>
         <input type="checkbox" id="contrast" name="contrast" checked={current.contrast} />
         <label for="contrast">
           High contrast
-          <span class="field-hint">— stronger text and border contrast</span>
+          <span class="field-hint">— stronger text and border contrast, on light or dark</span>
         </label>
       </p>
 
