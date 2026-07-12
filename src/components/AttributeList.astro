@@ -5,6 +5,7 @@
 // the evidence base — visible evidence is what makes the labels trustworthy).
 import LabelBadge from './LabelBadge.astro';
 import { staleness } from '../lib/labeling';
+import { PHOTO_REPORT_REASONS } from '../lib/reports';
 import type { AttributeStatus, EvidencePhoto } from '../lib/types';
 
 interface Props {
@@ -12,8 +13,13 @@ interface Props {
   /** Evidence photos per claimId (repo.getEvidenceForListing). Optional so
       contexts without evidence (seed fallback, tests) need no changes. */
   evidence?: Map<string, EvidencePhoto[]>;
+  /** Show the "report this photo" control. Gated on public contributions being
+      open (contributionsOpen) — a report queue is premature before then (§13). */
+  canReport?: boolean;
+  /** Absolute path to return to after a report POST (for the redirect + banner). */
+  returnTo?: string;
 }
-const { statuses, evidence } = Astro.props;
+const { statuses, evidence, canReport = false, returnTo = '/' } = Astro.props;
 
 // Low-bandwidth budget (§5): show at most this many photos per claim, newest
 // first, and say honestly how many more exist rather than hiding the cap.
@@ -60,6 +66,29 @@ const MAX_PHOTOS_PER_CLAIM = 4;
                         {photo.agrees ? 'Photo' : 'Problem reported — photo'} from{' '}
                         {photo.observedOn}. <a href={photo.photoUrl}>Full size</a>
                       </figcaption>
+                      {canReport && (
+                        /* Zero-JS disclosure (§5, the established <details>
+                           pattern): flag a photo for ops triage. Reporter-
+                           anonymous — we send only the already-public claim +
+                           photo URL and a coarse reason code (§6). */
+                        <details class="photo-report">
+                          <summary>Report this photo</summary>
+                          <form method="POST" action="/api/photo-reports">
+                            <input type="hidden" name="claim_id" value={status.claimId} />
+                            <input type="hidden" name="photo_url" value={photo.photoUrl} />
+                            <input type="hidden" name="return_to" value={returnTo} />
+                            <label>
+                              What's wrong with it?
+                              <select name="reason" required>
+                                {PHOTO_REPORT_REASONS.map((r) => (
+                                  <option value={r.code}>{r.label}</option>
+                                ))}
+                              </select>
+                            </label>
+                            <button type="submit">Report photo</button>
+                          </form>
+                        </details>
+                      )}
                     </figure>
                   </li>
                 ))}

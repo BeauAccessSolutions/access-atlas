@@ -534,6 +534,17 @@ strong { font-weight: 650; }
   border-radius: var(--radius);
 }
 .evidence-photo figcaption { max-width: 10rem; margin-top: 0.2rem; }
+/* "Report this photo" — a compact zero-JS disclosure under each thumbnail.
+   Only rendered when contributions are open (§13). Lighter than the FAQ
+   <details> but keeps the same keyboard/marker behavior. */
+.photo-report {
+  margin: 0.3rem 0 0;
+  padding: 0 0.6rem;
+  max-width: 12rem;
+}
+.photo-report summary { font-size: 0.9rem; font-weight: 600; padding: 0.45rem 0; }
+.photo-report label { display: block; font-size: 0.9rem; margin-bottom: 0.4rem; }
+.photo-report select { display: block; margin-top: 0.2rem; max-width: 100%; }
 .stale-note {
   color: var(--tone-disputed);
   font-size: 0.9rem;

@@ -1,0 +1,27 @@
+---
+// Honest, zero-JS status banner after a "report this photo" POST redirects back
+// (?photo_report=<status>). role="status" + aria-atomic so a screen reader
+// announces the whole message (§5). Renders nothing when there's no status.
+interface Props {
+  status: string | null;
+}
+const { status } = Astro.props;
+
+// Only these known statuses render; anything else is ignored (no reflected junk).
+const MESSAGES: Record<string, string> = {
+  thanks: 'Thanks — an operator will review this photo. Reports are anonymous.',
+  need_reason: 'Please choose a reason so we know what to review.',
+  gone: 'That photo is no longer available — it may have already been removed.',
+  closed: 'Photo reporting is not open yet.',
+  error: "Sorry — that report couldn't be saved. Please try again.",
+};
+const message = status ? MESSAGES[status] : undefined;
+---
+
+{
+  message && (
+    <p class="disclaimer" role="status" aria-atomic="true">
+      {message}
+    </p>
+  )
+}
