@@ -16,6 +16,11 @@
 // cannot be undone; --dry-run previews without touching anything.
 import { createInterface } from 'node:readline/promises';
 import { serviceClient, parseArgs } from './lib/db.mjs';
+import { registerTsExtResolve } from './lib/ts-ext-resolve.mjs';
+
+// Let Node resolve the app's extensionless relative imports (e.g. moderation.ts
+// → './data-rights') when running the real .ts modules under type-stripping.
+registerTsExtResolve();
 
 // Reuse the single typed implementation in src/lib/moderation.ts (also unit
 // tested) — no duplicated moderation logic. Importing .ts needs Node's native

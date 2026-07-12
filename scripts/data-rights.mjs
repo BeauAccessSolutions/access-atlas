@@ -15,6 +15,12 @@
 import { writeFileSync } from 'node:fs';
 import { createInterface } from 'node:readline/promises';
 import { serviceClient, parseArgs } from './lib/db.mjs';
+import { registerTsExtResolve } from './lib/ts-ext-resolve.mjs';
+
+// Let Node resolve the app's extensionless relative imports when running the
+// real .ts modules under type-stripping (data-rights.ts has none today, but any
+// sibling import it grows would otherwise fail at runtime only).
+registerTsExtResolve();
 
 // This script reuses the SINGLE typed implementation in src/lib/data-rights.ts
 // (also used by the unit tests and the future self-service endpoint — no
