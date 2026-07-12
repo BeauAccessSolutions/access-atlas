@@ -1,7 +1,7 @@
 // Ops CLI for evidence-photo moderation (§13). Ops-only until a user-facing
-// "report this photo" surface and a moderation-audit table land (both need a
-// migration verified against real Postgres). Run by an operator against a real
-// backend.
+// "report this photo" surface lands (still gated on public contributions
+// opening). Every run is now recorded in the moderation_audit table (0008).
+// Run by an operator against a real backend.
 //
 // Usage:
 //   npm run moderate:photo -- --url "<public photo URL>" --reason "off-topic" [--dry-run]
@@ -14,6 +14,7 @@
 // confirmation-level takedown, which would change §4 consensus and must be a
 // separate, deliberate action. This action is destructive to the image and
 // cannot be undone; --dry-run previews without touching anything.
+import { userInfo } from 'node:os';
 import { createInterface } from 'node:readline/promises';
 import { serviceClient, parseArgs } from './lib/db.mjs';
 import { registerTsExtResolve } from './lib/ts-ext-resolve.mjs';
@@ -41,6 +42,17 @@ const confirmationId = typeof args.id === 'string' ? args.id : undefined;
 const photoUrl = typeof args.url === 'string' ? args.url : undefined;
 const reason = typeof args.reason === 'string' ? args.reason : undefined;
 const dryRun = Boolean(args['dry-run']);
+// Who is acting — recorded in the moderation_audit trail (0008). Defaults to the
+// OS user running the CLI; override with --actor. Never a contributor id (§6).
+const actor = typeof args.actor === 'string' ? args.actor : `ops-cli:${safeUser()}`;
+
+function safeUser() {
+  try {
+    return userInfo().username || 'unknown';
+  } catch {
+    return 'unknown';
+  }
+}
 
 if ((!confirmationId && !photoUrl) || !isValidReason(reason)) {
   console.error(
@@ -73,7 +85,7 @@ if (!row) {
 console.error(
   `Evidence photo to redact:\n` +
     `  confirmation: ${row.id}\n  claim:        ${row.claim_id}\n  photo:        ${row.photo_url}\n` +
-    `  reason:       ${reason}`,
+    `  reason:       ${reason}\n  actor:        ${actor}`,
 );
 
 if (dryRun) {
@@ -97,6 +109,7 @@ const result = await redactEvidencePhoto(
   db,
   { confirmationId, photoUrl },
   reason,
+  actor,
 );
 
 if (!result.found) {
@@ -108,5 +121,5 @@ console.error(
   `\nRedacted evidence photo on confirmation ${result.confirmationId} ` +
     `(claim ${result.claimId}): ${result.removedObjects} storage object(s) removed, photo columns nulled.\n` +
     `The contributor's visit report was kept (§4 consensus unchanged).\n` +
-    `Reason (log this): ${result.reason}`,
+    `Recorded in moderation_audit as ${result.auditId} (actor ${actor}, reason: ${result.reason}).`,
 );
