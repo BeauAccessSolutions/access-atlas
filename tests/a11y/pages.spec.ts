@@ -70,11 +70,30 @@ test('seeded place exposes the report-a-visit CTA + per-attribute confirm links'
   }
 });
 
-// The browsing surface must stay zero-JS even though list/detail pages are now
-// on-demand rendered (low-bandwidth mandate, §5). No <script> on these routes.
-for (const route of ['/', '/places/', '/places/?q=cafe&owned=1', '/providers/', '/settings/', '/about/accessibility/', '/about/help/', '/places/11111111-1111-1111-1111-111111111111/', '/account/', '/account/delete/']) {
+// The browsing surface stays zero-JS everywhere EXCEPT the two list index pages,
+// which ship ONE self-hosted progressive-enhancement script (/nearby.js — the
+// on-device "sort by distance" feature; §13, ADR docs/adr-0001-nearby-geolocation.md).
+// Everything else — including the list DETAIL pages — must ship no <script> at
+// all (low-bandwidth mandate, §5).
+for (const route of ['/', '/settings/', '/about/accessibility/', '/about/help/', '/places/11111111-1111-1111-1111-111111111111/', '/account/', '/account/delete/']) {
   test(`ships zero <script>: ${route}`, async ({ page }) => {
     await page.goto(route);
     await expect(page.locator('script')).toHaveCount(0);
+  });
+}
+
+// The list index pages ship EXACTLY ONE script: the external, self-hosted
+// /nearby.js. No inline script anywhere (that's the part of the zero-JS
+// guarantee that stays absolute — an inline script is what a CSP injection would
+// need). And the page must be fully populated WITHOUT the script having run
+// (server-rendered), which the axe scans above already exercise.
+for (const route of ['/places/', '/places/?q=cafe&owned=1', '/providers/']) {
+  test(`list page ships only the self-hosted enhancement script: ${route}`, async ({ page }) => {
+    await page.goto(route);
+    const scripts = page.locator('script');
+    await expect(scripts).toHaveCount(1);
+    // External (has src), self-hosted, and NOT inline (no text content).
+    await expect(scripts.first()).toHaveAttribute('src', '/nearby.js');
+    expect((await scripts.first().textContent())?.trim() || '').toBe('');
   });
 }

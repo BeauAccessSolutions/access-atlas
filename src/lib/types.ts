@@ -40,6 +40,12 @@ export interface Listing {
   // When the listing was submitted (ISO). Drives the "recently added" sort so
   // fresh community submissions are discoverable. May be null (seed rows).
   createdAt?: string | null;
+  // Coarse coordinates (§5: the map is a progressive enhancement over the list).
+  // Optional — most listings have none. Used ONLY by the client "sort by
+  // distance" enhancement, which computes distance on-device (§6). Shipped to the
+  // browser as card data attributes; the server never receives a visitor's coords.
+  lat?: number | null;
+  lng?: number | null;
 }
 
 // One selectable attribute in the submission form (filtered by listing kind).

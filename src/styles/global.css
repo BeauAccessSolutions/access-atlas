@@ -551,6 +551,33 @@ strong { font-weight: 650; }
   font-weight: 650;
 }
 
+/* On-device "sort by distance" enhancement (public/nearby.js, list pages only).
+   The whole block is injected by the script, so no-JS visitors never see it. */
+.nearby-controls {
+  margin: 0.5rem 0 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 0.9rem;
+  align-items: center;
+}
+.nearby-reset {
+  background: none;
+  border: 0;
+  padding: 0.4rem 0;
+  color: var(--brand-ink);
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+  min-height: 44px;
+}
+.nearby-status {
+  flex-basis: 100%;
+  margin: 0;
+}
+.distance-note {
+  font-weight: 650;
+}
+
 /* -------- Forms (§5: generous spacing, clear labelled fields) ------------ */
 form fieldset {
   border: 1px solid var(--color-border);

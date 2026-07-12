@@ -37,24 +37,63 @@ const devStorageOrigin = (() => {
   }
 })();
 
-export const CONTENT_SECURITY_POLICY = [
-  "default-src 'none'",
-  "script-src 'none'",
-  "style-src 'self' 'unsafe-inline'",
-  `img-src 'self' https: data:${devStorageOrigin ? ` ${devStorageOrigin}` : ''}`,
-  "font-src 'self'",
-  "form-action 'self'",
-  "base-uri 'none'",
-  "frame-ancestors 'none'",
-].join('; ');
+// SCOPED SCRIPT CARVE-OUT (the ONLY routes that ship JavaScript).
+//
+// The list index pages carry ONE self-hosted progressive-enhancement script
+// (/nearby.js — the on-device "sort by distance" feature). Everywhere else the
+// browsing surface stays strictly zero-JS: script-src 'none'. This is the
+// deliberate, minimal departure from the §5 zero-JS default, recorded in
+// docs/adr-0001-nearby-geolocation.md and to be raised as a BAS ADR (§15). Keep
+// this set as SMALL as possible — a new script route is a real a11y/perf/privacy
+// decision, not a convenience.
+//
+// Note default-src stays 'none', so even on these routes the script can make NO
+// network requests (no connect-src) — it CANNOT exfiltrate the visitor's
+// location even if it tried. Location never leaves the device (§6).
+const SCRIPT_ENHANCED_ROUTES = new Set(['/places', '/providers']);
 
-// Applied as real HTTP headers on on-demand responses (middleware). Privacy-first
-// (§6): no-referrer so we never leak the page a user came from to any origin.
-export const SECURITY_HEADERS: Record<string, string> = {
-  'Content-Security-Policy': CONTENT_SECURITY_POLICY,
-  'X-Content-Type-Options': 'nosniff',
-  'X-Frame-Options': 'DENY',
-  'Referrer-Policy': 'no-referrer',
-  // No script means no need for any of these powerful features on browsing pages.
-  'Permissions-Policy': 'geolocation=(), camera=(), microphone=(), interest-cohort=()',
-};
+function normalizePath(pathname: string): string {
+  const p = (pathname.split('?')[0] || '').replace(/\/+$/, '');
+  return p === '' ? '/' : p;
+}
+
+/** True only for the list index routes that ship the /nearby.js enhancement. */
+export function routeAllowsScript(pathname: string): boolean {
+  return SCRIPT_ENHANCED_ROUTES.has(normalizePath(pathname));
+}
+
+// The CSP for a given route. script-src is 'self' ONLY on the enhanced routes,
+// 'none' everywhere else. Everything else is identical to the zero-JS baseline.
+export function contentSecurityPolicy(pathname = ''): string {
+  const scriptSrc = routeAllowsScript(pathname) ? "script-src 'self'" : "script-src 'none'";
+  return [
+    "default-src 'none'",
+    scriptSrc,
+    "style-src 'self' 'unsafe-inline'",
+    `img-src 'self' https: data:${devStorageOrigin ? ` ${devStorageOrigin}` : ''}`,
+    "font-src 'self'",
+    "form-action 'self'",
+    "base-uri 'none'",
+    "frame-ancestors 'none'",
+  ].join('; ');
+}
+
+// Real HTTP headers for on-demand responses (middleware). Privacy-first (§6):
+// no-referrer so we never leak the page a user came from. Geolocation is granted
+// (self) ONLY on the enhanced routes so navigator.geolocation works there; it
+// stays disabled (`geolocation=()`) on every other route.
+export function securityHeaders(pathname = ''): Record<string, string> {
+  const geolocation = routeAllowsScript(pathname) ? 'geolocation=(self)' : 'geolocation=()';
+  return {
+    'Content-Security-Policy': contentSecurityPolicy(pathname),
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'Referrer-Policy': 'no-referrer',
+    'Permissions-Policy': `${geolocation}, camera=(), microphone=(), interest-cohort=()`,
+  };
+}
+
+// Zero-JS defaults for any caller that doesn't know the route. Base.astro and
+// the middleware pass the real pathname so the carve-out applies per route.
+export const CONTENT_SECURITY_POLICY = contentSecurityPolicy();
+export const SECURITY_HEADERS: Record<string, string> = securityHeaders();

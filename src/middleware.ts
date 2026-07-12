@@ -7,11 +7,13 @@
 // the directives <meta> can't express (frame-ancestors) and the non-CSP security
 // headers, and is authoritative wherever a server actually serves the response.
 import { defineMiddleware } from 'astro:middleware';
-import { SECURITY_HEADERS } from './lib/security';
+import { securityHeaders } from './lib/security';
 
-export const onRequest = defineMiddleware(async (_context, next) => {
+export const onRequest = defineMiddleware(async (context, next) => {
   const response = await next();
-  for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
+  // Route-aware: the list index pages relax script-src/geolocation for the
+  // /nearby.js enhancement; every other route stays zero-JS (security.ts).
+  for (const [name, value] of Object.entries(securityHeaders(context.url.pathname))) {
     // Don't clobber a header a route set deliberately.
     if (!response.headers.has(name)) response.headers.set(name, value);
   }
