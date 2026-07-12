@@ -4,6 +4,7 @@ import {
   countyOptions,
   hasActiveFilters,
   parseListingFilters,
+  sortListings,
 } from '../../src/lib/filters';
 import type { Listing } from '../../src/lib/types';
 
@@ -48,6 +49,16 @@ describe('parseListingFilters', () => {
     const f = parse('q=&category=&county=');
     expect(hasActiveFilters(f, 'place')).toBe(false);
   });
+
+  it('defaults sort to name, accepts zip, ignores anything else', () => {
+    expect(parse('').sort).toBe('name');
+    expect(parse('sort=zip').sort).toBe('zip');
+    expect(parse('sort=bogus').sort).toBe('name');
+  });
+
+  it('a non-default sort is NOT an active filter (it never narrows)', () => {
+    expect(hasActiveFilters(parse('sort=zip'), 'place')).toBe(false);
+  });
 });
 
 describe('hasActiveFilters', () => {
@@ -88,6 +99,37 @@ describe('applyListingFilters', () => {
   it('never mutates or reorders what it keeps', () => {
     const out = applyListingFilters(SAMPLE, parse(''));
     expect(out).toEqual(SAMPLE);
+  });
+});
+
+describe('sortListings', () => {
+  const rows = [
+    listing({ id: 'a', name: 'Zed Diner', postalCode: '14201' }),
+    listing({ id: 'b', name: 'Anchor Bar', postalCode: '14222' }),
+    listing({ id: 'c', name: 'Middle Cafe', postalCode: '14201' }), // ties 'a' on zip
+    listing({ id: 'd', name: 'No Zip Place', postalCode: null }),
+  ];
+
+  it('sorts by name case-insensitively (the default)', () => {
+    expect(sortListings(rows, 'name').map((l) => l.id)).toEqual(['b', 'c', 'd', 'a']);
+  });
+
+  it('sorts by zip ascending, ties broken by name, missing zip last', () => {
+    // 14201: Middle Cafe (c) before Zed Diner (a); then 14222 (b); null (d) last.
+    expect(sortListings(rows, 'zip').map((l) => l.id)).toEqual(['c', 'a', 'b', 'd']);
+  });
+
+  it('treats a blank/whitespace zip as missing (sinks to the bottom)', () => {
+    const withBlank = [listing({ id: 'x', name: 'A', postalCode: '  ' }), listing({ id: 'y', name: 'B', postalCode: '14201' })];
+    expect(sortListings(withBlank, 'zip').map((l) => l.id)).toEqual(['y', 'x']);
+  });
+
+  it('returns a new array and never mutates the input', () => {
+    const input = [...rows];
+    const snapshot = input.map((l) => l.id);
+    const out = sortListings(input, 'zip');
+    expect(out).not.toBe(input);
+    expect(input.map((l) => l.id)).toEqual(snapshot);
   });
 });
 

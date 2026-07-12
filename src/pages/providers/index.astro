@@ -11,12 +11,14 @@ import {
   countyOptions,
   hasActiveFilters,
   parseListingFilters,
+  sortListings,
 } from '../../lib/filters';
 
 const providers = await getListings('provider');
 const filters = parseListingFilters(Astro.url.searchParams);
 const active = hasActiveFilters(filters, 'provider');
-const shown = active ? applyListingFilters(providers, filters) : providers;
+// Filter first (if any), then sort — sorting always applies.
+const shown = sortListings(active ? applyListingFilters(providers, filters) : providers, filters.sort);
 ---
 
 <Base

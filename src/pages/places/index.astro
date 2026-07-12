@@ -11,12 +11,15 @@ import {
   countyOptions,
   hasActiveFilters,
   parseListingFilters,
+  sortListings,
 } from '../../lib/filters';
 
 const places = await getListings('place');
 const filters = parseListingFilters(Astro.url.searchParams);
 const active = hasActiveFilters(filters, 'place');
-const shown = active ? applyListingFilters(places, filters) : places;
+// Filter first (if any), then sort — sorting always applies (a bare ?sort=zip
+// reorders the full list without "narrowing" it).
+const shown = sortListings(active ? applyListingFilters(places, filters) : places, filters.sort);
 ---
 
 <Base title="Places" description="Accessible businesses and physical spaces.">
