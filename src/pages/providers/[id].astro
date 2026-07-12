@@ -6,8 +6,10 @@ export const prerender = false;
 import Base from '../../layouts/Base.astro';
 import AttributeList from '../../components/AttributeList.astro';
 import ReportVisitCta from '../../components/ReportVisitCta.astro';
+import PhotoReportBanner from '../../components/PhotoReportBanner.astro';
 import CategoryIcon from '../../components/CategoryIcon.astro';
 import { categoryLabel, isCategory } from '../../lib/categories';
+import { contributionsOpen } from '../../lib/contributor';
 import { getEvidenceForListing, getListing, getStatusesForListing } from '../../lib/repo';
 
 const { id } = Astro.params;
@@ -20,6 +22,9 @@ const [statuses, evidence] = listing
 const place = listing ? [listing.city, listing.region].filter(Boolean).join(', ') : '';
 const prov = listing?.provider;
 const justSubmitted = Astro.url.searchParams.get('submitted') === '1';
+// "Report this photo" is gated on public contributions being open (§13).
+const canReport = contributionsOpen();
+const photoReportStatus = Astro.url.searchParams.get('photo_report');
 ---
 
 {
@@ -70,7 +75,13 @@ const justSubmitted = Astro.url.searchParams.get('submitted') === '1';
         Each item is validated separately — facility attributes are photo-backed,
         and behaviors come from first-person visits. No single overall score.
       </p>
-      <AttributeList statuses={statuses} evidence={evidence} />
+      <PhotoReportBanner status={photoReportStatus} />
+      <AttributeList
+        statuses={statuses}
+        evidence={evidence}
+        canReport={canReport}
+        returnTo={Astro.url.pathname}
+      />
 
       <div class="disclaimer">
         <p>

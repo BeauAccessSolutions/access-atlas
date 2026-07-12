@@ -28,6 +28,17 @@ export function provisionalContributionsAllowed(): boolean {
   return process.env.ALLOW_PROVISIONAL_CONTRIBUTIONS === 'true';
 }
 
+/**
+ * Are public contributions open at all? True when real auth is configured OR the
+ * provisional stand-in is explicitly enabled — i.e. the same conditions under
+ * which `contributionAccess` is not 'closed'. Community-facing affordances that
+ * only make sense once people can contribute — e.g. the "report this photo"
+ * queue (§7/§13) — gate on this, so they stay hidden until contributions open.
+ */
+export function contributionsOpen(): boolean {
+  return keycloakConfigured() || provisionalContributionsAllowed();
+}
+
 export interface Contributor {
   id: string;
   provisional: boolean;
