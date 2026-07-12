@@ -195,3 +195,160 @@ export async function redactEvidencePhoto(
     auditId,
   };
 }
+
+// ---------------------------------------------------------------------------
+// Confirmation-level takedown (§4 consensus-changing; §7 fake/brigaded reviews).
+//
+// The HEAVIER action, deliberately separate from photo redaction: removing a
+// FRAUDULENT confirmation (a fake or brigaded visit report), not just scrubbing
+// its image. This DELETES the confirmation row, so it changes §4 consensus — the
+// claim's derived state is recomputed. Like a departing dissent in
+// deleteContributorData (src/lib/data-rights.ts), taking down an agreeing OR a
+// dissenting confirmation can flip the claim:
+//   * remove an agreeing confirmation  -> may drop below the >=3 verified bar
+//   * remove the lone dissent          -> UN-FREEZES a 'disputed' claim (§4 bias
+//     toward caution means this must never be silent — we surface it for
+//     re-review, exactly as data-rights reports affectedClaimIds).
+//
+// We record the claim state BEFORE and AFTER (from attribute_claim_status, the
+// one source of truth for labeling) so an operator can see the consensus impact
+// and re-review. Evidence photos are removed from storage first (not FK-covered).
+// ---------------------------------------------------------------------------
+
+export interface TakedownResult {
+  /** false when no such confirmation (idempotent — safe to re-run). */
+  found: boolean;
+  confirmationId: string | null;
+  claimId: string | null;
+  listingId: string | null;
+  /** Number of evidence storage objects removed (full + thumb ⇒ 0, 1, or 2). */
+  removedObjects: number;
+  /** The removed confirmation's vote — context for the re-review. */
+  wasAgreeing: boolean | null;
+  /** The claim's derived state before and after the takedown (§4). If they
+   *  differ, the consensus label changed and the claim needs re-review. */
+  stateBefore: string | null;
+  stateAfter: string | null;
+  /** The claim whose consensus changed — mirrors data-rights' affectedClaimIds
+   *  so the two moderation/deletion paths report re-review the same way. */
+  affectedClaimIds: string[];
+  reason: string;
+  auditId: string | null;
+}
+
+/** Read a claim's derived label state from the single source of truth
+ *  (attribute_claim_status). Returns null if the claim has no status row. */
+async function claimState(admin: SupabaseClient, claimId: string): Promise<string | null> {
+  const { data, error } = await admin
+    .from('attribute_claim_status')
+    .select('state')
+    .eq('claim_id', claimId)
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  return (data?.state as string) ?? null;
+}
+
+/**
+ * Take down one fraudulent confirmation. Ops-only (service-role client).
+ * Idempotent: an already-removed confirmation returns { found:false } and writes
+ * no audit row. On success it removes the confirmation's evidence photos, deletes
+ * the row, recomputes the claim's §4 state, and records a 'confirmation_takedown'
+ * audit row carrying the before/after state.
+ */
+export async function takedownConfirmation(
+  admin: SupabaseClient,
+  confirmationId: string,
+  reason: string,
+  actor: string,
+): Promise<TakedownResult> {
+  if (!isValidReason(reason)) throw new Error('A non-empty moderation reason is required.');
+  if (!isValidActor(actor)) throw new Error('A non-empty moderation actor is required.');
+  if (typeof confirmationId !== 'string' || confirmationId.trim() === '') {
+    throw new Error('A confirmationId is required.');
+  }
+
+  // 1. Find the confirmation and, via its claim, the listing it belongs to.
+  const { data: row, error: selErr } = await admin
+    .from('confirmations')
+    .select('id, claim_id, agrees, photo_url, photo_thumb_url, attribute_claims!inner(listing_id)')
+    .eq('id', confirmationId)
+    .maybeSingle();
+  if (selErr) throw new Error(selErr.message);
+
+  if (!row) {
+    return {
+      found: false,
+      confirmationId,
+      claimId: null,
+      listingId: null,
+      removedObjects: 0,
+      wasAgreeing: null,
+      stateBefore: null,
+      stateAfter: null,
+      affectedClaimIds: [],
+      reason,
+      auditId: null,
+    };
+  }
+
+  const claimId = row.claim_id as string;
+  // supabase-js returns the embedded row as an object (or array); normalize.
+  const embedded = row.attribute_claims as { listing_id?: string } | { listing_id?: string }[] | null;
+  const listingId =
+    (Array.isArray(embedded) ? embedded[0]?.listing_id : embedded?.listing_id) ?? null;
+
+  // 2. Snapshot the claim's state BEFORE (the consensus we're about to disturb).
+  const stateBefore = await claimState(admin, claimId);
+
+  // 3. Remove evidence photos from storage FIRST (not covered by the FK cascade),
+  //    same primitive as redaction / deletion — no orphaned objects.
+  const paths = [
+    storagePathFromPublicUrl(row.photo_url as string | null),
+    storagePathFromPublicUrl(row.photo_thumb_url as string | null),
+  ].filter((p): p is string => p !== null);
+  let removedObjects = 0;
+  if (paths.length > 0) {
+    const { error: rmErr } = await admin.storage.from('evidence').remove(paths);
+    if (rmErr) throw new Error(`evidence photo removal failed: ${rmErr.message}`);
+    removedObjects = paths.length;
+  }
+
+  // 4. Delete the confirmation row — this is the consensus-changing step.
+  const { error: delErr } = await admin.from('confirmations').delete().eq('id', confirmationId);
+  if (delErr) throw new Error(delErr.message);
+
+  // 5. Recompute the claim's state AFTER (from the same view, §4 lockstep).
+  const stateAfter = await claimState(admin, claimId);
+
+  // 6. Record the takedown, with the consensus impact, in the durable trail.
+  const auditId = await recordModerationAudit(admin, {
+    action: 'confirmation_takedown',
+    reason,
+    actor,
+    confirmationId,
+    claimId,
+    listingId,
+    details: {
+      wasAgreeing: row.agrees as boolean,
+      removedObjects,
+      stateBefore,
+      stateAfter,
+      stateChanged: stateBefore !== stateAfter,
+    },
+  });
+
+  return {
+    found: true,
+    confirmationId,
+    claimId,
+    listingId,
+    removedObjects,
+    wasAgreeing: row.agrees as boolean,
+    stateBefore,
+    stateAfter,
+    // The claim always needs a look after a takedown; surface it for re-review.
+    affectedClaimIds: [claimId],
+    reason,
+    auditId,
+  };
+}

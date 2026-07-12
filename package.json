@@ -22,7 +22,8 @@
     "db:stop": "npx supabase stop",
     "seed:import": "node scripts/seed-import.mjs",
     "data-rights": "node scripts/data-rights.mjs",
-    "moderate:photo": "node scripts/moderate-photo.mjs"
+    "moderate:photo": "node scripts/moderate-photo.mjs",
+    "moderate:takedown": "node scripts/takedown-confirmation.mjs"
   },
   "dependencies": {
     "@astrojs/node": "^9.5.5",

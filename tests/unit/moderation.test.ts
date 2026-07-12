@@ -4,6 +4,7 @@ import {
   isValidReason,
   recordModerationAudit,
   redactEvidencePhoto,
+  takedownConfirmation,
 } from '../../src/lib/moderation';
 
 const ACTOR = 'ops-cli:test';
@@ -146,6 +147,110 @@ describe('moderation: recordModerationAudit', () => {
     });
     expect(id).toBe('audit-1');
     expect(audits[0]).toMatchObject({ action: 'confirmation_takedown', claim_id: 'claim-9' });
+    expect('contributor_id' in audits[0]).toBe(false);
+  });
+});
+
+// Fake for takedown: the confirmations select returns an embedded claim
+// (listing_id), attribute_claim_status returns a *sequence* of states (before,
+// then after) so we can assert the recomputed consensus, and we capture the
+// delete + audit insert. `states` is consumed in call order.
+function fakeTakedownAdmin(opts: {
+  conf: Record<string, unknown> | null;
+  states: Array<string | null>;
+}) {
+  const removed: string[][] = [];
+  const audits: Array<Record<string, unknown>> = [];
+  let deleted = false;
+  const stateQueue = [...opts.states];
+  const admin = {
+    from(table: string) {
+      if (table === 'confirmations') {
+        return {
+          select: () => ({ eq: () => ({ maybeSingle: () => ({ data: opts.conf, error: null }) }) }),
+          delete: () => ({
+            eq: () => {
+              deleted = true;
+              return { error: null };
+            },
+          }),
+        };
+      }
+      if (table === 'attribute_claim_status') {
+        const next = stateQueue.shift() ?? null;
+        return {
+          select: () => ({
+            eq: () => ({ maybeSingle: () => ({ data: next === null ? null : { state: next }, error: null }) }),
+          }),
+        };
+      }
+      // moderation_audit
+      return {
+        insert(patch: Record<string, unknown>) {
+          audits.push(patch);
+          return { select: () => ({ single: () => ({ data: { id: 'audit-1' }, error: null }) }) };
+        },
+      };
+    },
+    storage: {
+      from: () => ({
+        remove: (paths: string[]) => {
+          removed.push(paths);
+          return { error: null };
+        },
+      }),
+    },
+  };
+  return { admin, removed, audits, wasDeleted: () => deleted };
+}
+
+describe('moderation: takedownConfirmation (§4 consensus-changing)', () => {
+  it('requires reason, actor, and an id', async () => {
+    const { admin } = fakeTakedownAdmin({ conf: null, states: [] });
+    await expect(takedownConfirmation(admin as never, 'c1', '', ACTOR)).rejects.toThrow(/reason/i);
+    await expect(takedownConfirmation(admin as never, 'c1', 'fraud', '')).rejects.toThrow(/actor/i);
+    await expect(takedownConfirmation(admin as never, '', 'fraud', ACTOR)).rejects.toThrow(/confirmationId/i);
+  });
+
+  it('is idempotent — a missing confirmation is found:false, no delete, no audit', async () => {
+    const { admin, wasDeleted, audits } = fakeTakedownAdmin({ conf: null, states: [] });
+    const res = await takedownConfirmation(admin as never, 'gone', 'fraud', ACTOR);
+    expect(res.found).toBe(false);
+    expect(res.affectedClaimIds).toEqual([]);
+    expect(res.auditId).toBe(null);
+    expect(wasDeleted()).toBe(false);
+    expect(audits).toHaveLength(0);
+  });
+
+  it('removing the lone dissent un-freezes the claim, records before/after + affected claim', async () => {
+    const { admin, wasDeleted, audits } = fakeTakedownAdmin({
+      conf: {
+        id: 'conf-d',
+        claim_id: 'claim-x',
+        agrees: false,
+        photo_url: 'https://x/storage/v1/object/public/evidence/claim-x/d.jpg',
+        photo_thumb_url: null,
+        attribute_claims: { listing_id: 'listing-7' },
+      },
+      states: ['disputed', 'community_confirmations'], // before, after
+    });
+    const res = await takedownConfirmation(admin as never, 'conf-d', 'brigading', ACTOR);
+
+    expect(res.found).toBe(true);
+    expect(wasDeleted()).toBe(true);
+    expect(res.claimId).toBe('claim-x');
+    expect(res.listingId).toBe('listing-7');
+    expect(res.wasAgreeing).toBe(false);
+    expect(res.stateBefore).toBe('disputed');
+    expect(res.stateAfter).toBe('community_confirmations');
+    expect(res.affectedClaimIds).toEqual(['claim-x']); // surfaced for re-review
+    expect(res.removedObjects).toBe(1); // one photo object (thumb was null)
+    // Audit row is the takedown action, carries the consensus impact, no contributor id.
+    expect(audits).toHaveLength(1);
+    expect(audits[0].action).toBe('confirmation_takedown');
+    expect(audits[0].claim_id).toBe('claim-x');
+    expect(audits[0].listing_id).toBe('listing-7');
+    expect((audits[0].details as Record<string, unknown>).stateChanged).toBe(true);
     expect('contributor_id' in audits[0]).toBe(false);
   });
 });

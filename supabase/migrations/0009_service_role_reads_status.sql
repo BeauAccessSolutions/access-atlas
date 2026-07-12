@@ -1,0 +1,24 @@
+-- =============================================================================
+-- 0009_service_role_reads_status.sql — let the trusted server role READ the
+-- derived consensus state.
+--
+-- attribute_claim_status is THE single source of truth for a claim's §4 label
+-- (0001). It was granted to anon/authenticated (public browsing) but NOT to
+-- service_role — an oversight that only bites a server-side reader of the view.
+-- The service role is not a superuser; view privileges are a separate layer from
+-- RLS, so without this grant a service-role `select` on the view fails with
+-- "permission denied for view attribute_claim_status".
+--
+-- The confirmation-level takedown flow (src/lib/moderation.ts) needs it: after
+-- deleting a fraudulent confirmation it must recompute the claim's state to
+-- report the consensus impact for re-review (§4). It reads the VIEW rather than
+-- re-deriving the formula in TypeScript, so there's no second copy of the
+-- consensus logic to drift (§4/§13 lockstep).
+--
+-- This exposes nothing new: the service role already has full read on the
+-- underlying confirmations/attribute_claims tables (0001), so it could compute
+-- the same counts by hand. Granting the aggregate view is strictly less than
+-- what it can already see. Public exposure is unchanged.
+-- =============================================================================
+
+grant select on attribute_claim_status to service_role;
