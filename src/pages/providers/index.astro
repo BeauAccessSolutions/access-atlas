@@ -84,4 +84,11 @@ const shown = sortListings(active ? applyListingFilters(providers, filters) : pr
       </ul>
     )
   }
+
+  {/* Progressive enhancement ONLY (§5/§13): the page above is fully usable with
+      no JS. This one self-hosted script adds on-device "sort by distance" — the
+      visitor's location never leaves the device (§6). Scoped script-src 'self'
+      carve-out lives in src/lib/security.ts. is:inline keeps Astro from bundling
+      the public asset. */}
+  <script src="/nearby.js" is:inline defer></script>
 </Base>

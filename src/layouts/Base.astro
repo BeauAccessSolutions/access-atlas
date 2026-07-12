@@ -2,7 +2,7 @@
 // Base layout. Semantic landmarks (header/nav/main/footer), a skip link, a
 // lang attribute, and a sensible <title> — the floor every page stands on (§5).
 import '../styles/global.css';
-import { CONTENT_SECURITY_POLICY } from '../lib/security';
+import { contentSecurityPolicy } from '../lib/security';
 import { SETTINGS_COOKIE, parseSettings, settingsToRootAttrs } from '../lib/settings';
 
 interface Props {
@@ -29,11 +29,13 @@ const rootAttrs = settingsToRootAttrs(parseSettings(Astro.cookies.get(SETTINGS_C
       Content-Security-Policy baked into the page so it protects prerendered
       static pages regardless of host (hosting is still open, §13). SSR routes
       ALSO get it as a real HTTP header via src/middleware.ts. `script-src 'none'`
-      keeps the zero-JS non-negotiable self-enforcing (§2/§5). One source of
-      truth: src/lib/security.ts. (frame-ancestors is header-only; browsers
-      ignore it here and honor it from the middleware header.)
+      keeps the zero-JS non-negotiable self-enforcing (§2/§5) — EXCEPT on the two
+      list routes, which relax to `script-src 'self'` for the /nearby.js
+      enhancement (route-aware; see src/lib/security.ts + the ADR). The meta must
+      match the header per route, or the browser's intersection would block the
+      script. One source of truth: src/lib/security.ts.
     -->
-    <meta http-equiv="Content-Security-Policy" content={CONTENT_SECURITY_POLICY} />
+    <meta http-equiv="Content-Security-Policy" content={contentSecurityPolicy(Astro.url.pathname)} />
     <!-- Self-hosted SVG favicon (CSP img-src 'self'); no external request. -->
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{title} — {siteName}</title>

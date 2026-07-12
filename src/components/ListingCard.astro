@@ -13,9 +13,18 @@ const { listing } = Astro.props;
 const href = `/${listing.kind === 'provider' ? 'providers' : 'places'}/${listing.id}/`;
 const place = [listing.city, listing.region].filter(Boolean).join(', ');
 const catLabel = categoryLabel(listing.category);
+// Coarse coords for the on-device "sort by distance" enhancement (§6): rendered
+// as data attributes ONLY when present, so the client can compute distance
+// locally without the server ever seeing the visitor's location. Absent coords =
+// no attributes; the script sorts those cards last.
+const hasCoords = typeof listing.lat === 'number' && typeof listing.lng === 'number';
 ---
 
-<li class="listing-card">
+<li
+  class="listing-card"
+  data-lat={hasCoords ? String(listing.lat) : undefined}
+  data-lng={hasCoords ? String(listing.lng) : undefined}
+>
   {catLabel && isCategory(listing.category) && (
     <p class="category-tag">
       <CategoryIcon category={listing.category} />
