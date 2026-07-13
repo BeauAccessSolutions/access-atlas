@@ -46,6 +46,9 @@ export interface Listing {
   // browser as card data attributes; the server never receives a visitor's coords.
   lat?: number | null;
   lng?: number | null;
+  // How the coordinates were set (§4 honesty): 'exact' = contributor-entered,
+  // 'approximate' = derived from the ZIP centroid. null = no coordinates.
+  coordsSource?: 'exact' | 'approximate' | null;
 }
 
 // One selectable attribute in the submission form (filtered by listing kind).

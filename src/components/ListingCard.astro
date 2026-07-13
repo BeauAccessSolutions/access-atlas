@@ -18,12 +18,16 @@ const catLabel = categoryLabel(listing.category);
 // locally without the server ever seeing the visitor's location. Absent coords =
 // no attributes; the script sorts those cards last.
 const hasCoords = typeof listing.lat === 'number' && typeof listing.lng === 'number';
+// Approximate (ZIP-centroid) coords are labeled honestly in the distance sort
+// (§4) — never presented as a precise location.
+const approxCoords = hasCoords && listing.coordsSource === 'approximate';
 ---
 
 <li
   class="listing-card"
   data-lat={hasCoords ? String(listing.lat) : undefined}
   data-lng={hasCoords ? String(listing.lng) : undefined}
+  data-coords-approx={approxCoords ? '1' : undefined}
 >
   {catLabel && isCategory(listing.category) && (
     <p class="category-tag">

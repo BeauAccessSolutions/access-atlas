@@ -132,10 +132,11 @@ const noun = kind === 'provider' ? 'provider' : 'place';
         />
       </p>
       <p id="coords-hint" class="field-hint">
-        Coordinates let people sort listings by distance. To find them, open the
-        spot in a maps app, press and hold the location, and copy the two numbers
-        (for example <code>42.9180, -78.8784</code>). Enter both or leave both
-        blank — it's fine to skip this.
+        Coordinates let people sort listings by distance. You can usually skip
+        this — if you leave it blank, we place the listing at the approximate
+        center of its ZIP code. For an exact spot, open it in a maps app, press
+        and hold the location, and copy the two numbers (for example
+        <code>42.9180, -78.8784</code>). Enter both or leave both blank.
       </p>
       {coordsError && (
         <span class="field-error" id="coords-error">

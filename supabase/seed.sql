@@ -37,13 +37,13 @@ insert into attribute_definitions (key, label, category, applies_to_kind, questi
 -- listings — enough to demonstrate the on-device "sort by distance" enhancement,
 -- NOT surveyed addresses. Real listings will carry real coordinates when
 -- submitted. The map stays a progressive enhancement over the list (§5).
-insert into listings (id, kind, name, summary, city, region, postal_code, category, disabled_owned, disabled_led, lat, lng) values
+insert into listings (id, kind, name, summary, city, region, postal_code, category, disabled_owned, disabled_led, lat, lng, coords_source) values
   ('11111111-1111-1111-1111-111111111111', 'place', 'Elmwood Village Cafe',
-   'Neighborhood cafe on Elmwood Ave.', 'Buffalo', 'Erie County', '14222', 'business', false, false, 42.9180, -78.8784),
+   'Neighborhood cafe on Elmwood Ave.', 'Buffalo', 'Erie County', '14222', 'business', false, false, 42.9180, -78.8784, 'approximate'),
   ('22222222-2222-2222-2222-222222222222', 'place', 'Central Library — Downtown',
-   'Public library, main branch.', 'Buffalo', 'Erie County', '14203', 'library', false, false, 42.8867, -78.8739),
+   'Public library, main branch.', 'Buffalo', 'Erie County', '14203', 'library', false, false, 42.8867, -78.8739, 'approximate'),
   ('33333333-3333-3333-3333-333333333333', 'provider', 'Lakeshore Family Medicine',
-   'Primary care practice.', 'Buffalo', 'Erie County', '14201', 'healthcare', false, true, 42.9010, -78.8760);
+   'Primary care practice.', 'Buffalo', 'Erie County', '14201', 'healthcare', false, true, 42.9010, -78.8760, 'approximate');
 
 insert into provider_profiles (listing_id, disability_literate) values
   ('33333333-3333-3333-3333-333333333333', true);

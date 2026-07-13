@@ -28,7 +28,7 @@ export async function getListings(kind?: ListingKind): Promise<Listing[]> {
   let query = supabase
     .from('listings')
     .select(
-      'id, kind, name, summary, city, region, postal_code, category, disabled_owned, disabled_led, created_at, lat, lng, provider_profiles(disability_literate)',
+      'id, kind, name, summary, city, region, postal_code, category, disabled_owned, disabled_led, created_at, lat, lng, coords_source, provider_profiles(disability_literate)',
     )
     .order('name');
   if (kind) query = query.eq('kind', kind);
@@ -45,7 +45,7 @@ export async function getListing(id: string): Promise<Listing | null> {
   const { data, error } = await supabase
     .from('listings')
     .select(
-      'id, kind, name, summary, city, region, postal_code, category, disabled_owned, disabled_led, created_at, lat, lng, provider_profiles(disability_literate)',
+      'id, kind, name, summary, city, region, postal_code, category, disabled_owned, disabled_led, created_at, lat, lng, coords_source, provider_profiles(disability_literate)',
     )
     .eq('id', id)
     .maybeSingle();
@@ -173,6 +173,7 @@ function rowToListing(row: any): Listing {
     createdAt: row.created_at ?? null,
     lat: row.lat ?? null,
     lng: row.lng ?? null,
+    coordsSource: row.coords_source ?? null,
     provider:
       row.kind === 'provider' && profile
         ? { disabilityLiterate: !!profile.disability_literate }

@@ -144,6 +144,7 @@ export const LISTINGS: Listing[] = [
     // Approximate Buffalo coords (see supabase/seed.sql) — demo the distance sort.
     lat: 42.918,
     lng: -78.8784,
+    coordsSource: 'approximate',
   },
   {
     id: '22222222-2222-2222-2222-222222222222',
@@ -158,6 +159,7 @@ export const LISTINGS: Listing[] = [
     disabledLed: false,
     lat: 42.8867,
     lng: -78.8739,
+    coordsSource: 'approximate',
   },
   {
     id: '33333333-3333-3333-3333-333333333333',
@@ -173,6 +175,7 @@ export const LISTINGS: Listing[] = [
     provider: { disabilityLiterate: true },
     lat: 42.901,
     lng: -78.876,
+    coordsSource: 'approximate',
   },
 ];
 

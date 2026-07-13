@@ -10,6 +10,7 @@ import { supabaseAdmin } from '../../lib/supabase-server';
 import { getAttributeDefinitions } from '../../lib/repo';
 import { resolveContributor } from '../../lib/contributor';
 import { parseCoordinates } from '../../lib/geo';
+import { zipCentroid } from '../../lib/zip-centroids';
 
 export const prerender = false;
 
@@ -50,6 +51,26 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const str = (k: string, max: number) =>
       (form.get(k) as string | null)?.trim().slice(0, max) || null;
 
+    const postalCode = str('postal_code', 20);
+    // Coordinates power the on-device "sort by distance" (§13). Precedence:
+    //   1. exact lat/lng the contributor typed (validated above), else
+    //   2. an APPROXIMATE ZIP centroid (src/lib/zip-centroids.ts — no external
+    //      geocoder, §6), so a submitter who just gives an address still shows up
+    //      in the distance sort, else
+    //   3. none.
+    // coords_source records which, so the UI can label approximate honestly (§4).
+    let lat = coords?.lat ?? null;
+    let lng = coords?.lng ?? null;
+    let coordsSource: 'exact' | 'approximate' | null = coords ? 'exact' : null;
+    if (!coords) {
+      const centroid = zipCentroid(postalCode);
+      if (centroid) {
+        lat = centroid.lat;
+        lng = centroid.lng;
+        coordsSource = 'approximate';
+      }
+    }
+
     const { data: listing, error: listingErr } = await supabaseAdmin
       .from('listings')
       .insert({
@@ -59,11 +80,10 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         street: str('street', MAX_NAME),
         city: str('city', MAX_NAME),
         region: str('region', MAX_NAME),
-        postal_code: str('postal_code', 20),
-        // Optional coordinates (§13): power the on-device "sort by distance".
-        // null when the contributor left them blank.
-        lat: coords?.lat ?? null,
-        lng: coords?.lng ?? null,
+        postal_code: postalCode,
+        lat,
+        lng,
+        coords_source: coordsSource,
         // Representation (§12) applies to both kinds — it lives on the listing.
         disabled_owned: form.get('disabled_owned') != null,
         disabled_led: form.get('disabled_led') != null,

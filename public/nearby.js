@@ -110,7 +110,12 @@
           if (isFinite(s.dist)) {
             var note = document.createElement('p');
             note.className = 'listing-meta distance-note';
-            note.textContent = s.dist.toFixed(1) + ' mi away';
+            // Approximate (ZIP-centroid) coords are labeled honestly — a leading
+            // "~" and an "(approx.)" tag, never a precise-looking figure (§4).
+            var approx = s.card.getAttribute('data-coords-approx') === '1';
+            note.textContent = approx
+              ? '~' + s.dist.toFixed(1) + ' mi away (approx.)'
+              : s.dist.toFixed(1) + ' mi away';
             s.card.appendChild(note);
           }
           list.appendChild(s.card); // re-append in sorted order
