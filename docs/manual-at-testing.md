@@ -1,543 +1,456 @@
-# Manual screen-reader testing — run sheet
+# Manual screen-reader testing — run sheet (desktop)
 
-**Who this is for:** paid community co-designer testers running VoiceOver
-(Mac or iPhone/iPad) or NVDA (Windows). You do not need to be an engineer.
-You do not need to know how the site is built. You just need to use it the
-way you normally use the web, and tell us honestly what worked and what
-didn't.
+**Who this is for:** paid community co-designer testers running NVDA (Windows)
+or VoiceOver (macOS). You do not need to be an engineer. You do not need to
+know how the site is built. Use the site the way you normally use the web, and
+tell us honestly what worked and what didn't.
 
-> **This checklist does not replace paid disabled co-designer testing
+> **This script does not replace paid disabled co-designer testing
 > (CLAUDE.md §5) — it IS the structured script for those sessions.**
-> Automated scanners catch roughly 40% of accessibility problems. The other
-> 60% — confusing announcements, wrong reading order, things that "pass" but
-> make no sense — can only be found by a person using assistive technology
-> for real. That person is you, and your time is paid.
+> Automated scanners catch roughly 40% of accessibility problems. This session
+> is entirely about the other 60% — the parts only a person using assistive
+> technology can judge. Your time is paid.
 
 ---
 
-## Before you start
+## What this session covers — and what it doesn't
 
-Fill this in once per session:
+**Covered here:** the whole site, with a desktop screen reader — NVDA with
+Firefox or Chrome on Windows, or VoiceOver with Safari on a Mac. Test with
+whichever you actually use day to day; that matters more than any pairing.
 
-| | |
-|---|---|
-| Your name or tester code | |
-| Date | |
-| Screen reader + version | (e.g., NVDA 2025.1, VoiceOver on macOS 15, VoiceOver on iOS 18) |
-| Browser + version | |
-| Site address you tested | (your facilitator gives you this — usually a test address, not the live site) |
+**Checked by machines, so not your job:** page titles, landmark structure,
+heading counts, color contrast, and form-label wiring are asserted
+automatically on every code change. You never need to inventory them. (If any
+of them *announces* strangely anyway, absolutely say so — that's exactly the
+kind of thing machines miss.)
 
-**Recommended pairings** (test with what you actually use day to day — that
-matters more than this list):
+**Tested separately (tracked, not forgotten):**
 
-- NVDA with Firefox or Chrome on Windows
-- VoiceOver with Safari on a Mac
-- VoiceOver with Safari on an iPhone or iPad
+- Mobile VoiceOver (iPhone/iPad) — its own run sheet, coming with the mobile app work.
+- Sighted keyboard-only use, including whether you can *see* where focus is.
+- Low vision: screen magnification, browser zoom, and high-contrast modes.
+- The sign-in screen itself — it belongs to a separate system. If you meet it
+  and anything there confuses you, please say so; it's tracked separately.
 
-### Quick command reminders
+## How the session works
 
-You likely know these already — this is just for reference.
+Your facilitator sets everything up, gives you the site address, and writes
+down results while you work — **you never fill in a form or edit this
+document.** Just think aloud. The most useful thing you can say is: *what you
+did, the exact words your screen reader said, and what you expected instead.*
+"It said 'button' with no name" is gold. "It felt off" is also fine — say so,
+and we'll dig in together.
 
-**NVDA (Windows):** `H` = next heading · `F` = next form field · `B` = next
-button · `K` = next link · Arrow keys = read line by line · `Tab` = next
-focusable thing · `NVDA+F7` = list of headings/links/landmarks · `NVDA+T` =
-read the page title.
+**If something blocks you** — a step you can't finish because of a bug — say
+so, and move on to the next step or Part. A blocking bug is the most valuable
+find of the session. You haven't broken the run.
 
-**VoiceOver (Mac):** `VO` means Control+Option (or Caps Lock). `VO+Right
-Arrow` = next item · `VO+U` = rotor (headings, links, form controls) ·
-`Tab` = next focusable thing · `VO+F2` = read the window/page title.
+**About wording:** expected announcements are written as "you should hear
+**something like** …". Every screen reader phrases things differently; the
+exact words don't matter, only that the meaning is there and nothing important
+is missing. The few places where the exact words DO matter are marked
+**[exact wording matters]** — those are safety labels.
 
-**VoiceOver (iPhone/iPad):** swipe right = next item · double-tap =
-activate · two-finger twist = rotor · pick "Headings" in the rotor and swipe
-down to jump by heading.
+**Some checks are marked [sighted check].** Those need a sighted person (your
+facilitator) to confirm what the screen looks like. Skipping them is not a gap
+in *your* run.
 
-### How to record results
-
-Every check below has a checkbox:
-
-- **Tick the box** if it passed.
-- **Leave it empty and write a note** if it failed. The most useful note is:
-  *what you did, the exact words your screen reader said, and what you
-  expected instead.* "It said 'button' with no name" is gold. "It felt off"
-  is also fine — say so, we will dig in together.
-
-The expected announcements below are written like "you should hear
-**something like** …". Every screen reader phrases things a bit differently.
-The exact wording doesn't matter. What matters: **the meaning is there, and
-nothing important is missing.**
+**Pace:** this script is long. Breaks whenever you want — tell your
+facilitator; the clock does not matter. You can stop at any point and you are
+paid in full. Many testers split it over two sessions (a good split point is
+after Part 7, Settings).
 
 ---
 
-## Part 0 — Checks that apply on EVERY page
+## Part 1 — Checks that carry through the whole session
 
-Run these on the first page you visit, then spot-check them as you go. If
-one fails anywhere, note which page.
+1. **The skip link works.** Reload any page, then press `Tab` once. The first
+   thing you reach should be a link, "Skip to main content." Press Enter —
+   reading should continue at the page's main content, not back at the top
+   menu.
 
-1. **Page title.** Ask your screen reader for the window/page title
-   (`NVDA+T` / `VO+F2`). It should name the page and end with
-   "— Access Atlas" (for example, "Places — Access Atlas").
-   - [ ] Every page I visited had a title that told me where I was.
+2. **No keyboard traps.** Put the mouse away for the whole session. You should
+   be able to reach every link, button, and form field with the keyboard, and
+   never get stuck somewhere `Tab` or the arrow keys can't leave.
 
-2. **Skip link.** Reload the page, then press `Tab` once. The very first
-   thing you reach should be a link that says **"Skip to main content."**
-   Press Enter — reading should continue at the page's main content, not
-   back at the top menu.
-   - [ ] The skip link is the first Tab stop and it works.
-
-3. **Landmarks.** Open your landmark list (NVDA elements list, or the
-   VoiceOver rotor). You should find: a **banner/header**, a navigation
-   named **"Primary"**, a **main** region, and a **footer/content info**.
-   - [ ] All four landmarks are there and the navigation has a name.
-
-4. **One main heading.** Each page has exactly one level-1 heading, and it
-   matches what the page is about.
-   - [ ] Every page I visited had one clear level-1 heading.
-
-5. **Keyboard only, no traps.** Put the mouse away for the whole session.
-   You should be able to reach every link, button, and form field with the
-   keyboard, and never get stuck somewhere `Tab` or the arrow keys can't
-   leave.
-   - [ ] I completed this whole script without the mouse and never got stuck.
-
-6. **The main menu.** In the header navigation you should find these links,
-   each announced as a link with a clear name: **Places, Providers, Suggest
-   a listing, Help, Accessibility, Privacy.**
-   - [ ] All six menu links are announced clearly.
+3. **The main menu makes sense.** In the header navigation you should find six
+   clearly named links: Places, Providers, Suggest a listing, Help,
+   Accessibility, Privacy. In the footer: a "Your data" link.
 
 ---
 
-## Part 1 — Home page (`/`)
+## Part 2 — Home page (`/`)
 
-**Get there:** open the site's address, or activate "Access Atlas — home" in
-the header.
+**Get there:** open the site's address.
 
-1. Jump by headings. You should hear one level-1 heading, **something like**
-   "Accessible places and providers, validated by the community."
-   - [ ] The main heading is announced.
+1. Jump by headings. The one main heading should tell you what the site is —
+   **something like** "accessible places and providers, validated by the
+   community."
 
-2. After the intro text you should reach two links: **"Browse places"** and
-   **"Browse providers."** Both should be announced as links (they look like
-   buttons on screen — as long as they're announced with a clear name,
-   that's a pass).
-   - [ ] Both links are reachable and clearly named.
+2. After the intro you should reach two links, "Browse places" and "Browse
+   providers." They look like buttons on screen — announced as links with
+   clear names is a pass.
 
-3. Read the box that starts **"How to read our labels."** It should read as
-   normal text, in a sensible order, explaining self-reported vs.
-   community-verified.
-   - [ ] The labels explanation reads in a sensible order and makes sense.
+3. The box that starts "How to read our labels" should read as normal text,
+   in a sensible order, explaining self-reported vs. community-verified.
 
-4. **Plain-language check (your judgment):** after hearing this page once,
-   could you explain to a friend what this site is for?
-   - [ ] Yes — the purpose was clear from listening alone.
+4. **In your own words** (tell your facilitator): what is this site for, and
+   who is it for? Don't look anything up — answer from what you just heard.
 
 ---
 
-## Part 2 — Places list (`/places/`)
+## Part 3 — The two directory lists
 
-**Get there:** "Browse places" on the home page, or "Places" in the menu.
+**Run this part twice: once on Places, once on Providers** (both are in the
+main menu).
 
-1. The level-1 heading is **"Accessible places."** Right after it, a
-   sentence tells you **how many places are listed** — you should not have
-   to count them yourself.
-   - [ ] The count is announced before the list.
+On both lists:
 
-2. You should find a link **"+ Suggest a place"** before the list.
-   - [ ] The suggest link is there and clearly named.
-
-3. The places are a **list**. Your screen reader should announce it as a
-   list and say how many items it has. Each place is a level-3 heading with
-   a link — so jumping by headings should hop place to place.
-   - [ ] The list is announced as a list, and heading-jumping moves between
-     places.
-
-4. Some places carry tags read as plain text, **something like**
+1. Before the list, a link offers to add one ("+ Suggest a place" / "+ Suggest
+   a provider").
+2. The listings are announced as a **list**, and each listing is a level-3
+   heading containing a link — so jumping by headings hops listing to listing.
+3. Some listings carry tags read as plain text, **something like**
    "Disabled-owned (self-attested)" or "Disability-literate (self-attested)."
-   These must be spoken, not just shown as a colored chip.
-   - [ ] Any tags on a place are read out loud.
+   Tags must be spoken, not just shown as a colored chip.
+
+Differences you should expect (not bugs):
+
+- **Places** starts with "Accessible places" and a sentence saying **how many
+  places are listed** — you should not have to count.
+- **Providers** starts with "Providers" and a short explanation that
+  disability-literate and disabled-owned/-led are tracked separately. It does
+  **not** announce a count today — a known gap we've already filed.
+- An **empty list** should explain itself honestly (coverage starts thin in
+  Buffalo / Erie County on purpose) and offer a way to contribute — never just
+  silence. Your facilitator may show you one.
 
 ---
 
-## Part 3 — A place's detail page (`/places/…`)
+## Part 4 — Detail pages
 
-**Get there:** from the places list, activate any place's name link.
-Pick one that has photos if your facilitator can point you to one.
+**Run this part twice: once for a place, once for a provider.** Your
+facilitator will point you to ones with photos.
 
-1. First link on the page: **"← All places"** (a way back). Then the place's
-   name as the level-1 heading.
-   - [ ] Back link and main heading are announced.
+### 4.1 Orientation
 
-2. Find the **"Accessibility"** heading. Under it, a sentence says each item
-   is validated on its own, never rolled into a star rating. Then a list of
-   accessibility facts.
-   - [ ] The accessibility section is reachable by heading and reads in
-     order.
+The first link **in the main content area** (after the site menu) is a way
+back — "← All places" or "← All providers" — followed by the listing's name as
+the main heading.
 
-3. **Each fact reads as a complete thought.** For each item you should hear,
-   in order: the fact's name (like "Step-free entrance"), then its trust
-   label **in words** (like "self-reported / awaiting verification" or
-   "community-verified"), then a short description of what that label means,
-   and — when it exists — a "Last confirmed:" date. You must never have to
-   guess trust from a color or symbol alone.
-   - [ ] Every fact's trust label and its meaning are spoken in words.
-   - [ ] "Last confirmed" dates are read where present.
+### 4.2 Provider pages only: ownership & competence
 
-4. **Evidence photos (new — please test carefully).** Facts that have photo
-   evidence show a photo list announced **something like** "Photo evidence
-   for 'Step-free entrance', list."
-   - [ ] The photo list announces which fact it belongs to.
+Under a heading about ownership, leadership & competence, you should hear that
+these are **self-attested — no medical proof is ever required**, then three
+plain statements: disability-literate, disabled-owned, disabled-led — each
+"Yes (self-attested)" or the honest "Not attested."
 
-   For each photo:
-   - The image's description is read out. It should be the description a
-     visitor wrote — a real sentence about what the photo shows (like "the
-     front entrance, one step up, no ramp"). If nobody wrote one, you should
-     hear the honest fallback: **"Evidence photo (no description was
-     provided)"** — never a filename, never silence.
-     - [ ] Every photo has a spoken description or the honest fallback.
-   - The caption after the image says **"Photo from"** plus a date — or
-     **"Problem reported — photo from"** plus a date when the photo shows
-     something wrong. That difference is safety information: you must be
-     able to hear it, not just see red styling.
-     - [ ] "Problem reported" captions are clearly spoken where they exist.
-   - Each photo has a **"Full size"** link. It should be reachable by
-     keyboard and announced as a link.
-     - [ ] Full-size links are reachable and named.
+### 4.3 The accessibility facts
 
-5. Each fact ends with a link **"Report your visit for '…'"** naming the
-   specific fact — so out of context (in a links list) you still know which
-   fact it's for.
-   - [ ] Report links name their fact.
+Find the accessibility heading. Under it, a sentence says each item is
+validated on its own, never rolled into a star rating. Then each fact reads as
+a **complete thought**: its name (like "Step-free entrance"), then its trust
+label **in words**, then what that label means, and — when it exists — a
+"Last confirmed:" date.
 
-6. The closing note ("Accessibility facts change — ramps break…") reads as
-   plain text.
-   - [ ] The staleness note is read.
+**[exact wording matters]** The trust labels are a fixed, honest vocabulary:
+
+- "Self-reported / awaiting verification"
+- "1 community confirmation" / "N community confirmations"
+- "Community-verified"
+- "Sourced" (the only label allowed to say "high confidence")
+- "Disputed — under re-review"
+
+You must never have to guess trust from a color or symbol alone, and
+self-reported facts must never be called verified.
+
+You may also hear, on some facts — expected, not bugs:
+
+- a staleness note ("Last confirmed a while ago — access facts change; needs
+  re-confirmation"), and/or
+- a note that more photos exist than are shown ("N more photos exist for this
+  claim — showing the 4 most recent").
+
+### 4.4 Evidence photos
+
+Facts with photo evidence show a photo list that announces **which fact it
+belongs to** ("Photo evidence for 'Step-free entrance', list"). For each photo:
+
+- **The photo itself is a link** to the full-size image, so expect to hear
+  "link" and then "image" together — that's correct. There's also a separate
+  "Full size" text link to the same image.
+- The image's description is read out: a real sentence a visitor wrote about
+  what the photo shows. If nobody wrote one, you should hear the honest
+  fallback, "Evidence photo (no description was provided)" — never a filename,
+  never silence.
+- **[exact wording matters]** The caption is "Photo from" plus a date — or
+  **"Problem reported — photo from"** plus a date when the photo shows
+  something wrong. That difference is safety information: you must be able to
+  *hear* it, not just see red styling.
+
+### 4.5 The rest of the page
+
+1. Each fact ends with a link naming the specific fact — "Report your visit
+   for '…'" — so in a links list you still know which fact it belongs to.
+2. The closing note (accessibility facts change — ramps break…) reads as plain
+   text.
+3. **Broken address:** have your facilitator mangle the address. You should
+   hear a clear "not found" heading and a link back to the list — not a blank
+   page.
 
 ---
 
-## Part 4 — Report your visit (`/contribute/confirm/…`)
+## Part 5 — Report your visit (`/contribute/confirm/…`)
 
-**Get there:** on a place's page, activate any **"Report your visit for
-'…'"** link.
+**Get there:** on a detail page, activate any "Report your visit for '…'" link.
 
 This form is the safety-critical heart of the site. Take your time here.
 
-1. The page starts with a link back to the place, then the level-1 heading
-   **"Report your visit,"** then a sentence naming the place and the exact
-   claim you're reporting on.
-   - [ ] I knew which place and which claim I was reporting on from
-     listening alone.
+**One rule for this whole part: nothing you enter needs to be true about
+you.** You are testing that the form works, not reporting a real visit. Your
+facilitator gives you test answers.
 
-2. You may hear a sign-in notice (**something like** "To report a visit,
-   please sign in to contribute. Browsing stays account-free."). If so, it
-   should read as a normal message, and the sign-in link should work by
-   keyboard. Your facilitator will tell you whether to sign in or test the
-   form signed out.
-   - [ ] Any sign-in message was announced and its link worked.
+### 5.1 Orientation
 
-3. **The yes/no question (radio buttons).** Move into the form. When you
-   reach the first radio button you should hear the **question itself**
-   (like "Does the entrance have zero steps?") as the group's name, then the
-   option **"Yes — my visit confirms this,"** announced as a radio button,
-   marked required. The second option is **"No — this was NOT true on my
-   visit."** Arrow keys should move between the two.
-   - [ ] The question is announced when I reach the radio buttons.
-   - [ ] Both options are announced as radio buttons and arrows move
-     between them.
-   - [ ] The note that a single "no" freezes the claim is read after the
-     options.
+The page starts with a link back to the listing, then a "Report your visit"
+heading, then a sentence naming the listing and the exact claim. You should
+know **which place and which claim** from listening alone.
 
-4. **Date of your visit** — announced as an optional date field with its
-   label.
-   - [ ] Labeled and reachable.
+### 5.2 If a sign-in message appears
 
-5. **Photo field.** The label itself tells you whether a photo is required
-   for this claim ("Photo evidence — required to confirm this attribute") or
-   optional. Right after the field you should hear: **"Location and device
-   data are removed from your photo before it is stored."**
-   - [ ] The label says whether a photo is required.
-   - [ ] The privacy note about location data is announced with the field.
+It should read as a normal message ("to report a visit, please sign in —
+browsing stays account-free") with a working link. Your facilitator will tell
+you whether you'll see one today.
 
-6. **Photo description field (required if you attach a photo).** Its label:
-   **"Describe what your photo shows — required if you attach a photo."**
-   With it you should hear the example hint ("For example: 'the front
-   entrance, one step up, no ramp.' Your description is read aloud to blind
-   and low-vision users — it's part of the evidence.").
-   - [ ] Label and example hint are both announced.
+### 5.3 The yes/no question
 
-7. **Access-experience checkboxes.** A group whose name says **something
-   like** "Optional: which access experience are you speaking from? Never
-   shown tied to you — used only to weight your report." Inside, five
-   checkboxes: wheelchair or mobility device / blind or low vision / Deaf or
-   hard of hearing / cognitive or learning access needs / neurodivergent.
-   - [ ] The group's purpose (optional, never shown tied to you) is
-     announced before or with the checkboxes.
-   - [ ] All five checkboxes have clear spoken labels and toggle with Space.
-   - **Your judgment:** does this group feel safe and optional — not like
-     the site is fishing for your diagnosis?
-   - [ ] It felt optional and safe.
+When you reach the first radio button you should hear the **question itself**
+(like "Does the entrance have zero steps?") as the group's name, then "Yes —
+my visit confirms this," announced as a required radio button. The second
+option: "No — this was NOT true on my visit." Arrow keys move between the two.
+After the options, a note explains that a single "no" freezes the claim.
 
-8. The notes box and the display-name field are labeled and optional, and
-   the display-name label says it's **not your real name**.
-   - [ ] Both labeled; the pseudonym hint is spoken.
+### 5.4 The other fields
 
-9. **Error messages (do these on purpose):**
-   - Submit **without choosing yes or no.** You should be stopped and told —
-     either by your browser on the field itself, or by a page message spoken
-     **automatically** (without you hunting for it): "Please choose whether
-     your visit confirmed the claim or not."
-     - [ ] The missing-answer error was announced automatically and told me
-       what to fix.
-   - Choose **Yes**, attach any photo, leave the description empty, submit.
-     You should automatically hear **something like**: "Please describe what
-     your photo shows — the description is what makes it evidence for blind
-     and low-vision users."
-     - [ ] The missing-description error was announced automatically.
-   - If the claim requires a photo: choose **Yes** with no photo and submit.
-     You should hear: "A photo is required to confirm this attribute. (You
-     can dissent without one.)"
-     - [ ] The photo-required error was announced automatically (skip if
-       your claim doesn't require a photo).
+1. **Date of your visit** — an optional, labeled date field.
+2. **Photo** — the label itself says whether a photo is required for this
+   claim or optional. With the field you should hear that location and device
+   data are removed from photos before storage.
+3. **Photo description** — its label says it's required if you attach a photo,
+   with an example hint explaining the description *is* part of the evidence.
+4. **Notes** and **display name** — labeled, optional, and the display-name
+   label says it's not your real name.
 
-10. **Success.** Fill the form honestly (your facilitator will say what to
-    enter on a test site) and submit. The page should automatically announce
-    **something like**: "Thank you — your visit was recorded. It counts
-    toward this claim once enough independent visits agree." Submitting the
-    same claim again should say you've **already reported** it and each
-    person counts once.
-    - [ ] The thank-you message was announced automatically.
-    - [ ] The already-reported message was announced on a second try.
+### 5.5 The access-experience checkboxes
+
+A group whose name says **something like**: optional, which access experience
+are you speaking from, never shown tied to you, used only to weight your
+report. Inside, five checkboxes (wheelchair or mobility device / blind or low
+vision / Deaf or hard of hearing / cognitive or learning access needs /
+neurodivergent), each with a clear spoken label, each toggling with Space.
+
+**Check any boxes you like — they do not need to describe you.** This is a
+test database; we're checking the checkboxes work, not asking about you.
+
+**Then tell your facilitator, in your own words:** how did this question group
+make you feel? Is there anything you'd change about how it asks?
+
+### 5.6 Error messages (do these on purpose)
+
+For each error below there are two things to record. **Required:** after
+submitting, the error message is at or very near the **top of the page**,
+before the heading — easy to find, and it tells you what to fix. **Worth
+noting (not a failure):** whether it was spoken *automatically*, without you
+hunting — screen readers differ on this and we want the data.
+
+1. Submit **without choosing yes or no.** You should be stopped — either by
+   the browser on the field itself, or by a page message about choosing
+   whether your visit confirmed the claim.
+2. Choose Yes, attach any photo, leave the description **empty**, submit. The
+   message should ask you to describe what your photo shows.
+3. If this claim requires a photo: choose Yes with **no photo** and submit.
+   The message should say a photo is required to confirm (and that you can
+   dissent without one).
+
+### 5.7 Success
+
+Submit with your facilitator's test answers. The page should confirm your
+visit was recorded and explain it counts once enough independent visits agree
+(same two-tier rule: findable at the top is required; auto-spoken is worth
+noting). Submit the same claim again **with the same answers, photo
+included** — you should be told you've **already reported** it; each person
+counts once. (If you drop the photo on the retry, the photo-required message
+comes first — that's correct, not a bug.)
 
 ---
 
-## Part 5 — Suggest a listing (`/contribute/submit/`)
+## Part 6 — Suggest a listing (`/contribute/submit/`)
 
-**Get there:** "Suggest a listing" in the menu, or "+ Suggest a place" on
-the places list.
+**Get there:** "Suggest a listing" in the menu.
 
 1. The heading tells you what you're adding ("Suggest a place"), and right
-   after it a link offers the other kind: **"Add a provider instead."**
-   Activate it — the heading should now say "Suggest a provider," and a new
-   group of checkboxes about provider competence should appear. Then switch
-   back.
-   - [ ] Switching between place and provider is a plain link, works by
-     keyboard, and the page tells me which one I'm on.
-
+   after it a link offers the other kind: "Add a provider instead." Activate
+   it — the heading now says "Suggest a provider," a **"Provider competence"
+   group appears (currently a single checkbox)**, and the accessibility-features
+   checklist switches to provider-specific items. Then switch back.
 2. Early on, the page says new listings start as **"self-reported / awaiting
-   verification."**
-   - [ ] That honesty note is read before the form.
-
-3. **Name field.** Its label is "Name" and it is announced as **required**.
-   - [ ] Announced as required.
-
-4. Submit with the name **empty**. You should be stopped at the name field
-   and told it must be filled in (browsers usually announce "invalid entry"
-   and move you there). If a page message appears instead, it should say
-   "Please give the place or provider a name" and your focus should land on
-   the name field.
-   - [ ] The empty-name error put me on the name field and told me what to
-     fix.
-
+   verification"** — that honesty note comes before the form.
+3. The **Name** field is announced as required.
+4. Submit with the name **empty.** You should be stopped and put **on the name
+   field**, told it must be filled in (browsers usually announce "invalid
+   entry"; a page message saying to give it a name also passes — focus must
+   land on the field either way).
 5. The address, ownership, and accessibility-features groups each announce
-   their purpose when you enter them — "Where is it? (Buffalo / Erie County
-   first — optional)", "Ownership & leadership (self-attested — no proof
-   required)", "Which accessibility features did you observe? (optional;
-   self-reported — others will confirm from their own visits)". Every
-   checkbox inside has a clear spoken label.
-   - [ ] Each group announces its purpose.
-   - [ ] Every checkbox is clearly labeled and toggles with Space.
-
-6. Submit a complete test listing (facilitator's go-ahead). You should land
-   on the new listing's page and **automatically** hear: "Thanks — your
-   listing was added. It starts as 'self-reported / awaiting verification'
-   until community visits confirm it."
-   - [ ] The success message was announced on the new listing's page.
+   their purpose as you enter them, and every checkbox has a clear spoken
+   label.
+6. Submit a complete test listing (facilitator's go-ahead). You should land on
+   the new listing's own page with a message near the top confirming it was
+   added and starts as self-reported.
 
 ---
 
-## Part 6 — Accessibility settings (`/settings/`)
+## Part 7 — Accessibility settings (`/settings/`)
 
 **Get there:** "Accessibility" in the menu.
 
-This page must not just *announce* well — every setting must actually **take
-effect and stick**.
+This page must not just *announce* well — every setting must actually take
+effect and stick.
 
 1. Before the form, a note says settings are stored **on this device only**,
-   with no account and no tracking.
-   - [ ] The privacy note is read before the form.
+   no account, no tracking.
+2. The form has three named groups (text / colour & motion / pointer & touch)
+   holding six controls: three labeled dropdowns (Text size, Line spacing,
+   Font — the Font dropdown carries a hint explaining the choices) and three
+   labeled checkboxes (High contrast, Reduce motion, Larger click and tap
+   targets). All six work with the keyboard alone.
+3. Two buttons: "Save settings" and "Reset to defaults."
+4. **Does each setting actually work? Use this same pattern for every setting,
+   one at a time:**
+   - change it → Save → a message near the top confirms the save
+   - **[sighted check]** the page visibly changed where the setting promises it
+     (text size, contrast, font; reduce-motion is subtle on this site — the
+     saved state is the check)
+   - leave to the home page and come back → the control still announces your
+     choice as current.
 
-2. The form has three groups — **Text**, **Colour & motion**, **Pointer &
-   touch** — each announcing its name. Inside: three labeled dropdowns
-   (Text size, Line spacing, Font) and three labeled checkboxes (High
-   contrast, Reduce motion, Larger click and tap targets). The Font dropdown
-   also carries a hint explaining "Readable" vs "OpenDyslexic."
-   - [ ] All six controls are labeled and operable with the keyboard alone
-     (arrows change dropdowns, Space toggles checkboxes).
-   - [ ] The font hint is announced with the Font dropdown.
-
-3. Two buttons: **"Save settings"** and **"Reset to defaults."**
-   - [ ] Both announced as buttons with those names.
-
-4. **Does each setting work? Test one at a time:**
-   - Set **Text size** to "Extra large (150%)" and save. You should
-     automatically hear: "Your accessibility settings were saved. They're
-     applied below." Sighted check (facilitator or low-vision tester): the
-     text is visibly bigger.
-     - [ ] Save announced; text size actually changed.
-   - **It persists:** go to the home page, then come back to Settings. The
-     text should still be large, and the Text size dropdown should announce
-     "Extra large (150%)" as the current choice.
-     - [ ] The setting survived leaving and returning.
-   - Turn on **High contrast**, save, and confirm the page looks/reads with
-     stronger contrast (sighted check).
-     - [ ] High contrast took effect after saving.
-   - Turn on **Reduce motion**, save. (Effect is subtle on this site —
-     confirm the save is announced and the checkbox stays checked when you
-     return.)
-     - [ ] Reduce motion saved and persisted.
-   - Set **Font** to OpenDyslexic, save, sighted check that the typeface
-     changed; return and confirm the dropdown still says OpenDyslexic.
-     - [ ] Font change took effect and persisted.
-   - Turn on **Larger click and tap targets**, save. On a touch device,
-     links and buttons should be comfortably bigger targets.
-     - [ ] Larger targets saved (and felt bigger on touch, if tested).
-   - Press **"Reset to defaults."** You should hear: "Your accessibility
-     settings were reset to the defaults," and the page returns to normal
-     size.
-     - [ ] Reset announced and everything returned to defaults.
+   Settings to run through the pattern: Text size ("Extra large"), High
+   contrast, Reduce motion, Font (OpenDyslexic), Larger targets.
+5. Finally, "Reset to defaults": a message confirms the reset and
+   **[sighted check]** everything returns to normal.
 
 ---
 
-## Part 7 — Your data (`/account/`)
+## Part 8 — Your data (`/account/`)
 
-**Get there:** the **"Your data"** link in the footer.
+**Get there:** the "Your data" link in the footer.
 
-What you find depends on whether you're signed in and have contributed.
-Test the state your facilitator sets up; note which one you saw.
+What you find depends on how the test site is set up — your facilitator will
+tell you which state to expect. Note which one you saw.
 
-1. The level-1 heading is **"Your data."** The intro says browsing needs no
-   account and, for most visitors, the site holds nothing at all.
-   - [ ] Heading and intro are announced and understandable.
-
-2. **If you're not signed in:** you should hear a message like "To manage
-   your data, please sign in — we can only show your data to you," with a
-   working sign-in link. (Or, if contributions aren't open: a plain message
-   saying so.)
-   - [ ] The signed-out message was announced and made sense.
-
-3. **If you're signed in and have contributed:** under "What we hold about
-   you," a short list reads your display name, how many visit reports, and
-   how many listings you suggested — followed by: "That's the whole list. We
-   never hold your specific disability or diagnosis — we never ask for it."
-   - [ ] The list reads completely and the never-ask promise is spoken.
-
-4. **"Download my data (JSON)"** is a button. Activating it downloads one
-   file immediately — no form, no waiting.
-   - [ ] The download button is announced and produces a file.
-
-5. A link **"Delete my data…"** leads to a separate confirmation page (next
-   part). The text before it warns it cannot be undone and that you'll be
-   asked to confirm first.
-   - [ ] The delete link and its warning are announced before anything
-     destructive can happen.
-
-6. If a **Sign out** button is present, it's announced as a button, and its
-   explanation ("ends this session everywhere") is read.
-   - [ ] Sign out is a clearly named button.
+1. The main heading is "Your data." The intro says browsing needs no account
+   and, for most visitors, the site holds nothing at all.
+2. **Before you've contributed** you'll hear one of: a sign-in message with a
+   working link; a plain note that contributions aren't open; or an honest
+   "we hold no data for this browser" note. Whichever appears must read as a
+   normal message and make sense.
+3. **After you've contributed** (you did, in Parts 5–6): under "What we hold
+   about you," a short list reads your display name and your counts of visit
+   reports and suggested listings — followed by the promise that that's the
+   whole list and your specific disability or diagnosis is **never** held or
+   asked for.
+4. "Download my data (JSON)" is a button. Activating it downloads one file
+   immediately — no form, no waiting.
+5. A "Delete my data…" link leads to a separate confirmation page (next part).
+   The text before it warns it cannot be undone — the warning comes **before**
+   anything destructive is possible.
+6. If a Sign out button is present, it's announced as a button with its
+   explanation.
 
 ---
 
-## Part 8 — Delete your data (`/account/delete/`)
+## Part 9 — Delete your data (`/account/delete/`)
 
-**Get there:** "Delete my data…" on the Your data page.
-**Only do this with test data your facilitator says is safe to delete.**
+**Do this part last — it really deletes the test account you built up in
+Parts 5–6. That's expected; your facilitator resets everything afterward.**
 
 This is the one destructive action on the site. The protection is a typed
-word — not a pop-up — precisely so it works for everyone. Please test that
-it really protects.
+word — not a pop-up — precisely so it works for everyone. Test that it really
+protects.
 
-1. Before any button, the page reads two plain sections: **"What will be
-   deleted"** (your reports, photos, tags, display name, account) and
-   **"What stays"** (listings you suggested, with your name detached), then
-   a clear warning: **"This cannot be undone,"** with a pointer to
-   downloading a copy instead.
-   - [ ] I heard exactly what would be deleted and what would stay,
-     *before* reaching the delete button.
-
-2. **The confirmation field.** Its label says: "To confirm, type the word
-   **delete**" and is announced as **required**. With it you should hear the
-   explanation: "Typing the word is asked so a stray click or key press can
-   never erase your data. Capital letters are fine."
-   - [ ] The label, the required state, and the why-we-ask note are all
-     spoken.
-
-3. The button is named **"Permanently delete my data"** — no vague "OK" or
-   "Submit."
-   - [ ] The button name states the consequence.
-
-4. A safe way out — the link **"Cancel and keep my data"** — is present and
-   reachable by keyboard.
-   - [ ] The cancel link is there and works.
-
+1. Before any button, two plain sections read **what will be deleted** (your
+   reports, photos, tags, display name, account) and **what stays** (listings
+   you suggested, with your name detached), then a clear warning that this
+   cannot be undone, with a pointer to downloading a copy first.
+2. The confirmation field's label asks you to **type the word "delete"** and
+   is announced as required, with the explanation of why typing is asked (so a
+   stray click can never erase your data) and that capital letters are fine.
+3. The button is named **"Permanently delete my data"** — no vague "OK."
+4. A safe way out — "Cancel and keep my data" — is present and reachable.
 5. **The guard actually guards.** Type the **wrong** word (like "yes") and
-   submit. Nothing should be deleted, and you should automatically hear:
-   "Please type the word 'delete' in the confirmation box — nothing was
-   deleted." Leaving it empty should also stop you (the browser will insist
-   on the field).
-   - [ ] Wrong word: stopped, told why, nothing deleted.
-   - [ ] Empty: stopped at the field.
-
-6. **The real deletion** (test data only!). Type **delete** — try it with
-   capital letters; that must also work — and submit. You should land back
-   on Your data and automatically hear: "Your data has been deleted.
-   Listings you suggested stay in the directory, with your name detached."
-   - [ ] Deletion worked, capitals were accepted, and the confirmation was
-     announced automatically.
+   submit. You should be stopped with a message that includes
+   **[exact wording matters]** "nothing was deleted" — and you can prove it:
+   go back to Your data, and your reports are still listed. Leaving the field
+   empty should also stop you at the field.
+6. **The real deletion.** Type **Delete** with a capital — that must work —
+   and submit. You land back on Your data with a message near the top: your
+   data has been deleted; listings you suggested stay, with your name
+   detached.
 
 ---
 
-## Part 9 — Help & plain words (`/about/help/`)
+## Part 10 — Help & plain words (`/about/help/`)
 
 **Get there:** "Help" in the menu.
 
-1. The glossary under **"Words we use"** reads as term-then-meaning pairs,
-   in order, with nothing skipped.
-   - [ ] Every term and its meaning are read as a pair.
+1. The glossary under "Words we use" reads as term-then-meaning pairs, in
+   order, nothing skipped.
+2. **The fold-out questions.** Each question is announced as something you can
+   open — "summary," "disclosure triangle," or a button — with a
+   collapsed/expanded state. Enter or Space opens it (announced expanded;
+   reading onward gives the answer); pressing again closes it (the answer
+   leaves the reading order). All six behave the same way.
+3. Links inside opened answers work by keyboard.
+4. **In your own words:** the page promises short sentences and no jargon.
+   Which sentences, if any, did you have to hear twice?
 
-2. **The fold-out questions under "Common questions."** Each question (like
-   "Do I need an account to look around?") should be announced as something
-   you can open — typically "summary" or "disclosure triangle" or a button —
-   with a **collapsed/expanded** state.
-   - Press Enter or Space on a question: it should announce it's now
-     **expanded**, and reading onward gives the answer.
-   - Press again: **collapsed**, and the answer is gone from the reading
-     order.
-   - [ ] Each question announces open/closed state and toggles with
-     Enter/Space.
-   - [ ] Answers are only in the reading order while open.
-   - [ ] All six questions behave the same way.
+---
 
-3. Links inside the answers (privacy policy, Accessibility settings, Your
-   data) are reachable by keyboard once the answer is open.
-   - [ ] Links inside opened answers work by keyboard.
+## Part 11 — Two short reads
 
-4. **Plain-language check (your judgment):** the whole page promises "short
-   sentences, no jargon." Did it deliver? Flag any sentence you had to
-   re-read.
-   - [ ] The page was genuinely plain to me. (Note any sentence that
-     wasn't.)
+Open "Privacy" and then "Accessibility → the statement page" from the site
+footer/menu (your facilitator can point you to the accessibility *statement*
+if the menu word takes you to settings).
+
+1. Each page reads top to bottom in a sensible order with one clear main
+   heading.
+2. **In your own words:** after your session today, did anything on these two
+   pages feel untrue or overstated? (These pages make promises; you just spent
+   two hours testing them.)
 
 ---
 
 ## Wrap-up
 
-Three questions in your own words — these are as important as every
-checkbox above:
+Three questions in your own words — these are as important as everything
+above:
 
 1. What was the most confusing or tiring moment of the session?
 2. Was anything announced in a way that felt dishonest, patronizing, or
    unsafe?
-3. Would you trust this site to tell you whether you can get into a
-   building? Why or why not?
+3. Would you trust this site to tell you whether you can get into a building?
+   Why or why not?
 
 Thank you. Your report — including every failure — directly changes what
 ships. Nothing in this script is a test of *you*; every failure is a bug in
 *the site*.
+
+---
+
+<!-- For editors, not testers: the [exact wording matters] quotes come from
+src/lib/labeling.ts (trust vocabulary), src/components/AttributeList.astro
+(photo captions), and src/pages/account/delete.astro (the delete guard). If
+you change those strings, change them here too. Everything else in this script
+is deliberately meaning-level ("something like") so UI copy edits don't rot
+it. Setup, scoring, and session logistics live in
+docs/manual-at-testing-facilitator.md. -->

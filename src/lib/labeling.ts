@@ -10,6 +10,9 @@
 //
 // If you find yourself hand-writing a status string in a component, stop and add
 // it here instead. One vocabulary, one place.
+//
+// The label texts are quoted verbatim in docs/manual-at-testing.md (marked
+// "[exact wording matters]") — if you change them, update the run sheet too.
 // -----------------------------------------------------------------------------
 import type { AttributeState, AttributeStatus } from './types';
 
