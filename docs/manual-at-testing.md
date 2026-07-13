@@ -109,9 +109,24 @@ On both lists:
 
 1. Before the list, a link offers to add one ("+ Suggest a place" / "+ Suggest
    a provider").
-2. The listings are announced as a **list**, and each listing is a level-3
+2. **The search & filter fold-out.** A control announced **something like**
+   "Search & filter places, collapsed" opens (Enter or Space) into a small
+   form: a labeled search box, category / county / ZIP choices, one or two
+   checkboxes, and a "Sort by" choice. Everything has a spoken label; nothing
+   filters "live" — you choose, then activate the Apply/submit button, and the
+   page reloads with the narrowed list and an updated count.
+3. **Filter it to nothing** (your facilitator suggests an over-narrow search).
+   The empty result should explain itself honestly — coverage starts thin in
+   Buffalo / Erie County on purpose — and offer a way to contribute or clear
+   the filter. Never just silence.
+4. **A "Sort by distance (use my location)" button may also be present** (it's
+   the site's one scripted extra). If you try it, the browser asks permission
+   for your location; declining must produce an honest spoken status, not a
+   dead button. Your location is used on your device only — it is never sent
+   anywhere. Trying this is optional.
+5. The listings are announced as a **list**, and each listing is a level-3
    heading containing a link — so jumping by headings hops listing to listing.
-3. Some listings carry tags read as plain text, **something like**
+6. Some listings carry tags read as plain text, **something like**
    "Disabled-owned (self-attested)" or "Disability-literate (self-attested)."
    Tags must be spoken, not just shown as a colored chip.
 
@@ -137,7 +152,9 @@ facilitator will point you to ones with photos.
 
 The first link **in the main content area** (after the site menu) is a way
 back — "← All places" or "← All providers" — followed by the listing's name as
-the main heading.
+the main heading. Near the top there is also a prominent **"Report a visit"**
+link: it jumps **down the same page** to the accessibility section (reading
+should continue there — you shouldn't land somewhere unlabeled).
 
 ### 4.2 Provider pages only: ownership & competence
 
@@ -188,6 +205,13 @@ belongs to** ("Photo evidence for 'Step-free entrance', list"). For each photo:
   **"Problem reported — photo from"** plus a date when the photo shows
   something wrong. That difference is safety information: you must be able to
   *hear* it, not just see red styling.
+- **A "Report this photo" fold-out** sits under each photo (on the test site;
+  it only appears when contributing is open). It should announce as openable
+  with a collapsed/expanded state, like the Help page questions. Open it: a
+  short form offers a fixed set of reasons — no free-text box, and nothing
+  about you is recorded with a report. Submit one with your facilitator's
+  go-ahead; the confirmation message follows the same "findable at the top"
+  rule as every other form.
 
 ### 4.5 The rest of the page
 
@@ -319,23 +343,24 @@ effect and stick.
 
 1. Before the form, a note says settings are stored **on this device only**,
    no account, no tracking.
-2. The form has three named groups (text / colour & motion / pointer & touch)
-   holding six controls: three labeled dropdowns (Text size, Line spacing,
-   Font — the Font dropdown carries a hint explaining the choices) and three
-   labeled checkboxes (High contrast, Reduce motion, Larger click and tap
-   targets). All six work with the keyboard alone.
+2. The form has four named groups (text / colour & motion / reading / pointer
+   & touch). Every dropdown (Text size, Line spacing, Font, Theme) and every
+   checkbox (High contrast, Reduce motion, Reading mode, Underline links,
+   Larger click and tap targets) has a clear spoken label and works with the
+   keyboard alone; the Font dropdown carries a hint explaining the choices.
 3. Two buttons: "Save settings" and "Reset to defaults."
 4. **Does each setting actually work? Use this same pattern for every setting,
    one at a time:**
    - change it → Save → a message near the top confirms the save
    - **[sighted check]** the page visibly changed where the setting promises it
-     (text size, contrast, font; reduce-motion is subtle on this site — the
-     saved state is the check)
+     (text size, contrast, theme, font; reduce-motion is subtle on this site —
+     the saved state is the check)
    - leave to the home page and come back → the control still announces your
      choice as current.
 
-   Settings to run through the pattern: Text size ("Extra large"), High
-   contrast, Reduce motion, Font (OpenDyslexic), Larger targets.
+   Settings to run through the pattern: Text size ("Extra large"), Theme
+   (dark), High contrast, Reduce motion, Font (OpenDyslexic), Underline links,
+   Larger targets.
 5. Finally, "Reset to defaults": a message confirms the reset and
    **[sighted check]** everything returns to normal.
 

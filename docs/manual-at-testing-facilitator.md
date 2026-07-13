@@ -72,10 +72,18 @@ npm run db:reset
 ```
 
 plus a fresh browser profile. This un-does everything a session created — test
-contributions, the Part 9 deletion, any identity-tag rows — so every tester
-starts from identical seeded state (that's what makes results comparable), and
-no tester's session data accumulates anywhere. The reset **is** the data
-hygiene: nothing a tester entered survives it.
+contributions, the Part 9 deletion, any identity-tag rows, and any test photo
+reports (Part 4.4 has the tester file one; it lands in the ops `photo_reports`
+queue, so don't be surprised to see it there before the reset) — so every
+tester starts from identical seeded state (that's what makes results
+comparable), and no tester's session data accumulates anywhere. The reset
+**is** the data hygiene: nothing a tester entered survives it.
+
+Two things to remember after the reset (both bit us before): reload the
+PostgREST schema cache (`notify pgrst, 'reload schema';` via psql), and verify
+the reset actually applied migrations — `select count(*) from
+attribute_definitions;` should return a number, not an error. A reset that
+finishes "successfully" with an empty schema happens; run it again if so.
 
 ---
 
