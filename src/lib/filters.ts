@@ -7,7 +7,7 @@
 // Filters only ever NARROW what is shown. They never touch claim states or
 // labels (§4) — a filtered list shows the same honest cards, just fewer.
 import type { Listing, ListingKind } from './types';
-import { isCategory, type Category } from './categories';
+import { isCategory, CATEGORY_LABELS, type Category } from './categories';
 
 // How the (already-filtered) list is ordered. Sorting only REORDERS — it never
 // narrows or touches claim labels (§4).
@@ -95,6 +95,92 @@ export function applyListingFilters(listings: Listing[], f: ListingFilters): Lis
     if (f.literate && !l.provider?.disabilityLiterate) return false;
     return true;
   });
+}
+
+// ListingFilters -> query string, omitting anything at its default. The partial
+// inverse of parseListingFilters (only the fields the UI sets), so a relaxed
+// filter set round-trips back into a real, bookmarkable list URL. Deterministic
+// key order. `literate` is provider-only, so it's emitted only when set — a
+// place URL never carries it.
+export function serializeListingFilters(f: ListingFilters): string {
+  const p = new URLSearchParams();
+  if (f.q) p.set('q', f.q);
+  if (f.category) p.set('category', f.category);
+  if (f.county) p.set('county', f.county);
+  if (f.zip) p.set('zip', f.zip);
+  if (f.owned) p.set('owned', '1');
+  if (f.led) p.set('led', '1');
+  if (f.literate) p.set('literate', '1');
+  if (f.sort !== DEFAULT_SORT) p.set('sort', f.sort);
+  return p.toString();
+}
+
+// One suggested way to widen a search that came back empty: drop exactly ONE
+// filter, keep the rest, and show how many listings that would surface.
+export interface BroadenSuggestion {
+  /** Which single filter is relaxed (also a stable de-dupe key). */
+  key: 'q' | 'category' | 'county' | 'zip' | 'owned' | 'led' | 'literate';
+  /** Human phrase naming the dropped constraint, e.g. `ZIP 14222`. */
+  label: string;
+  /** URL with just this one constraint removed; other filters + sort preserved. */
+  href: string;
+  /** How many listings match once this one filter is removed (always > 0). */
+  count: number;
+}
+
+// The active constraints, each paired with a copy of `filters` that has ONLY
+// that one cleared. Order here is the priority used to break count ties below:
+// most-specific constraints (a ZIP, a text needle) first.
+function activeConstraints(
+  f: ListingFilters,
+  kind: ListingKind,
+): Array<{ key: BroadenSuggestion['key']; label: string; without: ListingFilters }> {
+  const c: Array<{ key: BroadenSuggestion['key']; label: string; without: ListingFilters }> = [];
+  if (f.zip) c.push({ key: 'zip', label: `ZIP ${f.zip}`, without: { ...f, zip: '' } });
+  if (f.q) c.push({ key: 'q', label: `“${f.q}”`, without: { ...f, q: '' } });
+  if (f.category)
+    c.push({ key: 'category', label: CATEGORY_LABELS[f.category], without: { ...f, category: null } });
+  if (f.county) c.push({ key: 'county', label: f.county, without: { ...f, county: null } });
+  if (f.owned) c.push({ key: 'owned', label: 'disabled-owned', without: { ...f, owned: false } });
+  if (f.led) c.push({ key: 'led', label: 'disabled-led', without: { ...f, led: false } });
+  // literate is provider-only (hasActiveFilters ignores it for places).
+  if (kind === 'provider' && f.literate)
+    c.push({ key: 'literate', label: 'disability-literate', without: { ...f, literate: false } });
+  return c;
+}
+
+/**
+ * "Broaden your search" coaching for a filtered result set that came back empty
+ * (§3.4 empty-state coaching — explain why, then suggest a real broader query).
+ * For each active filter, count how many listings would show if just THAT one
+ * were relaxed (the others kept), and return only the relaxations that actually
+ * surface results — ranked by how many, most first.
+ *
+ * The counts are DERIVED from the same in-memory list the page just filtered, so
+ * every suggestion is a live link that leads somewhere — never a dead end. One
+ * code path for the Postgres and seed backends (§11). A relaxation that clears
+ * the LAST remaining filter is omitted: that is exactly the always-present
+ * "clear all filters" action, which the caller shows separately.
+ */
+export function broadenSuggestions(
+  action: string,
+  listings: Listing[],
+  f: ListingFilters,
+  kind: ListingKind,
+  limit = 4,
+): BroadenSuggestion[] {
+  const out: BroadenSuggestion[] = [];
+  for (const c of activeConstraints(f, kind)) {
+    // Dropping the last active constraint == "clear all"; don't duplicate it.
+    if (!hasActiveFilters(c.without, kind)) continue;
+    const count = applyListingFilters(listings, c.without).length;
+    if (count === 0) continue; // relaxing this one alone still shows nothing
+    const query = serializeListingFilters(c.without);
+    out.push({ key: c.key, label: c.label, href: query ? `${action}?${query}` : action, count });
+  }
+  // Most results first; stable sort keeps the activeConstraints priority on ties.
+  out.sort((a, b) => b.count - a.count);
+  return out.slice(0, limit);
 }
 
 // Reorder the (already-filtered) list. Returns a NEW array — never mutates the

@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import {
   applyListingFilters,
+  broadenSuggestions,
   countyOptions,
   hasActiveFilters,
   parseListingFilters,
+  serializeListingFilters,
   sortListings,
 } from '../../src/lib/filters';
 import type { Listing } from '../../src/lib/types';
@@ -173,6 +175,76 @@ describe('sortListings', () => {
     ];
     // No coords / no visitor location server-side → deterministic name order.
     expect(sortListings(rows, 'distance').map((l) => l.id)).toEqual(['a', 'z']);
+  });
+});
+
+describe('serializeListingFilters', () => {
+  it('round-trips through parseListingFilters, omitting defaults', () => {
+    const f = parse('q=cafe&category=business&county=Erie+County&zip=142&owned=1&sort=zip');
+    const qs = serializeListingFilters(f);
+    // Re-parsing the serialized string yields the same filters.
+    expect(parseListingFilters(new URLSearchParams(qs))).toEqual(f);
+  });
+
+  it('emits nothing for an all-default filter set', () => {
+    expect(serializeListingFilters(parse(''))).toBe('');
+  });
+
+  it('omits the default sort but keeps a non-default one', () => {
+    expect(serializeListingFilters(parse('zip=142'))).toBe('zip=142');
+    expect(serializeListingFilters(parse('zip=142&sort=recent'))).toBe('zip=142&sort=recent');
+  });
+});
+
+describe('broadenSuggestions', () => {
+  // Two owned businesses + one (not-owned) healthcare listing, all in Erie.
+  const ROWS: Listing[] = [
+    listing({ id: 'a', name: 'Ann Cafe', region: 'Erie County', category: 'business', postalCode: '14201', disabledOwned: true }),
+    listing({ id: 'b', name: 'Bo Cafe', region: 'Erie County', category: 'business', postalCode: '14222', disabledOwned: true }),
+    listing({ id: 'c', name: 'Cee Clinic', region: 'Erie County', category: 'healthcare', postalCode: '14203' }),
+  ];
+
+  it('for each active filter, offers a one-filter-relaxed link with a real result count', () => {
+    // owned + a ZIP that matches nothing → zero results, both filters active.
+    const f = parse('zip=15000&owned=1');
+    const s = broadenSuggestions('/places/', ROWS, f, 'place');
+    // Dropping the dead ZIP (keeping owned=1) surfaces the 2 owned listings;
+    // dropping owned (keeping the dead ZIP) still shows nothing → not offered.
+    expect(s.map((x) => x.key)).toEqual(['zip']);
+    expect(s[0].count).toBe(2);
+    expect(s[0].label).toBe('ZIP 15000');
+    expect(s[0].href).toBe('/places/?owned=1'); // other filter preserved
+  });
+
+  it('ranks suggestions by how many results each surfaces, most first', () => {
+    // category=healthcare (matches only c) AND owned=1 (matches a,b) → 0 together.
+    // Drop category (keep owned) → 2 owned businesses. Drop owned (keep
+    // healthcare) → 1 clinic. So the bigger-payoff relaxation ranks first.
+    const f = parse('category=healthcare&owned=1');
+    const s = broadenSuggestions('/places/', ROWS, f, 'place');
+    expect(s.map((x) => x.key)).toEqual(['category', 'owned']);
+    expect(s.map((x) => x.count)).toEqual([2, 1]);
+    expect(s[0].href).toBe('/places/?owned=1');
+    expect(s[1].href).toBe('/places/?category=healthcare');
+  });
+
+  it('never offers a relaxation that still shows nothing', () => {
+    // Both a dead ZIP and a dead category: relaxing either one alone still 0.
+    const f = parse('zip=15000&category=arts_culture');
+    expect(broadenSuggestions('/places/', ROWS, f, 'place')).toEqual([]);
+  });
+
+  it('omits the last-filter relaxation (that is the separate "clear all")', () => {
+    // Only one active filter → dropping it is "clear all", not a per-filter hint.
+    const f = parse('zip=15000');
+    expect(broadenSuggestions('/places/', ROWS, f, 'place')).toEqual([]);
+  });
+
+  it('ignores the provider-only literate filter on places', () => {
+    const f = parse('zip=15000&literate=1');
+    // literate isn't an active constraint for places, so only the ZIP is — and
+    // dropping the ZIP is the last filter → nothing to suggest.
+    expect(broadenSuggestions('/places/', ROWS, f, 'place')).toEqual([]);
   });
 });
 

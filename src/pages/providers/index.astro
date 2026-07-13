@@ -5,6 +5,7 @@ export const prerender = false;
 import Base from '../../layouts/Base.astro';
 import ListingCard from '../../components/ListingCard.astro';
 import ListingFilters from '../../components/ListingFilters.astro';
+import ListingEmptyState from '../../components/ListingEmptyState.astro';
 import { getListings } from '../../lib/repo';
 import {
   applyListingFilters,
@@ -55,27 +56,13 @@ const shown = sortListings(active ? applyListingFilters(providers, filters) : pr
 
   {
     shown.length === 0 ? (
-      active ? (
-        <div class="disclaimer">
-          <p>
-            <strong>No providers match these filters.</strong> Try removing a
-            filter, or <a href="/providers/">clear all filters</a> to see the
-            full list.
-          </p>
-        </div>
-      ) : (
-        <div class="disclaimer">
-          <p>
-            <strong>No providers here yet.</strong> We're seeding Buffalo / Erie
-            County first, and listings are validated by first-person visits — so
-            coverage starts thin and grows as people contribute.
-          </p>
-          <p>
-            <a href="/contribute/submit/?kind=provider">Suggest a provider</a>, or
-            browse <a href="/places/">places</a> instead.
-          </p>
-        </div>
-      )
+      <ListingEmptyState
+        kind="provider"
+        action="/providers/"
+        active={active}
+        listings={providers}
+        filters={filters}
+      />
     ) : (
       <ul class="listing-list">
         {shown.map((listing) => (

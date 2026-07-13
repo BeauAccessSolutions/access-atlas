@@ -1,0 +1,87 @@
+---
+// The "nothing to show" block for the list pages — ONE component for both
+// places and providers (§11 one code path) so the two stay in parity. There are
+// two distinct empty states and they must never share copy:
+//
+//   * ACTIVE filters, zero matches → search-coaching. Say WHY (the filters, not
+//     the directory, are empty), then offer real broader queries: each link
+//     drops exactly one filter and shows how many listings that surfaces
+//     (broadenSuggestions, derived from the live list — never a dead end). The
+//     "clear all filters" reset is always present as the final fallback.
+//   * NO filters, zero listings → first-run/seeding message. The sparseness is
+//     honest and on-mission (the directory grows from first-person visits, §4),
+//     so we explain it and point forward instead of apologising.
+//
+// Zero-JS: the surrounding page already re-rendered from the URL, and the
+// results-count <h2> on the page is the status announcement (§3.4) — so this
+// block is plain content, not a live region (no role=status double-read).
+import { broadenSuggestions, type ListingFilters } from '../lib/filters';
+import type { Listing, ListingKind } from '../lib/types';
+
+interface Props {
+  kind: ListingKind;
+  /** Bare list path, e.g. "/places/" — clear-all target + suggestion base. */
+  action: string;
+  /** Whether any filter is active (chooses which empty state to show). */
+  active: boolean;
+  /** The full kind list (pre-filter) — used to count broaden suggestions. */
+  listings: Listing[];
+  filters: ListingFilters;
+}
+const { kind, action, active, listings, filters } = Astro.props;
+
+const noun = kind === 'provider' ? 'provider' : 'place';
+const nounPlural = kind === 'provider' ? 'providers' : 'places';
+const submitHref = `/contribute/submit/?kind=${kind}`;
+const otherHref = kind === 'provider' ? '/places/' : '/providers/';
+const otherLabel = kind === 'provider' ? 'places' : 'providers';
+
+const suggestions = active ? broadenSuggestions(action, listings, filters, kind) : [];
+const total = listings.length;
+---
+
+{
+  active ? (
+    <div class="disclaimer">
+      <p>
+        <strong>No {nounPlural} match these filters.</strong> The directory isn't
+        empty — your filters just narrowed it to nothing.
+      </p>
+      {suggestions.length > 0 ? (
+        <>
+          <p>Widen the search — each option keeps your other filters:</p>
+          <ul>
+            {suggestions.map((s) => (
+              <li>
+                <a href={s.href}>Remove {s.label}</a> —{' '}
+                {s.count === 1 ? `${s.count} ${noun}` : `${s.count} ${nounPlural}`}
+              </li>
+            ))}
+          </ul>
+          <p>
+            Or <a href={action}>clear all filters</a> to see all {total}{' '}
+            {total === 1 ? noun : nounPlural}.
+          </p>
+        </>
+      ) : (
+        <p>
+          No single filter can be relaxed to show results.{' '}
+          <a href={action}>Clear all filters</a> to see all {total}{' '}
+          {total === 1 ? noun : nounPlural}.
+        </p>
+      )}
+    </div>
+  ) : (
+    <div class="disclaimer">
+      <p>
+        <strong>No {nounPlural} here yet.</strong> Access Atlas is starting in
+        Buffalo / Erie County, and every listing comes from a real first-person
+        visit — so coverage starts thin and grows as the community adds to it.
+      </p>
+      <p>
+        <a href={submitHref}>Suggest a {noun}</a>, or browse{' '}
+        <a href={otherHref}>{otherLabel}</a> instead.
+      </p>
+    </div>
+  )
+}

@@ -5,6 +5,7 @@ export const prerender = false;
 import Base from '../../layouts/Base.astro';
 import ListingCard from '../../components/ListingCard.astro';
 import ListingFilters from '../../components/ListingFilters.astro';
+import ListingEmptyState from '../../components/ListingEmptyState.astro';
 import { getListings } from '../../lib/repo';
 import {
   applyListingFilters,
@@ -52,27 +53,13 @@ const shown = sortListings(active ? applyListingFilters(places, filters) : place
 
   {
     shown.length === 0 ? (
-      active ? (
-        <div class="disclaimer">
-          <p>
-            <strong>No places match these filters.</strong> Try removing a
-            filter, or <a href="/places/">clear all filters</a> to see the full
-            list.
-          </p>
-        </div>
-      ) : (
-        <div class="disclaimer">
-          <p>
-            <strong>No places here yet.</strong> Access Atlas is starting in
-            Buffalo / Erie County, and this directory grows from real first-person
-            visits — so it's sparse on purpose until the community fills it in.
-          </p>
-          <p>
-            <a href="/contribute/submit/?kind=place">Suggest an accessible place</a>,
-            or browse <a href="/providers/">providers</a> instead.
-          </p>
-        </div>
-      )
+      <ListingEmptyState
+        kind="place"
+        action="/places/"
+        active={active}
+        listings={places}
+        filters={filters}
+      />
     ) : (
       <ul class="listing-list">
         {shown.map((listing) => (
