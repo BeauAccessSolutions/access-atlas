@@ -285,3 +285,9 @@ Role: **full identity member**, scoped honestly to how this app works —
 
 If a platform rule ever conflicts with a non-negotiable here, the more conservative
 (more accessible, more private) rule wins and the conflict is raised as a BAS ADR.
+
+---
+<!-- Shared cross-project lessons. Edit the canonical file, not here. -->
+@~/.claude/shared/LESSONS.md
+<!-- BAS-platform-only lessons. Canonical file lives in bas-platform. -->
+@~/projects/bas-platform/LESSONS.md
