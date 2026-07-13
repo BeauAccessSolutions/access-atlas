@@ -23,12 +23,14 @@ const BANNERS: Record<string, { role: 'status' | 'alert'; text: string }> = {
   disabled: { role: 'status', text: 'Contributions are not open yet — the community sign-in is still being set up. Your listing was not saved.' },
   need_signin: { role: 'alert', text: 'Please sign in to contribute — your listing was not saved.' },
   auth_error: { role: 'alert', text: 'Sign-in did not complete. Please try again.' },
+  bad_coords: { role: 'alert', text: 'The latitude/longitude looked off, so your listing was not saved. Enter both numbers (or leave both blank) and try again.' },
   error: { role: 'alert', text: 'Something went wrong and your listing was not saved. Please try again.' },
 };
 const banner = status ? BANNERS[status] : null;
 // A missing name is shown INLINE on the field (aria-invalid + aria-describedby),
 // not just as a top banner — the error sits where the fix is made (§5).
 const nameError = status === 'need_name';
+const coordsError = status === 'bad_coords';
 const noun = kind === 'provider' ? 'provider' : 'place';
 ---
 
@@ -105,6 +107,42 @@ const noun = kind === 'provider' ? 'provider' : 'place';
         <label for="postal_code">ZIP</label><br />
         <input type="text" id="postal_code" name="postal_code" inputmode="numeric" autocomplete="off" />
       </p>
+      <p>
+        <label for="lat">Latitude (optional)</label><br />
+        <input
+          type="text"
+          id="lat"
+          name="lat"
+          inputmode="decimal"
+          autocomplete="off"
+          aria-invalid={coordsError ? 'true' : undefined}
+          aria-describedby="coords-hint"
+        />
+      </p>
+      <p>
+        <label for="lng">Longitude (optional)</label><br />
+        <input
+          type="text"
+          id="lng"
+          name="lng"
+          inputmode="decimal"
+          autocomplete="off"
+          aria-invalid={coordsError ? 'true' : undefined}
+          aria-describedby="coords-hint"
+        />
+      </p>
+      <p id="coords-hint" class="field-hint">
+        Coordinates let people sort listings by distance. To find them, open the
+        spot in a maps app, press and hold the location, and copy the two numbers
+        (for example <code>42.9180, -78.8784</code>). Enter both or leave both
+        blank — it's fine to skip this.
+      </p>
+      {coordsError && (
+        <span class="field-error" id="coords-error">
+          Please enter both latitude and longitude as numbers (latitude −90 to 90,
+          longitude −180 to 180), or clear both.
+        </span>
+      )}
     </fieldset>
 
     <fieldset>

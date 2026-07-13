@@ -9,6 +9,7 @@ import type { APIRoute } from 'astro';
 import { supabaseAdmin } from '../../lib/supabase-server';
 import { getAttributeDefinitions } from '../../lib/repo';
 import { resolveContributor } from '../../lib/contributor';
+import { parseCoordinates } from '../../lib/geo';
 
 export const prerender = false;
 
@@ -34,6 +35,12 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   const name = (form.get('name') as string | null)?.trim();
   if (!name) return backToForm(kind, 'need_name');
 
+  // Optional coordinates (both together or neither). A half-filled or
+  // out-of-range pair is rejected honestly rather than silently dropped.
+  const coordsParse = parseCoordinates(form.get('lat'), form.get('lng'));
+  if ('error' in coordsParse) return backToForm(kind, 'bad_coords');
+  const coords = coordsParse.coords;
+
   try {
     const pseudonym = (form.get('pseudonym') as string | null) ?? null;
     const resolved = await resolveContributor(cookies, supabaseAdmin, { pseudonym });
@@ -53,6 +60,10 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         city: str('city', MAX_NAME),
         region: str('region', MAX_NAME),
         postal_code: str('postal_code', 20),
+        // Optional coordinates (§13): power the on-device "sort by distance".
+        // null when the contributor left them blank.
+        lat: coords?.lat ?? null,
+        lng: coords?.lng ?? null,
         // Representation (§12) applies to both kinds — it lives on the listing.
         disabled_owned: form.get('disabled_owned') != null,
         disabled_led: form.get('disabled_led') != null,
