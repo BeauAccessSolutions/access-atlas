@@ -37,6 +37,15 @@ for (const route of ROUTES) {
       .analyze();
     expect(results.violations).toEqual([]);
   });
+
+  // Every page title names the page and ends with the site name, so a
+  // screen-reader user always knows where they are (§5). Asserted here so the
+  // manual AT run sheet (docs/manual-at-testing.md) doesn't have to spend
+  // paid tester time on it.
+  test(`title ends with site name: ${route}`, async ({ page }) => {
+    await page.goto(route);
+    await expect(page).toHaveTitle(/— Access Atlas$/);
+  });
 }
 
 // A minimal structural check that survives refactors: every page must expose a
