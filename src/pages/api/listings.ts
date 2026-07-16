@@ -11,6 +11,7 @@ import { getAttributeDefinitions } from '../../lib/repo';
 import { resolveContributor } from '../../lib/contributor';
 import { parseCoordinates } from '../../lib/geo';
 import { zipCentroid } from '../../lib/zip-centroids';
+import { setFormEcho, clearFormEcho } from '../../lib/form-echo';
 
 export const prerender = false;
 
@@ -30,6 +31,11 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   const kindRaw = form?.get('kind');
   const kind = kindRaw === 'provider' ? 'provider' : kindRaw === 'place' ? 'place' : null;
   if (!form || !kind) return new Response('Bad request', { status: 400 });
+
+  // Preserve every typed field so a single-field error (a bad coordinate, a
+  // missing name) doesn't wipe the whole form (§5). Every error path re-renders
+  // via `backToForm()`; the success redirect clears this below.
+  setFormEcho(cookies, form);
 
   if (!supabaseAdmin) return backToForm(kind, 'disabled');
 
@@ -124,6 +130,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       }
     }
 
+    clearFormEcho(cookies);
     const path = kind === 'provider' ? 'providers' : 'places';
     return new Response(null, {
       status: 303,

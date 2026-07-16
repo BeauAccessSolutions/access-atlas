@@ -8,6 +8,7 @@ import Base from '../../layouts/Base.astro';
 import { getAttributeDefinitions } from '../../lib/repo';
 import { contributionAccess } from '../../lib/contributor';
 import { supabaseAdmin } from '../../lib/supabase-server';
+import { readFormEcho } from '../../lib/form-echo';
 import type { ListingKind } from '../../lib/types';
 
 const kindParam = Astro.url.searchParams.get('kind');
@@ -32,6 +33,16 @@ const banner = status ? BANNERS[status] : null;
 const nameError = status === 'need_name';
 const coordsError = status === 'bad_coords';
 const noun = kind === 'provider' ? 'provider' : 'place';
+
+// After a validation-error redirect, restore what the contributor typed so a
+// single-field error doesn't wipe the whole form (§5). Null on a normal first
+// render — then every control keeps its default. Zero-JS: read from a
+// short-lived cookie the POST handler set (lib/form-echo.ts).
+const echo = readFormEcho(Astro.cookies);
+const ev = (name: string): string | undefined => (echo ? echo.value(name) : undefined);
+const echoChecked = (name: string): boolean | undefined => (echo ? echo.checked(name) : undefined);
+const echoHas = (name: string, value: string): boolean | undefined =>
+  echo ? echo.includes(name, value) : undefined;
 ---
 
 <Base title={`Suggest a ${noun}`}>
@@ -75,6 +86,7 @@ const noun = kind === 'provider' ? 'provider' : 'place';
         type="text"
         id="name"
         name="name"
+        value={ev('name')}
         required
         aria-required="true"
         maxlength="200"
@@ -86,26 +98,26 @@ const noun = kind === 'provider' ? 'provider' : 'place';
     </p>
     <p>
       <label for="summary">Short description (optional)</label><br />
-      <textarea id="summary" name="summary" rows="2" maxlength="1000"></textarea>
+      <textarea id="summary" name="summary" rows="2" maxlength="1000">{ev('summary')}</textarea>
     </p>
 
     <fieldset>
       <legend>Where is it? (Buffalo / Erie County first — optional)</legend>
       <p>
         <label for="street">Street</label><br />
-        <input type="text" id="street" name="street" autocomplete="off" />
+        <input type="text" id="street" name="street" value={ev('street')} autocomplete="off" />
       </p>
       <p>
         <label for="city">City</label><br />
-        <input type="text" id="city" name="city" autocomplete="off" />
+        <input type="text" id="city" name="city" value={ev('city')} autocomplete="off" />
       </p>
       <p>
         <label for="region">County / region</label><br />
-        <input type="text" id="region" name="region" autocomplete="off" />
+        <input type="text" id="region" name="region" value={ev('region')} autocomplete="off" />
       </p>
       <p>
         <label for="postal_code">ZIP</label><br />
-        <input type="text" id="postal_code" name="postal_code" inputmode="numeric" autocomplete="off" />
+        <input type="text" id="postal_code" name="postal_code" value={ev('postal_code')} inputmode="numeric" autocomplete="off" />
       </p>
       <p>
         <label for="lat">Latitude (optional)</label><br />
@@ -113,6 +125,7 @@ const noun = kind === 'provider' ? 'provider' : 'place';
           type="text"
           id="lat"
           name="lat"
+          value={ev('lat')}
           inputmode="decimal"
           autocomplete="off"
           aria-invalid={coordsError ? 'true' : undefined}
@@ -125,6 +138,7 @@ const noun = kind === 'provider' ? 'provider' : 'place';
           type="text"
           id="lng"
           name="lng"
+          value={ev('lng')}
           inputmode="decimal"
           autocomplete="off"
           aria-invalid={coordsError ? 'true' : undefined}
@@ -149,11 +163,11 @@ const noun = kind === 'provider' ? 'provider' : 'place';
     <fieldset>
       <legend>Ownership &amp; leadership (self-attested — no proof required)</legend>
       <p>
-        <input type="checkbox" id="disabled_owned" name="disabled_owned" />
+        <input type="checkbox" id="disabled_owned" name="disabled_owned" checked={echoChecked('disabled_owned')} />
         <label for="disabled_owned">Disabled-owned — a disabled person owns 51% or more</label>
       </p>
       <p>
-        <input type="checkbox" id="disabled_led" name="disabled_led" />
+        <input type="checkbox" id="disabled_led" name="disabled_led" checked={echoChecked('disabled_led')} />
         <label for="disabled_led">Disabled-led — a disabled person holds primary leadership</label>
       </p>
     </fieldset>
@@ -163,7 +177,7 @@ const noun = kind === 'provider' ? 'provider' : 'place';
         <fieldset>
           <legend>Provider competence (self-attested — no proof required)</legend>
           <p>
-            <input type="checkbox" id="disability_literate" name="disability_literate" />
+            <input type="checkbox" id="disability_literate" name="disability_literate" checked={echoChecked('disability_literate')} />
             <label for="disability_literate">Disability-literate — serves disabled people well</label>
           </p>
         </fieldset>
@@ -177,7 +191,7 @@ const noun = kind === 'provider' ? 'provider' : 'place';
       </legend>
       {attributes.map((attr) => (
         <p>
-          <input type="checkbox" id={`attr-${attr.key}`} name="attributes" value={attr.key} />
+          <input type="checkbox" id={`attr-${attr.key}`} name="attributes" value={attr.key} checked={echoHas('attributes', attr.key)} />
           <label for={`attr-${attr.key}`}>{attr.label}</label>
         </p>
       ))}
@@ -185,7 +199,7 @@ const noun = kind === 'provider' ? 'provider' : 'place';
 
     <p>
       <label for="pseudonym">A display name to post under (optional, not your real name)</label><br />
-      <input type="text" id="pseudonym" name="pseudonym" autocomplete="off" />
+      <input type="text" id="pseudonym" name="pseudonym" value={ev('pseudonym')} autocomplete="off" />
     </p>
 
     <p><button type="submit">Submit this {noun}</button></p>

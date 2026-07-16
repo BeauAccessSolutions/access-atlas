@@ -16,6 +16,7 @@ import { supabaseAdmin } from '../../lib/supabase-server';
 import { getClaimForConfirm } from '../../lib/repo';
 import { resolveContributor } from '../../lib/contributor';
 import { sanitizeTags } from '../../lib/identity-tags';
+import { setFormEcho, clearFormEcho } from '../../lib/form-echo';
 
 export const prerender = false;
 
@@ -39,6 +40,11 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   if (!form || typeof claimId !== 'string' || !claimId) {
     return new Response('Bad request', { status: 400 });
   }
+
+  // Preserve everything the contributor typed so a single-field error doesn't
+  // wipe the form (§5). Every error path below re-renders the form via `back()`;
+  // the success path clears this so a recorded report leaves the form blank.
+  setFormEcho(cookies, form);
 
   // Writes require a resolved contributor — a verified Keycloak session, or the
   // provisional stand-in when explicitly enabled. resolveContributor encodes the
@@ -136,6 +142,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       return back(claimId, 'error');
     }
 
+    clearFormEcho(cookies);
     return back(claimId, 'thanks');
   } catch {
     return back(claimId, 'error');
