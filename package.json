@@ -28,6 +28,9 @@
   "dependencies": {
     "@astrojs/node": "^9.5.5",
     "@astrojs/react": "^4.2.0",
+    "@capacitor/cli": "^8.4.1",
+    "@capacitor/core": "^8.4.1",
+    "@capacitor/ios": "^8.4.1",
     "@supabase/supabase-js": "^2.45.0",
     "astro": "^5.2.0",
     "jose": "^5.10.0",
