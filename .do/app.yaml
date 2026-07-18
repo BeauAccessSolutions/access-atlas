@@ -4,7 +4,7 @@
 #
 # ONE component: the Astro web app (Dockerfile from GitHub). App data lives in a
 # Supabase CLOUD project; identity uses the SHARED platform Keycloak
-# (id.kindredaccess.org, realm `bas`) — Access Atlas does NOT run its own
+# (id.beauaccesssolutions.com, realm `bas`) — Access Atlas does NOT run its own
 # Keycloak (§15: the platform IdP is shared). So the only new cost is this
 # ~$5/mo web container. See docs/deploy-digitalocean.md.
 #
@@ -41,13 +41,18 @@ services:
       - key: SUPABASE_SERVICE_ROLE_KEY
         scope: RUN_TIME
         type: SECRET
-      # --- Shared platform Keycloak (id.kindredaccess.org, realm bas) ---
+      # --- Shared platform Keycloak (id.beauaccesssolutions.com, realm bas) ---
       # Reused, not self-hosted. The redirect URI resolves from the app's own
       # assigned URL; the `access-atlas` client must be registered on the bas
       # realm with this exact redirect (see the runbook).
+      # The issuer was flipped from id.kindredaccess.org via a live dashboard
+      # env edit first (verified live 2026-07-18: /api/auth/login 302s to the
+      # new host); this file caught up after the fact. If it ever disagrees
+      # with `doctl apps spec get` again, live wins — re-applying a stale copy
+      # of this file reverts the issuer and breaks login.
       - key: KEYCLOAK_ISSUER
         scope: RUN_TIME
-        value: "https://id.kindredaccess.org/realms/bas"
+        value: "https://id.beauaccesssolutions.com/realms/bas"
       - key: KEYCLOAK_CLIENT_ID
         scope: RUN_TIME
         value: "access-atlas"
