@@ -63,3 +63,30 @@ services:
       - key: ALLOW_PROVISIONAL_CONTRIBUTIONS
         scope: RUN_TIME
         value: "false"
+
+# ---- PRE_DEPLOY: apply pending DB migrations before the web app goes live ----
+# Runs `supabase db push` against the prod database on every deploy, BEFORE the
+# new `web` version is promoted. A PRE_DEPLOY job that exits non-zero HALTS the
+# deploy, so this both (a) applies additive migrations automatically (the analog
+# of CIT's `prisma migrate deploy`) and (b) fail-closes the rollout if the DB
+# can't be migrated — instead of shipping code ahead of the schema, which 500'd
+# the list pages on 2026-07-23 (missing listings.coords_source / migration 0011).
+#
+# REQUIRES a new secret: SUPABASE_DB_URL — the SESSION-mode pooler connection
+# string (port 5432), percent-encoded. See docs/deploy-digitalocean.md. Set the
+# secret BEFORE applying this spec, or the very next deploy will (by design) fail
+# at this job.
+jobs:
+  - name: migrate
+    kind: PRE_DEPLOY
+    github:
+      repo: Beaudoin0zach/access-atlas
+      branch: main
+      deploy_on_push: true
+    dockerfile_path: .do/migrate.Dockerfile
+    instance_size_slug: apps-s-1vcpu-0.5gb
+    instance_count: 1
+    envs:
+      - key: SUPABASE_DB_URL
+        scope: RUN_TIME
+        type: SECRET

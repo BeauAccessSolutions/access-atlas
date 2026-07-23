@@ -60,6 +60,50 @@ doctl apps logs <app-id> web --follow
 doctl apps logs <app-id> keycloak --follow
 ```
 
+## Database migrations (PRE_DEPLOY job)
+
+Every deploy runs a **`migrate` PRE_DEPLOY job** (`.do/app.yaml` `jobs:`, image
+`.do/migrate.Dockerfile`) BEFORE the new `web` version is promoted. It runs
+`supabase db push` (`scripts/migrate-deploy.sh`), which applies only the
+`supabase/migrations/*.sql` that aren't yet in the remote
+`supabase_migrations.schema_migrations` table — the same tool and tracking table
+local `supabase db reset` uses, so prod can't drift from the repo. This is the
+analog of CIT's `prisma migrate deploy`.
+
+**Why it exists:** without it, `deploy_on_push` shipped *code* but never the
+*schema*, so a push whose code assumed an unapplied migration 500'd the list
+pages (2026-07-23: `getListings` selected `listings.coords_source` before
+migration `0011` had been applied to prod). A PRE_DEPLOY job that exits non-zero
+**halts the deploy**, so a failed or skipped migration now stops the rollout
+instead of serving code against an un-migrated database.
+
+**One-time setup — a new secret is required:**
+
+```
+# SUPABASE_DB_URL — the SESSION-mode pooler connection string (port 5432),
+# percent-encoded. Get it from: Supabase dashboard -> Project Settings ->
+# Database -> Connection string -> "Session pooler". Do NOT use the transaction
+# pooler (port 6543): it doesn't support all migration statements. The direct
+# db.<ref>.supabase.co host is IPv6-only and may be unreachable from App Platform.
+#
+# 1. Set the secret on the app (encrypted at rest), THEN apply the spec:
+doctl apps update <app-id> --spec .do/app.yaml    # adds the `migrate` job
+# 2. If you apply the spec before setting SUPABASE_DB_URL, the next deploy will
+#    (by design) fail at the migrate job with a clear message — set the secret
+#    and redeploy.
+```
+
+The existing prod DB was reconciled and its migration history baselined on
+2026-07-23 (all of `0001`–`0011` recorded as applied), so the first run of this
+job is a no-op; only new migrations apply thereafter.
+
+**Manual / local equivalents** (operator sets `SUPABASE_DB_URL` in the env):
+
+```
+npm run migrate:check     # dry run: list pending migrations, apply none
+npm run migrate:deploy    # apply pending migrations
+```
+
 ## Resolve the two URL couplings (after the first deploy assigns URLs)
 
 App Platform assigns `https://<name>-<hash>.ondigitalocean.app` URLs that aren't
@@ -84,8 +128,10 @@ should replace the dev realm before external traffic. The local dev realm
 
 Drive the contributor flow against the deployed URLs and confirm: `/api/auth/login`
 → Keycloak → `/api/auth/callback` mints an httpOnly session; `/account/` resolves it;
-logout revokes it. The homepage + `/places/` must serve before any of that (they
-need no backend).
+logout revokes it. The **homepage** must serve before any of that (it needs no
+backend). Note `/places/` and `/providers/` DO query the database — they 500 if
+the schema is behind (the reason the migrate job above exists), so treat a 200 on
+those as part of verifying the DB, not a backend-free liveness check.
 
 ## Cost (recurring, approximate)
 

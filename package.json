@@ -20,6 +20,8 @@
     "db:start": "npx supabase start",
     "db:reset": "npx supabase db reset",
     "db:stop": "npx supabase stop",
+    "migrate:deploy": "sh scripts/migrate-deploy.sh",
+    "migrate:check": "sh scripts/migrate-deploy.sh --dry-run",
     "seed:import": "node scripts/seed-import.mjs",
     "data-rights": "node scripts/data-rights.mjs",
     "moderate:photo": "node scripts/moderate-photo.mjs",
