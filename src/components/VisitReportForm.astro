@@ -1,0 +1,167 @@
+---
+// The one visit-report form (§4), shared by the two doors into
+// /api/confirmations: the per-claim confirm flow (hidden claimId) and the
+// first-report flow (hidden listingId + attributeKey, for an attribute with no
+// claim on the listing yet). Pure semantic HTML — no JS ships from here (§5);
+// the native-camera enhancement is a separate, route-scoped script the PAGES
+// include (ADR-0002).
+import { IDENTITY_TAGS } from '../lib/identity-tags';
+import { readFormEcho } from '../lib/form-echo';
+
+interface Props {
+  /** Hidden fields naming the target — [{claimId}] or [{listingId},{attributeKey}]. */
+  hidden: Array<{ name: string; value: string }>;
+  /** The attribute's structured question, answered FROM THE VISIT (§4). */
+  questionText: string;
+  requiresPhoto: boolean;
+  /** ?status= from the redirect, for inline at-the-field errors. */
+  status: string | null;
+}
+const { hidden, questionText, requiresPhoto, status } = Astro.props;
+
+// Inline, at-the-field errors mirror the submit form (§5): the error sits where
+// the fix is made, not only in the top banner. Each is set aria-invalid, gets an
+// inline .field-error, and autofocuses the first errored control. Only one
+// `status` is ever set, so at most one of these is true.
+const answerError = status === 'need_answer';
+const photoError = status === 'photo_required' || status === 'photo_too_big';
+const altError = status === 'alt_required';
+
+// Restore what the contributor typed after a validation-error redirect so a
+// single-field error doesn't wipe the whole report (§5). Null on a normal first
+// render. Zero-JS: read from the short-lived cookie the POST handler set. (The
+// file input can't be pre-filled by a browser, so the photo is the one field
+// that must be re-attached — everything else survives.)
+const echo = readFormEcho(Astro.cookies);
+const ev = (name: string): string | undefined => (echo ? echo.value(name) : undefined);
+const echoHas = (name: string, value: string): boolean | undefined =>
+  echo ? echo.includes(name, value) : undefined;
+const echoRadio = (name: string, value: string): boolean | undefined =>
+  echo ? echo.selected(name, value) : undefined;
+---
+
+<form method="post" action="/api/confirmations" enctype="multipart/form-data">
+  {hidden.map((h) => <input type="hidden" name={h.name} value={h.value} />)}
+
+  <fieldset>
+    <legend>{questionText}</legend>
+    <p>
+      <input
+        type="radio"
+        id="agrees-yes"
+        name="agrees"
+        value="yes"
+        required
+        checked={echoRadio('agrees', 'yes')}
+        aria-invalid={answerError ? 'true' : undefined}
+        aria-describedby={answerError ? 'agrees-error' : undefined}
+        autofocus={answerError}
+      />
+      <label for="agrees-yes">Yes — my visit confirms this</label>
+    </p>
+    <p>
+      <input
+        type="radio"
+        id="agrees-no"
+        name="agrees"
+        value="no"
+        checked={echoRadio('agrees', 'no')}
+        aria-invalid={answerError ? 'true' : undefined}
+        aria-describedby={answerError ? 'agrees-error' : undefined}
+      />
+      <label for="agrees-no">No — this was NOT true on my visit</label>
+    </p>
+    {answerError && (
+      <span class="field-error" id="agrees-error">
+        Please choose whether your visit confirmed the claim.
+      </span>
+    )}
+    <p class="attr-desc">
+      A single credible “no” freezes the claim for re-review — reporting a
+      problem is as valuable as confirming.
+    </p>
+  </fieldset>
+
+  <p>
+    <label for="visited_on">Date of your visit (optional)</label><br />
+    <input type="date" id="visited_on" name="visited_on" value={ev('visited_on')} />
+  </p>
+
+  <p>
+    <label for="photo">
+      Photo evidence{requiresPhoto ? ' — required to confirm this attribute' : ' (optional)'}
+    </label><br />
+    <input
+      type="file"
+      id="photo"
+      name="photo"
+      accept="image/*"
+      aria-invalid={photoError ? 'true' : undefined}
+      aria-describedby={photoError ? 'photo-help photo-error' : 'photo-help'}
+      autofocus={photoError}
+    />
+    <span id="photo-help" class="attr-desc">
+      Photos up to 10 MB. Location and device data are removed from your
+      photo before it is stored.
+    </span>
+    {photoError && (
+      <span class="field-error" id="photo-error">
+        {status === 'photo_too_big'
+          ? 'That photo is over 10 MB — please choose a smaller one.'
+          : 'A photo is required to confirm this attribute. (You can dissent without one.)'}
+      </span>
+    )}
+  </p>
+
+  <p>
+    <label for="photo_alt">
+      Describe what your photo shows — required if you attach a photo
+    </label><br />
+    <input
+      type="text"
+      id="photo_alt"
+      name="photo_alt"
+      value={ev('photo_alt')}
+      maxlength="300"
+      autocomplete="off"
+      aria-invalid={altError ? 'true' : undefined}
+      aria-describedby={altError ? 'photo-alt-help photo-alt-error' : 'photo-alt-help'}
+      autofocus={altError}
+    />
+    <span id="photo-alt-help" class="attr-desc">
+      For example: “the front entrance, one step up, no ramp.” Your
+      description is read aloud to blind and low-vision users — it's
+      part of the evidence.
+    </span>
+    {altError && (
+      <span class="field-error" id="photo-alt-error">
+        Please describe what your photo shows.
+      </span>
+    )}
+  </p>
+
+  <fieldset>
+    <legend>
+      Optional: which access experience are you speaking from? Never shown
+      tied to you — used only to weight your report.
+    </legend>
+    {IDENTITY_TAGS.map((tag) => (
+      <p>
+        <input type="checkbox" id={`tag-${tag.key}`} name="identity_tags" value={tag.key} checked={echoHas('identity_tags', tag.key)} />
+        <label for={`tag-${tag.key}`}>{tag.label}</label>
+      </p>
+    ))}
+  </fieldset>
+
+  <p>
+    <label for="observed_note">Anything else from your visit? (optional)</label><br />
+    <textarea id="observed_note" name="observed_note" rows="3" maxlength="2000">{ev('observed_note')}</textarea>
+  </p>
+
+  <p>
+    <label for="pseudonym">A display name to post under (optional, not your real name)</label><br />
+    <input type="text" id="pseudonym" name="pseudonym" value={ev('pseudonym')} autocomplete="off" />
+  </p>
+
+  <p><button type="submit">Submit my report</button></p>
+</form>

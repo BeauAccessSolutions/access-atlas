@@ -72,6 +72,23 @@ export interface ClaimForConfirm {
   relevantIdentityTag: string | null;
 }
 
+// Everything the "report a fact we don't track yet" form needs (the first-report
+// flow, §4): the listing, the attribute's structured question, and — if a claim
+// already exists for this pair — its id, so callers can route to the canonical
+// per-claim confirm flow instead of creating a duplicate.
+export interface AttributeForReport {
+  listingId: string;
+  listingName: string;
+  listingKind: ListingKind;
+  attributeDefId: string;
+  attributeKey: string;
+  attributeLabel: string;
+  questionText: string;
+  requiresPhoto: boolean;
+  relevantIdentityTag: string | null;
+  existingClaimId: string | null;
+}
+
 // One public evidence photo (the evidence_photos view, migration 0007). This is
 // the ONLY shape photo evidence reaches pages in — photo fields plus a coarse
 // date and the agree/dissent flag, never notes/tags/contributor ids (§6).

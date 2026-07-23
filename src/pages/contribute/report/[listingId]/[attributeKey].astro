@@ -1,0 +1,104 @@
+---
+// First-report form (§4/§13): report an accessibility fact that has NO claim on
+// this listing yet. The report creates the claim and this visit's confirmation
+// together (POST /api/confirmations with listingId + attributeKey). On-demand,
+// pure semantic HTML — the shared VisitReportForm, same as the confirm flow.
+//
+// If a claim already exists for this (listing, attribute) pair — including the
+// moment someone else's first report lands — this page 303s to the canonical
+// per-claim confirm form, carrying any ?status banner along, so there is exactly
+// one door per claim and no duplicates.
+export const prerender = false;
+
+import Base from '../../../../layouts/Base.astro';
+import VisitReportForm from '../../../../components/VisitReportForm.astro';
+import { getAttributeForReport } from '../../../../lib/repo';
+import { contributionAccess } from '../../../../lib/contributor';
+import { supabaseAdmin } from '../../../../lib/supabase-server';
+import { VISIT_BANNERS } from '../../../../lib/visit-report-banners';
+
+const { listingId, attributeKey } = Astro.params;
+const status = Astro.url.searchParams.get('status');
+const target =
+  listingId && attributeKey ? await getAttributeForReport(listingId, attributeKey) : null;
+
+if (target?.existingClaimId) {
+  const suffix = status ? `?status=${encodeURIComponent(status)}` : '';
+  return Astro.redirect(`/contribute/confirm/${target.existingClaimId}/${suffix}`, 303);
+}
+
+const access = await contributionAccess(Astro.cookies, supabaseAdmin);
+const loginHref = `/api/auth/login?return_to=${encodeURIComponent(Astro.url.pathname)}`;
+const banner = status ? VISIT_BANNERS[status] : null;
+
+const listingHref = target
+  ? `/${target.listingKind === 'provider' ? 'providers' : 'places'}/${target.listingId}/`
+  : null;
+---
+
+<Base title={target ? `Report your visit — ${target.attributeLabel}` : 'Report your visit'}>
+  {banner && (
+    <p class="disclaimer" role={banner.role} aria-atomic="true">{banner.text}</p>
+  )}
+
+  {
+    !target ? (
+      <>
+        <h1>Nothing to report against</h1>
+        <p>
+          We couldn't find that listing or accessibility fact.{' '}
+          <a href="/places/">Browse places</a> or <a href="/providers/">browse providers</a>.
+        </p>
+      </>
+    ) : (
+      <>
+        <p><a href={listingHref}>← Back to {target.listingName}</a></p>
+        <h1>Report your visit</h1>
+        <p>
+          For <strong>{target.listingName}</strong> —
+          “<strong>{target.attributeLabel}</strong>”. Nobody has reported on this
+          yet; your visit would be the first. Answer from your own visit, not
+          from what others have said — that's what makes this trustworthy.
+        </p>
+        <p class="attr-desc">
+          Your report starts this fact's record. It will be labeled honestly —
+          “1 community confirmation”, never “verified” — until at least three
+          independent visits agree.
+        </p>
+
+        {access.mode === 'closed' && (
+          <p class="disclaimer" role="status" aria-atomic="true">{access.gateReason} You can still see the form below.</p>
+        )}
+        {access.mode === 'keycloak' && !access.signedIn && (
+          <p class="disclaimer" role="status" aria-atomic="true">
+            To report a visit, please <a href={loginHref}>sign in to contribute</a>. Browsing stays account-free.
+          </p>
+        )}
+        {access.mode === 'keycloak' && access.signedIn && (
+          <p class="disclaimer" role="status" aria-atomic="true">
+            You're signed in and reporting pseudonymously.{' '}
+            <form method="post" action="/api/auth/logout" style="display:inline">
+              <button type="submit" class="linklike">Sign out</button>
+            </form>
+          </p>
+        )}
+
+        <VisitReportForm
+          hidden={[
+            { name: 'listingId', value: target.listingId },
+            { name: 'attributeKey', value: target.attributeKey },
+          ]}
+          questionText={target.questionText}
+          requiresPhoto={target.requiresPhoto}
+          status={status}
+        />
+      </>
+    )
+  }
+
+  {/* Progressive enhancement, NATIVE-ONLY (§5/§13; ADR-0002) — same contract as
+      the confirm flow: fully usable with no JS (the file input is the baseline);
+      this self-hosted script no-ops on the web and adds native camera capture
+      only inside the Capacitor iOS app. Route carve-out: src/lib/security.ts. */}
+  <script src="/confirm-camera.js" is:inline defer></script>
+</Base>

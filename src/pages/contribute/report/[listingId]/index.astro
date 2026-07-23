@@ -1,0 +1,92 @@
+---
+// Report-your-visit hub for one listing (§4/§13): every accessibility fact a
+// visitor can report on, in one place. Facts already being tracked link to
+// their per-claim confirm form; facts nobody has reported yet link to the
+// first-report form. This is the destination of the "Report an accessibility
+// fact" CTA on claimless listings — the entry point that used to be a dead end.
+// On-demand, zero-JS server-rendered HTML (§5).
+export const prerender = false;
+
+import Base from '../../../../layouts/Base.astro';
+import { getAttributeDefinitions, getListing, getStatusesForListing } from '../../../../lib/repo';
+
+const { listingId } = Astro.params;
+const listing = listingId ? await getListing(listingId) : null;
+if (!listing) Astro.response.status = 404;
+
+const [statuses, defs] = listing
+  ? await Promise.all([
+      getStatusesForListing(listing.id),
+      getAttributeDefinitions(listing.kind),
+    ])
+  : [[], []];
+const trackedKeys = new Set(statuses.map((s) => s.attributeKey));
+const unreported = defs.filter((d) => !trackedKeys.has(d.key));
+
+const listingHref = listing
+  ? `/${listing.kind === 'provider' ? 'providers' : 'places'}/${listing.id}/`
+  : null;
+---
+
+{
+  !listing ? (
+    <Base title="Listing not found">
+      <h1>Listing not found</h1>
+      <p>
+        We couldn't find that listing. <a href="/places/">Browse places</a> or{' '}
+        <a href="/providers/">browse providers</a>.
+      </p>
+    </Base>
+  ) : (
+    <Base
+      title={`Report your visit — ${listing.name}`}
+      description={`Report an accessibility fact about ${listing.name} from your own visit.`}
+    >
+      <p><a href={listingHref}>← Back to {listing.name}</a></p>
+      <h1>Report your visit</h1>
+      <p>
+        Pick what you can speak to from your own visit to{' '}
+        <strong>{listing.name}</strong>. Each fact is validated on its own — one
+        report at a time, never a star rating.
+      </p>
+
+      {statuses.length > 0 && (
+        <>
+          <h2>Facts the community is tracking</h2>
+          <ul>
+            {statuses.map((s) => (
+              <li>
+                <a href={`/contribute/confirm/${s.claimId}/`}>
+                  Report your visit for “{s.label}”
+                </a>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      {unreported.length > 0 && (
+        <>
+          <h2>Facts nobody has reported yet</h2>
+          <p class="attr-desc">
+            Your visit would be the first report. It stays honestly labeled —
+            never “verified” — until at least three independent visits agree.
+          </p>
+          <ul>
+            {unreported.map((d) => (
+              <li>
+                <a href={`/contribute/report/${listing.id}/${d.key}/`}>
+                  Be the first to report “{d.label}”
+                </a>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      {statuses.length === 0 && unreported.length === 0 && (
+        <p>There are no reportable accessibility facts for this listing yet.</p>
+      )}
+    </Base>
+  )
+}

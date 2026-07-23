@@ -52,7 +52,11 @@ const photoReportStatus = Astro.url.searchParams.get('photo_report');
       {place && <p class="listing-meta">{place}</p>}
       {listing.summary && <p>{listing.summary}</p>}
 
-      <ReportVisitCta target="#accessibility" hasClaims={statuses.length > 0} />
+      <ReportVisitCta
+        target="#accessibility"
+        hasClaims={statuses.length > 0}
+        reportHref={`/contribute/report/${listing.id}/`}
+      />
 
       <h2>Ownership, leadership &amp; competence</h2>
       <p>These are <strong>self-attested</strong> — no medical proof is ever required.</p>

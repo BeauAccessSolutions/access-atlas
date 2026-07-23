@@ -52,7 +52,11 @@ const photoReportStatus = Astro.url.searchParams.get('photo_report');
       {place && <p class="listing-meta">{place}</p>}
       {listing.summary && <p>{listing.summary}</p>}
 
-      <ReportVisitCta target="#accessibility" hasClaims={statuses.length > 0} />
+      <ReportVisitCta
+        target="#accessibility"
+        hasClaims={statuses.length > 0}
+        reportHref={`/contribute/report/${listing.id}/`}
+      />
 
       {(listing.disabledOwned || listing.disabledLed) && (
         <>
@@ -78,13 +82,15 @@ const photoReportStatus = Astro.url.searchParams.get('photo_report');
         returnTo={Astro.url.pathname}
       />
 
-      <div class="disclaimer">
-        <p>
-          Accessibility facts change — ramps break, elevators fail. Dates show
-          when each claim was last confirmed. Visited recently? Use “Report your
-          visit” on any claim above.
-        </p>
-      </div>
+      {statuses.length > 0 && (
+        <div class="disclaimer">
+          <p>
+            Accessibility facts change — ramps break, elevators fail. Dates show
+            when each claim was last confirmed. Visited recently? Use “Report your
+            visit” on any claim above.
+          </p>
+        </div>
+      )}
     </Base>
   )
 }

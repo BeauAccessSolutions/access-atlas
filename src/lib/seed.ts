@@ -5,6 +5,7 @@
 import type {
   AttributeCategory,
   AttributeDefOption,
+  AttributeForReport,
   AttributeState,
   AttributeStatus,
   ClaimForConfirm,
@@ -177,6 +178,24 @@ export const LISTINGS: Listing[] = [
     lng: -78.876,
     coordsSource: 'approximate',
   },
+  // Deliberately CLAIMLESS (zero attribute claims): exercises the "no facts
+  // reported yet — be the first" entry into the report flow, which is the
+  // dominant real-data case (§4). Keep it claimless.
+  {
+    id: '44444444-4444-4444-4444-444444444444',
+    kind: 'place',
+    name: 'Riverside Bakery',
+    summary: 'Small bakery on the West Side.',
+    city: 'Buffalo',
+    region: 'Erie County',
+    postalCode: '14213',
+    category: 'business',
+    disabledOwned: true,
+    disabledLed: false,
+    lat: 42.916,
+    lng: -78.895,
+    coordsSource: 'approximate',
+  },
 ];
 
 const CLAIMS: Claim[] = [
@@ -245,6 +264,36 @@ export function seedClaimForConfirm(claimId: string): ClaimForConfirm | null {
     questionText: claim.attr.questionText,
     requiresPhoto: claim.attr.requiresPhoto,
     relevantIdentityTag: claim.attr.relevantIdentityTag,
+  };
+}
+
+// Read-only details for the first-report form (report a fact that has no claim
+// yet), from seed (no DB). Mirrors repo.getAttributeForReport: validates the
+// attribute applies to the listing's kind and surfaces an existing claim id so
+// the caller can route to the canonical confirm flow instead. The seed has no
+// def uuids, so the key stands in — writes are separately gated on a real DB.
+export function seedAttributeForReport(
+  listingId: string,
+  attributeKey: string,
+): AttributeForReport | null {
+  const listing = LISTINGS.find((l) => l.id === listingId);
+  const attr = ATTR[attributeKey];
+  if (!listing || !attr) return null;
+  if (attr.appliesToKind !== null && attr.appliesToKind !== listing.kind) return null;
+  const existing = CLAIMS.find(
+    (c) => c.listingId === listingId && c.attr.key === attributeKey,
+  );
+  return {
+    listingId: listing.id,
+    listingName: listing.name,
+    listingKind: listing.kind,
+    attributeDefId: attr.key,
+    attributeKey: attr.key,
+    attributeLabel: attr.label,
+    questionText: attr.questionText,
+    requiresPhoto: attr.requiresPhoto,
+    relevantIdentityTag: attr.relevantIdentityTag,
+    existingClaimId: existing?.id ?? null,
   };
 }
 

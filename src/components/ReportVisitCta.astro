@@ -1,21 +1,26 @@
 ---
 // A prominent, honest entry point into the community-validation layer (§4 — the
-// moat). The confirm flow is per-attribute (one claim at a time), so this CTA
-// signposts down to the attribute list, where each claim carries its own
-// "Report your visit" link. It never implies the listing is verified — reporting
-// a visit adds YOUR first-person report; a claim only flips once enough
-// independent visits agree (§4 honest labeling). Zero-JS: a plain anchor.
+// moat). Renders on EVERY listing:
+//   * with claims — signposts down to the attribute list, where each claim
+//     carries its own "Report your visit" link, plus a link to the report hub
+//     for facts not tracked yet;
+//   * with NO claims — the listing used to be a dead end (no button at all, the
+//     dominant real-data case); now it invites the FIRST report via the hub.
+// It never implies the listing is verified — a claim only flips once enough
+// independent visits agree (§4 honest labeling). Zero-JS: plain anchors.
 interface Props {
   /** Fragment where the per-attribute confirm links live (the accessibility
       section heading). */
   target: string;
-  /** Only worth showing when there are claims to confirm. */
+  /** Whether any claims exist to confirm (switches the copy honestly). */
   hasClaims: boolean;
+  /** The listing's report hub (/contribute/report/<listingId>/). */
+  reportHref: string;
 }
-const { target, hasClaims } = Astro.props;
+const { target, hasClaims, reportHref } = Astro.props;
 ---
 {
-  hasClaims && (
+  hasClaims ? (
     <aside class="report-cta" aria-label="Report your visit">
       <h2 class="report-cta-title">Been here? Report your visit</h2>
       <p>
@@ -25,6 +30,22 @@ const { target, hasClaims } = Astro.props;
         toward a claim only once enough independent visits agree.
       </p>
       <a class="btn btn-primary" href={target}>Report a visit</a>
+      <p class="attr-desc">
+        Found something we don't list below?{' '}
+        <a href={reportHref}>Report another accessibility fact</a>.
+      </p>
+    </aside>
+  ) : (
+    <aside class="report-cta" aria-label="Report your visit">
+      <h2 class="report-cta-title">Been here? Be the first to report</h2>
+      <p>
+        Nobody has reported any accessibility facts for this listing yet. If
+        you've visited, what you actually experienced — a step-free entrance, an
+        accessible restroom — is exactly what other disabled visitors need to
+        know. First reports stay honestly labeled, never “verified”, until
+        independent visits agree.
+      </p>
+      <a class="btn btn-primary" href={reportHref}>Report an accessibility fact</a>
     </aside>
   )
 }

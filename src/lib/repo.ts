@@ -5,6 +5,7 @@
 // simple (§11: boring, legible code).
 import type {
   AttributeDefOption,
+  AttributeForReport,
   AttributeStatus,
   ClaimForConfirm,
   EvidencePhoto,
@@ -17,6 +18,7 @@ import {
   seedStatuses,
   seedClaimForConfirm,
   seedAttributeDefinitions,
+  seedAttributeForReport,
 } from './seed';
 
 export async function getListings(kind?: ListingKind): Promise<Listing[]> {
@@ -150,6 +152,55 @@ export async function getClaimForConfirm(claimId: string): Promise<ClaimForConfi
     questionText: attr.question_text,
     requiresPhoto: !!attr.requires_photo,
     relevantIdentityTag: attr.relevant_identity_tag ?? null,
+  };
+}
+
+// Everything the first-report form needs: the listing + one attribute's
+// structured question, for a (listing, attribute) pair that may have NO claim
+// yet (§4 — the entry point for listings nobody has reported on). Returns null
+// when either half is missing or the attribute doesn't apply to the listing's
+// kind. If a claim already exists, its id is surfaced so callers route to the
+// canonical per-claim confirm flow instead of duplicating it.
+export async function getAttributeForReport(
+  listingId: string,
+  attributeKey: string,
+): Promise<AttributeForReport | null> {
+  if (!isDbConfigured || !supabase) return seedAttributeForReport(listingId, attributeKey);
+
+  const [listingRes, defRes] = await Promise.all([
+    supabase.from('listings').select('id, name, kind').eq('id', listingId).maybeSingle(),
+    supabase
+      .from('attribute_definitions')
+      .select('id, key, label, question_text, requires_photo, relevant_identity_tag, applies_to_kind')
+      .eq('key', attributeKey)
+      .maybeSingle(),
+  ]);
+  if (listingRes.error) throw listingRes.error;
+  if (defRes.error) throw defRes.error;
+  const listing = listingRes.data;
+  const def = defRes.data;
+  if (!listing || !def) return null;
+  if (def.applies_to_kind !== null && def.applies_to_kind !== listing.kind) return null;
+
+  const claimRes = await supabase
+    .from('attribute_claims')
+    .select('id')
+    .eq('listing_id', listingId)
+    .eq('attribute_def_id', def.id)
+    .maybeSingle();
+  if (claimRes.error) throw claimRes.error;
+
+  return {
+    listingId: listing.id,
+    listingName: listing.name,
+    listingKind: listing.kind,
+    attributeDefId: def.id,
+    attributeKey: def.key,
+    attributeLabel: def.label,
+    questionText: def.question_text,
+    requiresPhoto: !!def.requires_photo,
+    relevantIdentityTag: def.relevant_identity_tag ?? null,
+    existingClaimId: claimRes.data?.id ?? null,
   };
 }
 

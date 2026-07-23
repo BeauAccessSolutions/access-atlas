@@ -43,7 +43,11 @@ insert into listings (id, kind, name, summary, city, region, postal_code, catego
   ('22222222-2222-2222-2222-222222222222', 'place', 'Central Library — Downtown',
    'Public library, main branch.', 'Buffalo', 'Erie County', '14203', 'library', false, false, 42.8867, -78.8739, 'approximate'),
   ('33333333-3333-3333-3333-333333333333', 'provider', 'Lakeshore Family Medicine',
-   'Primary care practice.', 'Buffalo', 'Erie County', '14201', 'healthcare', false, true, 42.9010, -78.8760, 'approximate');
+   'Primary care practice.', 'Buffalo', 'Erie County', '14201', 'healthcare', false, true, 42.9010, -78.8760, 'approximate'),
+  -- Deliberately CLAIMLESS (zero attribute claims): exercises the "no facts
+  -- reported yet — be the first" entry into the report flow (§4). Keep it so.
+  ('44444444-4444-4444-4444-444444444444', 'place', 'Riverside Bakery',
+   'Small bakery on the West Side.', 'Buffalo', 'Erie County', '14213', 'business', true, false, 42.9160, -78.8950, 'approximate');
 
 insert into provider_profiles (listing_id, disability_literate) values
   ('33333333-3333-3333-3333-333333333333', true);

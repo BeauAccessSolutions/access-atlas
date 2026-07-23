@@ -43,9 +43,12 @@ const devStorageOrigin = (() => {
 // script; everywhere else the surface stays strictly zero-JS (script-src 'none'):
 //   * the list index pages (/places, /providers) -> /nearby.js, the on-device
 //     "sort by distance" feature (docs/adr-0001-nearby-geolocation.md).
-//   * the confirm flow (/contribute/confirm/<claimId>) -> /confirm-camera.js, the
+//   * the visit-report forms (/contribute/confirm/<claimId> and
+//     /contribute/report/<listingId>/<attributeKey>) -> /confirm-camera.js, the
 //     native camera capture that no-ops on web and only acts inside the Capacitor
-//     iOS app (App Review 4.2; docs/adr-0002-native-camera-capture.md).
+//     iOS app (App Review 4.2; docs/adr-0002-native-camera-capture.md). The
+//     report HUB (/contribute/report/<listingId>/) falls under the same prefix
+//     but deliberately ships no <script> — asserted in tests/a11y/pages.spec.ts.
 // Both are the deliberate, minimal departure from the §5 zero-JS default, to be
 // raised as BAS ADRs (§15). Keep this list as SMALL as possible — a new script
 // route is a real a11y/perf/privacy decision, not a convenience.
@@ -58,7 +61,7 @@ const SCRIPT_ENHANCED_ROUTES = new Set(['/places', '/providers']);
 
 // Dynamic routes (a variable id segment) that ship a self-hosted enhancement —
 // matched by prefix since the exact path isn't enumerable.
-const SCRIPT_ENHANCED_PREFIXES = ['/contribute/confirm/'];
+const SCRIPT_ENHANCED_PREFIXES = ['/contribute/confirm/', '/contribute/report/'];
 
 function normalizePath(pathname: string): string {
   const p = (pathname.split('?')[0] || '').replace(/\/+$/, '');

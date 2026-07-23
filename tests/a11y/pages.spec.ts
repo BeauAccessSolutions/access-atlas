@@ -25,6 +25,11 @@ const ROUTES = [
   '/contribute/confirm/c1111111-1111-1111-1111-111111111111/',
   '/contribute/submit/?kind=place',
   '/contribute/submit/?kind=provider',
+  // the claimless seed place (the "be the first to report" CTA mode)
+  '/places/44444444-4444-4444-4444-444444444444/',
+  // report hub (tracked + unreported sections) and the first-report form
+  '/contribute/report/11111111-1111-1111-1111-111111111111/',
+  '/contribute/report/11111111-1111-1111-1111-111111111111/accessible_parking/',
   // self-service data rights (on-demand; renders the no-DB notice in CI)
   '/account/',
   '/account/delete/',
@@ -95,6 +100,29 @@ test('seeded place exposes the report-a-visit CTA + per-attribute confirm links'
   }
 });
 
+// A CLAIMLESS listing must NOT be a dead end (§4): it renders the same
+// prominent CTA, honestly reworded ("be the first"), pointing at the report hub
+// — where every unreported fact links into the first-report form.
+test('claimless place exposes the be-the-first CTA into the report hub', async ({ page }) => {
+  await page.goto('/places/44444444-4444-4444-4444-444444444444/');
+
+  const cta = page.locator('aside.report-cta a.btn');
+  await expect(cta).toHaveText(/report an accessibility fact/i);
+  await expect(cta).toHaveAttribute(
+    'href',
+    '/contribute/report/44444444-4444-4444-4444-444444444444/'
+  );
+
+  // Follow it: the hub lists only "be the first" links (no claims exist), each
+  // into the first-report form for this listing.
+  await page.goto('/contribute/report/44444444-4444-4444-4444-444444444444/');
+  const firstLinks = page.locator('main a[href^="/contribute/report/44444444-"]');
+  expect(await firstLinks.count()).toBeGreaterThan(0);
+  for (const href of await firstLinks.evaluateAll((els) => els.map((e) => e.getAttribute('href')))) {
+    expect(href).toMatch(/^\/contribute\/report\/44444444-[0-9a-f-]+\/[a-z_]+\/$/);
+  }
+});
+
 // The browsing surface stays zero-JS everywhere EXCEPT the two list index pages,
 // which ship ONE self-hosted progressive-enhancement script (/nearby.js — the
 // on-device "sort by distance" feature; §13, ADR docs/adr-0001-nearby-geolocation.md).
@@ -152,15 +180,29 @@ for (const route of ['/places/', '/places/?q=cafe&owned=1', '/providers/']) {
   });
 }
 
-// The confirm route ships EXACTLY ONE script: the external, self-hosted
-// /confirm-camera.js (native camera capture; §13, ADR-0002). Same absolute
-// contract as the list pages — one self-hosted script, never inline. The script
-// no-ops on web (Capacitor absent), and the form above is fully server-rendered
-// and usable without it, which the axe scan of this route already exercises.
-test('confirm page ships only the self-hosted camera script', async ({ page }) => {
-  await page.goto('/contribute/confirm/c1111111-1111-1111-1111-111111111111/');
-  const scripts = page.locator('script');
-  await expect(scripts).toHaveCount(1);
-  await expect(scripts.first()).toHaveAttribute('src', '/confirm-camera.js');
-  expect((await scripts.first().textContent())?.trim() || '').toBe('');
+// The visit-report FORM routes (confirm + first-report) ship EXACTLY ONE
+// script: the external, self-hosted /confirm-camera.js (native camera capture;
+// §13, ADR-0002). Same absolute contract as the list pages — one self-hosted
+// script, never inline. The script no-ops on web (Capacitor absent), and the
+// form is fully server-rendered and usable without it, which the axe scans of
+// these routes already exercise.
+for (const route of [
+  '/contribute/confirm/c1111111-1111-1111-1111-111111111111/',
+  '/contribute/report/11111111-1111-1111-1111-111111111111/accessible_parking/',
+]) {
+  test(`visit-report form ships only the self-hosted camera script: ${route}`, async ({ page }) => {
+    await page.goto(route);
+    const scripts = page.locator('script');
+    await expect(scripts).toHaveCount(1);
+    await expect(scripts.first()).toHaveAttribute('src', '/confirm-camera.js');
+    expect((await scripts.first().textContent())?.trim() || '').toBe('');
+  });
+}
+
+// The report HUB falls under the script-carve-out prefix (security.ts) but must
+// still ship zero <script> — the CSP allows script there only because the
+// prefix isn't segment-aware; the page itself stays zero-JS (§5).
+test('report hub ships zero <script>', async ({ page }) => {
+  await page.goto('/contribute/report/11111111-1111-1111-1111-111111111111/');
+  await expect(page.locator('script')).toHaveCount(0);
 });
