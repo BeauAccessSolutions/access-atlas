@@ -17,7 +17,7 @@ services:
   # ---- The Astro app (zero-JS browsing + contributor BFF) ------------------
   - name: web
     github:
-      repo: Beaudoin0zach/access-atlas
+      repo: BeauAccessSolutions/access-atlas
       branch: main
       deploy_on_push: true
     dockerfile_path: Dockerfile
@@ -80,7 +80,7 @@ jobs:
   - name: migrate
     kind: PRE_DEPLOY
     github:
-      repo: Beaudoin0zach/access-atlas
+      repo: BeauAccessSolutions/access-atlas
       branch: main
       deploy_on_push: true
     dockerfile_path: .do/migrate.Dockerfile
