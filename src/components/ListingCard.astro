@@ -47,8 +47,8 @@ const approxCoords = hasCoords && listing.coordsSource === 'approximate';
         {listing.provider?.disabilityLiterate && (
           <span class="tag">Disability-literate (self-attested)</span>
         )}
-        {listing.disabledOwned && <span class="tag">Disabled-owned (self-attested)</span>}
-        {listing.disabledLed && <span class="tag">Disabled-led (self-attested)</span>}
+        {listing.disabledOwned && <span class="tag tag--rep">Disabled-owned (self-attested)</span>}
+        {listing.disabledLed && <span class="tag tag--rep">Disabled-led (self-attested)</span>}
       </p>
     )
   }

@@ -11,6 +11,13 @@
 ----------------------------------------------------------------------------- */
 
 :root {
+  /* Tell the UA which themes we support so native control chrome (scrollbars,
+     <select> popups, the date picker, spin buttons) matches the page instead of
+     rendering light-on-dark, and so the browser doesn't auto-darken us (C4).
+     Defaults to following the OS; the manual .theme-* overrides below pin it to
+     the chosen theme. */
+  color-scheme: light dark;
+
   --font-scale: 1;            /* user-adjustable text size (§5) */
   --line-scale: 1;            /* user-adjustable line spacing (§5) */
 
@@ -28,6 +35,17 @@
   --brand-strong: #0a4145;    /* pressed/hover */
   --brand-ink: #0b4a4f;       /* teal used as text on light (~7.9:1) */
   --brand-wash: #e7f1f1;      /* faint teal tint for accents */
+
+  /* Representation accent (§1). The two provider axes are orthogonal —
+     *competence* (disability-literate) stays teal (the brand default), while the
+     *representation* axis (disabled-owned / disabled-led) gets its own violet so
+     the distinction the whole app is built on is visible at a glance, not only
+     in the tag text. Violet is hue-separated from all five validation tones and
+     from teal, so it never reads as a trust status. It is ALWAYS paired with the
+     tag's text label — colour is reinforcement here, never the sole signal
+     (§5, WCAG 1.4.1). Ink is ~8.3:1 on the canvas; ink-on-wash is ~7.2:1. */
+  --rep-ink: #5b3c86;         /* violet used as text on light */
+  --rep-wash: #ede8f0;        /* faint violet tint for the representation pill */
 
   --color-border: #e0e2de;    /* DECORATIVE hairlines (cards, dividers) */
   --field-border: #6a6a6a;    /* INTERACTIVE borders — WCAG 1.4.11 needs >=3:1 */
@@ -62,6 +80,7 @@
    just excludes itself from the media query and falls back to the :root light
    defaults. */
 :root.theme-dark {
+  color-scheme: dark;         /* pin native controls to dark (C4) */
   --color-bg: #0f1513;
   --color-surface: #161d1b;
   --color-surface-2: #1c2422;
@@ -73,6 +92,8 @@
   --brand-strong: #0b585c;
   --brand-ink: #7fd7dc;
   --brand-wash: #12312f;
+  --rep-ink: #c9a9ef;         /* light violet ink on the dark canvas (~7.2:1 on wash) */
+  --rep-wash: #292931;        /* faint violet-grey tint */
   --color-border: #2b3330;
   --field-border: #8c9591;
   --color-focus: #7fd7dc;
@@ -98,6 +119,8 @@
     --brand-strong: #0b585c;
     --brand-ink: #7fd7dc;
     --brand-wash: #12312f;
+    --rep-ink: #c9a9ef;         /* keep in sync with :root.theme-dark above */
+    --rep-wash: #292931;
     --color-border: #2b3330;
     --field-border: #8c9591;    /* >=3:1 */
     --color-focus: #7fd7dc;
@@ -111,6 +134,11 @@
     --shadow-hover: 0 4px 10px rgba(0, 0, 0, 0.45), 0 16px 40px rgba(0, 0, 0, 0.5);
   }
 }
+
+/* Explicit light choice: pin native controls to light so a person who forces
+   light over a dark OS doesn't get dark scrollbars/pickers (C4). Tokens already
+   fall through to the :root light defaults, so only color-scheme is needed. */
+:root.theme-light { color-scheme: light; }
 
 /* High contrast is an INDEPENDENT axis from light/dark (§15: we keep it separate
    so a person can run dark AND high-contrast at once). Each rule is scoped to
@@ -471,7 +499,7 @@ strong { font-weight: 650; }
 .listing-card h3 a:hover { text-decoration: underline; }
 .listing-meta { color: var(--color-muted); margin: 0 0 0.5rem; font-size: 0.95rem; }
 
-/* Representation / competence tags (§1) — quiet teal-tinted pills. */
+/* Competence tags (§1, disability-literate) — quiet teal-tinted pills. */
 .tag {
   display: inline-block;
   border: 1px solid color-mix(in srgb, var(--brand) 30%, var(--color-border));
@@ -482,6 +510,15 @@ strong { font-weight: 650; }
   font-size: 0.82rem;
   font-weight: 600;
   margin: 0 0.3rem 0.3rem 0;
+}
+/* Representation tags (§1, disabled-owned / disabled-led) — the SAME pill, in the
+   violet representation accent. Re-points the three colour properties only; shape,
+   size, and the text label are unchanged, so the axis reads distinct at a glance
+   while colour stays pure reinforcement (§5, WCAG 1.4.1). */
+.tag--rep {
+  border-color: color-mix(in srgb, var(--rep-ink) 30%, var(--color-border));
+  background: var(--rep-wash);
+  color: var(--rep-ink);
 }
 
 /* -------- Attribute claim rows (§4 — each labeled separately) ------------ */
