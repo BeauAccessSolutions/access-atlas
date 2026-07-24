@@ -53,7 +53,10 @@ const isCurrent = (href: string, exact = false): boolean =>
 <html lang="en" class={rootAttrs.class || undefined} style={rootAttrs.style}>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- viewport-fit=cover is REQUIRED for env(safe-area-inset-*) to resolve to
+         anything but 0 (see global.css safe-area block). Without it the iOS
+         status-bar / notch overlap fix below is silently inert. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <!--
       Content-Security-Policy baked into the page so it protects prerendered
       static pages regardless of host (hosting is still open, §13). SSR routes

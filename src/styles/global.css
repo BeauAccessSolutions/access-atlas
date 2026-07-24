@@ -197,8 +197,36 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/* iOS safe area (notch / status bar). The header is not sticky, so once the page
+   scrolls, content would render UNREADABLY under the translucent status bar (and
+   a fixed toast can land there too). Padding the body can't fix this — padding on
+   the scroll container scrolls away with the content. A FIXED backdrop pinned over
+   the top inset is the only thing that stays put, so it always sits between the
+   status bar and the content beneath it. Painted in --brand so it reads as the
+   teal header extending up under the clock, not a stray bar.
+
+   Requires viewport-fit=cover (Base.astro) for env() to be non-zero; on a
+   non-notched device or desktop env(safe-area-inset-top)=0, the strip collapses
+   to 0 height and this is completely inert. The matching initial padding keeps
+   the header itself clear of the strip at the top of the page.
+
+   NOTE: verify on a real notched device — a simulator's default device may not
+   surface the inset, and the z-index (below modal overlays, above page chrome)
+   is chosen conservatively. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: env(safe-area-inset-top, 0px);
+  background: var(--brand);
+  z-index: 40;
+  pointer-events: none;
+}
+
 body {
   margin: 0;
+  /* Keep the header (first child) clear of the fixed status-bar strip above. */
+  padding-top: env(safe-area-inset-top, 0px);
   background: var(--color-bg);
   color: var(--color-fg);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
