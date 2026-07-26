@@ -5,7 +5,7 @@
   "private": true,
   "description": "Access Atlas — a disability-focused discovery platform: accessible providers, accessible places, community validation.",
   "engines": {
-    "node": ">=20.3.0"
+    "node": ">=20.9.0"
   },
   "scripts": {
     "dev": "astro dev",
@@ -39,7 +39,10 @@
     "react": "^18.3.1",
     "react-aria-components": "^1.5.0",
     "react-dom": "^18.3.1",
-    "sharp": "^0.33.5"
+    "sharp": "^0.35.3"
+  },
+  "overrides": {
+    "sharp": "^0.35.3"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
