@@ -4,6 +4,7 @@
 // as distinct tags because they are independent (§1) — never merged.
 import type { Listing } from '../lib/types';
 import { categoryLabel, isCategory } from '../lib/categories';
+import { presentRepresentation } from '../lib/labeling';
 import CategoryIcon from './CategoryIcon.astro';
 
 interface Props {
@@ -21,6 +22,19 @@ const hasCoords = typeof listing.lat === 'number' && typeof listing.lng === 'num
 // Approximate (ZIP-centroid) coords are labeled honestly in the distance sort
 // (§4) — never presented as a precise location.
 const approxCoords = hasCoords && listing.coordsSource === 'approximate';
+// Representation tags, or null when provenance is unknown (§4 — see labeling.ts).
+const owned = presentRepresentation(
+  'owned',
+  listing.disabledOwned,
+  listing.disabledOwnedSource,
+  listing.representationNote,
+);
+const led = presentRepresentation(
+  'led',
+  listing.disabledLed,
+  listing.disabledLedSource,
+  listing.representationNote,
+);
 ---
 
 <li
@@ -40,15 +54,18 @@ const approxCoords = hasCoords && listing.coordsSource === 'approximate';
   {listing.summary && <p>{listing.summary}</p>}
 
   {
-    (listing.disabledOwned || listing.disabledLed || listing.provider?.disabilityLiterate) && (
+    (owned || led || listing.provider?.disabilityLiterate) && (
       <p>
         {/* Provider competence (provider-only) and the representation axis
-            (both kinds) are independent (§1) — shown as distinct tags. */}
+            (both kinds) are independent (§1) — shown as distinct tags.
+            Representation goes through presentRepresentation(), which returns
+            null when provenance is unknown, so an un-sourced flag renders
+            nothing rather than claiming an attestation (§4; migration 0012). */}
         {listing.provider?.disabilityLiterate && (
           <span class="tag">Disability-literate (self-attested)</span>
         )}
-        {listing.disabledOwned && <span class="tag tag--rep">Disabled-owned (self-attested)</span>}
-        {listing.disabledLed && <span class="tag tag--rep">Disabled-led (self-attested)</span>}
+        {owned && <span class="tag tag--rep">{owned.text}</span>}
+        {led && <span class="tag tag--rep">{led.text}</span>}
       </p>
     )
   }

@@ -98,17 +98,21 @@ const panelOpen = active || filters.sort !== 'name';
     <fieldset>
       <legend>Only show</legend>
       {/* Representation (§1) and provider competence (§8) are independent
-          axes — independent checkboxes, never merged. All self-attested. */}
+          axes — independent checkboxes, never merged. The FILTER labels drop the
+          provenance suffix on purpose: a filter matches listings whose claim is
+          either self-attested or sourced, so naming one source here would
+          misdescribe the results. Each listing states its own provenance
+          (labeling.ts presentRepresentation). */}
       <p>
         <label>
           <input type="checkbox" name="owned" value="1" checked={filters.owned} />
-          Disabled-owned (self-attested)
+          Disabled-owned
         </label>
       </p>
       <p>
         <label>
           <input type="checkbox" name="led" value="1" checked={filters.led} />
-          Disabled-led (self-attested)
+          Disabled-led
         </label>
       </p>
       {kind === 'provider' && (

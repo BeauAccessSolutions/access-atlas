@@ -18,7 +18,9 @@
       "disabled_owned": false,
       "disabled_led": true,
       "_review": {
-        "flags": [],
+        "flags": [
+          "cil_consumer_control"
+        ],
         "source_notes": "First-party site. Anchor partner (§3). disabled_led=true rests on the federal Center for Independent Living definition: CILs are consumer-controlled (>=51% of staff/board are people with disabilities). Address confirmed on the NYSILC ILC directory. NEEDS OWNER/ORG SELF-ATTESTATION AT ONBOARDING (no proof)."
       },
       "provider": {
@@ -43,7 +45,8 @@
       "disabled_led": true,
       "_review": {
         "flags": [
-          "outside_erie_county"
+          "outside_erie_county",
+          "cil_consumer_control"
         ],
         "source_notes": "First-party WNYIL family-of-agencies page. Peer-run ILC; disabled_led per CIL consumer-control federal requirement. Niagara County (adjacent to the Erie beachhead). NEEDS SELF-ATTESTATION AT ONBOARDING."
       },
@@ -69,7 +72,8 @@
       "disabled_led": true,
       "_review": {
         "flags": [
-          "outside_erie_county"
+          "outside_erie_county",
+          "cil_consumer_control"
         ],
         "source_notes": "First-party WNYIL page. Self-describes as 'a grassroots, peer directed, multi-cultural civil rights organization for/of people with disabilities.' disabled_led per CIL consumer-control. NEEDS SELF-ATTESTATION AT ONBOARDING."
       },
@@ -94,7 +98,9 @@
       "disabled_owned": false,
       "disabled_led": true,
       "_review": {
-        "flags": [],
+        "flags": [
+          "cil_consumer_control"
+        ],
         "source_notes": "First-party WNYIL page. Explicitly 'an organization run for and by people with behavioral health disabilities' — disabled_led directly stated. WNYIL affiliate; shares the 3108 Main St address. NEEDS SELF-ATTESTATION AT ONBOARDING."
       },
       "provider": {
@@ -119,7 +125,8 @@
       "disabled_led": true,
       "_review": {
         "flags": [
-          "outside_erie_county"
+          "outside_erie_county",
+          "cil_consumer_control"
         ],
         "source_notes": "NYSILC official ILC directory + first-party site (silcchq.org). Designated NYS CIL, consumer-controlled per federal definition. NEEDS SELF-ATTESTATION AT ONBOARDING."
       },
@@ -145,7 +152,8 @@
       "disabled_led": true,
       "_review": {
         "flags": [
-          "outside_erie_county"
+          "outside_erie_county",
+          "cil_consumer_control"
         ],
         "source_notes": "First-party site + NYSILC ILC directory. Designated NYS CIL, consumer-controlled per federal definition. NEEDS SELF-ATTESTATION AT ONBOARDING."
       },

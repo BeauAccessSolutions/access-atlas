@@ -17,6 +17,7 @@
 //   npm run seed:import -- <file.json>
 import { readFileSync } from 'node:fs';
 import { serviceClient, parseArgs } from './lib/db.mjs';
+import { representationColumns } from './lib/representation-source.mjs';
 
 // Allowed scannability categories — mirror of src/lib/categories.ts. Inlined
 // (not imported) so this script stays pure ESM and runs on the Node 20 floor.
@@ -152,8 +153,12 @@ for (const l of listings) {
         lng: l.lng ?? null,
         category: l.category ?? null,
         // Representation (§12) is top-level: it applies to places AND providers.
+        // The booleans travel WITH their provenance — a flag whose source can't
+        // be established imports as `true` with a null source, which the UI
+        // renders as nothing at all rather than as an attestation (§4).
         disabled_owned: Boolean(l.disabled_owned),
         disabled_led: Boolean(l.disabled_led),
+        ...representationColumns(l),
         source_ref: l.source_ref,
         source_url: l.source_url,
         updated_at: new Date().toISOString(),

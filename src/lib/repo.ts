@@ -30,7 +30,7 @@ export async function getListings(kind?: ListingKind): Promise<Listing[]> {
   let query = supabase
     .from('listings')
     .select(
-      'id, kind, name, summary, city, region, postal_code, category, disabled_owned, disabled_led, created_at, lat, lng, coords_source, provider_profiles(disability_literate)',
+      'id, kind, name, summary, city, region, postal_code, category, disabled_owned, disabled_led, disabled_owned_source, disabled_led_source, representation_note, created_at, lat, lng, coords_source, provider_profiles(disability_literate)',
     )
     .order('name');
   if (kind) query = query.eq('kind', kind);
@@ -47,7 +47,7 @@ export async function getListing(id: string): Promise<Listing | null> {
   const { data, error } = await supabase
     .from('listings')
     .select(
-      'id, kind, name, summary, city, region, postal_code, category, disabled_owned, disabled_led, created_at, lat, lng, coords_source, provider_profiles(disability_literate)',
+      'id, kind, name, summary, city, region, postal_code, category, disabled_owned, disabled_led, disabled_owned_source, disabled_led_source, representation_note, created_at, lat, lng, coords_source, provider_profiles(disability_literate)',
     )
     .eq('id', id)
     .maybeSingle();
@@ -221,6 +221,9 @@ function rowToListing(row: any): Listing {
     category: row.category ?? null,
     disabledOwned: !!row.disabled_owned,
     disabledLed: !!row.disabled_led,
+    disabledOwnedSource: row.disabled_owned_source ?? null,
+    disabledLedSource: row.disabled_led_source ?? null,
+    representationNote: row.representation_note ?? null,
     createdAt: row.created_at ?? null,
     lat: row.lat ?? null,
     lng: row.lng ?? null,

@@ -9,11 +9,20 @@ import ReportVisitCta from '../../components/ReportVisitCta.astro';
 import PhotoReportBanner from '../../components/PhotoReportBanner.astro';
 import CategoryIcon from '../../components/CategoryIcon.astro';
 import { categoryLabel, isCategory } from '../../lib/categories';
+import { presentRepresentation, representationDefinition } from '../../lib/labeling';
 import { contributionsOpen } from '../../lib/contributor';
 import { getEvidenceForListing, getListing, getStatusesForListing } from '../../lib/repo';
 
 const { id } = Astro.params;
 const listing = id ? await getListing(id) : null;
+// Representation tags, or null when provenance is unknown — an un-sourced flag
+// must never render as an attestation (§4; migration 0012).
+const owned = listing
+  ? presentRepresentation('owned', listing.disabledOwned, listing.disabledOwnedSource, listing.representationNote)
+  : null;
+const led = listing
+  ? presentRepresentation('led', listing.disabledLed, listing.disabledLedSource, listing.representationNote)
+  : null;
 if (!listing || listing.kind !== 'provider') Astro.response.status = 404;
 
 const [statuses, evidence] = listing
@@ -59,18 +68,27 @@ const photoReportStatus = Astro.url.searchParams.get('photo_report');
       />
 
       <h2>Ownership, leadership &amp; competence</h2>
-      <p>These are <strong>self-attested</strong> — no medical proof is ever required.</p>
+      <p>
+        No medical proof is ever required, or asked for. Each line says where the
+        claim came from — the business telling us directly, or a certification we
+        can point you at.
+      </p>
       <ul>
         {prov && (
           <li>Disability-literate: {prov.disabilityLiterate ? 'Yes (self-attested)' : 'Not attested'}</li>
         )}
+        {/* Representation renders ONLY with recorded provenance. An un-sourced
+            flag reads "Not attested" — which is honest: we do not know who said
+            it, so we do not repeat it (§4; migration 0012). */}
         <li>
-          Disabled-owned (a disabled person owns 51% or more):
-          {listing.disabledOwned ? ' Yes (self-attested)' : ' Not attested'}
+          Disabled-owned ({representationDefinition('owned')}):
+          {owned ? ` Yes (${owned.sourceLabel})` : ' Not attested'}
+          {owned && <><br /><span class="attr-desc">{owned.provenance}</span></>}
         </li>
         <li>
-          Disabled-led (a disabled person holds primary leadership):
-          {listing.disabledLed ? ' Yes (self-attested)' : ' Not attested'}
+          Disabled-led ({representationDefinition('led')}):
+          {led ? ` Yes (${led.sourceLabel})` : ' Not attested'}
+          {led && <><br /><span class="attr-desc">{led.provenance}</span></>}
         </li>
       </ul>
 

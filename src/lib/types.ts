@@ -4,6 +4,16 @@
 
 export type ListingKind = 'provider' | 'place';
 
+// Where a representation claim (§1, §12) came from. Deliberately mirrors §4's
+// vocabulary rather than inventing a parallel one:
+//   'self_attested' — the owner/org told US. The ONLY value that may render
+//                     "self-attested"; the phrase is a claim about who spoke.
+//   'sourced'       — backed by a certification, audit, or partner org, named in
+//                     Listing.representationNote so a reader can check it.
+// The absence of a value (null) is meaningful and must fail safe — see
+// presentRepresentation() in labeling.ts and migration 0012.
+export type RepresentationSource = 'self_attested' | 'sourced';
+
 export type AttributeCategory =
   | 'facility_objective'
   | 'provider_behavior'
@@ -28,11 +38,23 @@ export interface Listing {
   // Coarse scannability category (src/lib/categories.ts). Not part of validation
   // (§4). May be null.
   category: string | null;
-  // Representation axis (§1, §12), self-attested. Lives on the listing because a
-  // business's ownership/leadership is independent of place-vs-provider — a
-  // disabled-owned cafe is a place. Applies to BOTH kinds.
+  // Representation axis (§1, §12). Lives on the listing because a business's
+  // ownership/leadership is independent of place-vs-provider — a disabled-owned
+  // cafe is a place. Applies to BOTH kinds.
+  //
+  // The boolean alone is NOT publishable: it says a claim exists, not where it
+  // came from, and rendering it as "self-attested" is how production ended up
+  // asserting attestations nobody made (migration 0012). Always render via
+  // presentRepresentation() in labeling.ts, which returns null when the source
+  // is unknown.
   disabledOwned: boolean;
   disabledLed: boolean;
+  /** Provenance for disabledOwned. null/undefined = unknown → publish nothing. */
+  disabledOwnedSource?: RepresentationSource | null;
+  /** Provenance for disabledLed. null/undefined = unknown → publish nothing. */
+  disabledLedSource?: RepresentationSource | null;
+  /** Plain-language citation backing a `sourced` representation claim (§7). */
+  representationNote?: string | null;
   // Provider-only competence (§8), self-attested. Absent for places.
   provider?: {
     disabilityLiterate: boolean;

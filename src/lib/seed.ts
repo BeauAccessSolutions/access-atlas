@@ -173,6 +173,11 @@ export const LISTINGS: Listing[] = [
     category: 'healthcare',
     disabledOwned: false,
     disabledLed: true,
+    // Provenance travels WITH the flag (§4; migration 0012). A demo row exercises
+    // the `sourced` branch so the fallback renders what real data will.
+    disabledLedSource: 'sourced',
+    representationNote:
+      'its designation as a Center for Independent Living, where consumer control — 51% or more of staff and board being disabled people — is a condition of the designation',
     provider: { disabilityLiterate: true },
     lat: 42.901,
     lng: -78.876,
@@ -192,6 +197,9 @@ export const LISTINGS: Listing[] = [
     postalCode: '14213',
     category: 'business',
     disabledOwned: true,
+    // Deliberately left WITHOUT a source: exercises the fail-safe path, where a
+    // claimed flag with unknown provenance must render nothing at all.
+    disabledOwnedSource: null,
     disabledLed: false,
     lat: 42.916,
     lng: -78.895,
