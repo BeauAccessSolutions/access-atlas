@@ -10,7 +10,17 @@ import node from '@astrojs/node';
 // would ship inside the container image. For local dev + build, mirror .env into
 // process.env here. This config file does NOT run in the production standalone
 // server (it gets real env from its host), so this affects local tooling only.
-Object.assign(process.env, loadEnv(process.env.NODE_ENV ?? 'development', process.cwd(), ''));
+//
+// An EMPTY value in .env never clobbers a real exported one. `.env.example`
+// ships `SITE_ORIGINS=` blank and tells you to copy it, so a plain Object.assign
+// would let that blank line silently defeat
+// `SITE_ORIGINS=host npm run build` — the same inert-config failure this whole
+// file exists to prevent, just moved to the developer's machine.
+const fileEnv = loadEnv(process.env.NODE_ENV ?? 'development', process.cwd(), '');
+for (const [key, value] of Object.entries(fileEnv)) {
+  if (value === '' && process.env[key]) continue;
+  process.env[key] = value;
+}
 
 // Public origin(s) this app is served from, for Astro's CSRF origin check.
 //

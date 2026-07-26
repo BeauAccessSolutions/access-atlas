@@ -11,6 +11,17 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
+# The public hostname(s) this app is served from, for Astro's CSRF origin check.
+# This MUST be a build ARG: astro.config.mjs bakes `security.allowedDomains` into
+# the manifest at BUILD time, so a run-time-only variable arrives too late and
+# the setting is silently inert. Without it Astro distrusts the proxy's
+# X-Forwarded-Host, computes its own origin as `https://localhost`, and rejects
+# EVERY browser form POST with "Cross-site POST form submissions are forbidden"
+# — which is exactly what production did from launch until 2026-07-26.
+# A public hostname is not a secret, so baking it does not touch the §6
+# no-secrets-in-the-image rule. Empty default = today's local-dev behavior.
+ARG SITE_ORIGINS=""
+ENV SITE_ORIGINS=$SITE_ORIGINS
 RUN npm run build
 
 # ---- runner: production deps + built output only ---------------------------

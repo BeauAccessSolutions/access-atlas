@@ -31,6 +31,24 @@ services:
       - key: HOST
         value: "0.0.0.0"
         scope: RUN_TIME
+      # --- CSRF origin trust (BUILD_TIME — see the Dockerfile's ARG) ---------
+      # Astro's `security.checkOrigin` rejects a form POST whose browser Origin
+      # doesn't match the origin Astro computes for itself. Behind App Platform's
+      # TLS-terminating proxy the container sees plain HTTP with the real host in
+      # X-Forwarded-Host, and Astro only TRUSTS that header for hosts named here.
+      # Unset => allowedDomains is empty => every POST 403s ("Cross-site POST
+      # form submissions are forbidden"): submit, report a visit, confirm a
+      # claim, accessibility settings, sign-out, data export/delete. That was
+      # production's real state from launch until 2026-07-26.
+      #
+      # MUST be BUILD_TIME: astro.config.mjs bakes this into the manifest during
+      # `npm run build`. A RUN_TIME value arrives after the decision is frozen
+      # and does nothing. Hostname only — no scheme, no path. Add a custom domain
+      # here (comma-separated) BEFORE cutting DNS over to it, or POSTs break on
+      # the new host. A public hostname is not a secret.
+      - key: SITE_ORIGINS
+        scope: BUILD_TIME
+        value: "access-atlas-qd464.ondigitalocean.app"
       # --- Supabase CLOUD (project gclxpbjifxwrhueopdta) ---
       - key: PUBLIC_SUPABASE_URL
         scope: RUN_TIME
