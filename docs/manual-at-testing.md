@@ -127,8 +127,12 @@ On both lists:
 5. The listings are announced as a **list**, and each listing is a level-3
    heading containing a link — so jumping by headings hops listing to listing.
 6. Some listings carry tags read as plain text, **something like**
-   "Disabled-owned (self-attested)" or "Disability-literate (self-attested)."
-   Tags must be spoken, not just shown as a colored chip.
+   "Disabled-led (sourced)", "Disabled-owned (self-attested)", or
+   "Disability-literate (self-attested)." Tags must be spoken, not just shown as
+   a colored chip. **The word in the parentheses matters and is not decoration**
+   — "self-attested" means the business told us themselves; "sourced" means a
+   certification or partner backs it. A tag with neither word is a bug: report
+   it. [exact wording matters]
 
 Differences you should expect (not bugs):
 
@@ -159,9 +163,22 @@ should continue there — you shouldn't land somewhere unlabeled).
 ### 4.2 Provider pages only: ownership & competence
 
 Under a heading about ownership, leadership & competence, you should hear that
-these are **self-attested — no medical proof is ever required**, then three
-plain statements: disability-literate, disabled-owned, disabled-led — each
-"Yes (self-attested)" or the honest "Not attested."
+**no medical proof is ever required, or asked for**, and that each line says
+where the claim came from. Then three plain statements: disability-literate,
+disabled-owned, disabled-led — each either "Not attested" or "Yes" followed by
+**where it came from**:
+
+- **"Yes (self-attested)"** — the business told us themselves. You should then
+  hear a short sentence saying exactly that.
+- **"Yes (sourced)"** — a certification or partner organization backs it. You
+  should then hear what that source IS (for example, a state or federal
+  certification, or a Center for Independent Living designation), and an
+  explicit note that this is **not** a self-attestation.
+
+[exact wording matters] If you hear "Yes" with no source at all, or hear
+"self-attested" where the follow-up sentence describes a certificate instead of
+the business speaking, that is a bug — it is the exact defect this section was
+rewritten to catch.
 
 ### 4.3 The accessibility facts
 

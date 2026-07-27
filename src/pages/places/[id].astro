@@ -10,11 +10,19 @@ import ReportVisitCta from '../../components/ReportVisitCta.astro';
 import PhotoReportBanner from '../../components/PhotoReportBanner.astro';
 import CategoryIcon from '../../components/CategoryIcon.astro';
 import { categoryLabel, isCategory } from '../../lib/categories';
+import { presentRepresentation } from '../../lib/labeling';
 import { contributionsOpen } from '../../lib/contributor';
 import { getEvidenceForListing, getListing, getStatusesForListing } from '../../lib/repo';
 
 const { id } = Astro.params;
 const listing = id ? await getListing(id) : null;
+// Representation, or null when provenance is unknown (§4; migration 0012).
+const owned = listing
+  ? presentRepresentation('owned', listing.disabledOwned, listing.disabledOwnedSource, listing.representationNote)
+  : null;
+const led = listing
+  ? presentRepresentation('led', listing.disabledLed, listing.disabledLedSource, listing.representationNote)
+  : null;
 if (!listing || listing.kind !== 'place') Astro.response.status = 404;
 
 const [statuses, evidence] = listing
@@ -58,13 +66,26 @@ const photoReportStatus = Astro.url.searchParams.get('photo_report');
         reportHref={`/contribute/report/${listing.id}/`}
       />
 
-      {(listing.disabledOwned || listing.disabledLed) && (
+      {/* Shown only when provenance is recorded. A bare flag with unknown
+          provenance renders nothing at all — silence, never a claim (§4;
+          migration 0012). */}
+      {(owned || led) && (
         <>
           <h2>Ownership &amp; leadership</h2>
-          <p>Self-attested — no proof required.</p>
+          <p>No proof is ever required, or asked for. Each line says where the claim came from.</p>
           <ul>
-            {listing.disabledOwned && <li>Disabled-owned (a disabled person owns 51% or more)</li>}
-            {listing.disabledLed && <li>Disabled-led (a disabled person holds primary leadership)</li>}
+            {owned && (
+              <li>
+                Disabled-owned ({owned.definition}) — {owned.sourceLabel}
+                <br /><span class="attr-desc">{owned.provenance}</span>
+              </li>
+            )}
+            {led && (
+              <li>
+                Disabled-led ({led.definition}) — {led.sourceLabel}
+                <br /><span class="attr-desc">{led.provenance}</span>
+              </li>
+            )}
           </ul>
         </>
       )}
