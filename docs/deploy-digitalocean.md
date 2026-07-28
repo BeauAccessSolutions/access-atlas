@@ -43,6 +43,36 @@ Platform, app data on a Supabase **cloud** project. Decision shape chosen
    you'd rather deploy from a container image pushed to DOCR — ask and I'll switch
    the spec to `image:` from `github:`.)
 
+## ⚠️ Updating a live app — never apply `.do/app.yaml`
+
+`doctl apps update --spec .do/app.yaml` **will blank every secret** on the running app.
+
+This file declares `PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` and `SUPABASE_DB_URL`
+as `type: SECRET` **with no value** — deliberately, so no secret is committed. The LIVE spec is the
+only place the encrypted `EV[1:…]` values exist. Applying the committed copy overwrites them with
+nothing, and the app loses its database keys: every listing page 500s. That is a worse outage than
+any drift you are fixing. (Nearly done 2026-07-27; caught by diffing first.)
+
+Always edit the live spec instead:
+
+```sh
+doctl apps spec get <app-id> > /tmp/live.yaml
+# diff it against this file FIRST — the live spec is authoritative for anything
+# edited through the dashboard (the KEYCLOAK_ISSUER flip on 2026-07-18 lived
+# only there for days). Most apparent differences are just YAML quoting.
+$EDITOR /tmp/live.yaml
+diff -u <(doctl apps spec get <app-id>) /tmp/live.yaml   # expect ONLY your change
+doctl apps update <app-id> --spec /tmp/live.yaml
+```
+
+Then reconcile `.do/app.yaml` in the repo by hand so the committed copy stays an accurate
+description — it is documentation and a create-time template, **not** something you re-apply.
+
+**A `PRE_DEPLOY` job must declare no `envs` entry for an app-level secret.** App Platform inherits
+app-level envs into every component. Re-declaring `SUPABASE_DB_URL` on the `migrate` job with
+`type: SECRET` and no value shadows the inherited secret with an empty one, and the job fails every
+run looking exactly as though the secret was never set.
+
 ## Provision (doctl)
 
 ```
@@ -52,7 +82,7 @@ doctl apps create --spec .do/app.yaml
 # 2. Set the secret env values (or paste them in the DO console the first time):
 #    web:  PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY
 #    keycloak: KC_BOOTSTRAP_ADMIN_USERNAME, KC_BOOTSTRAP_ADMIN_PASSWORD
-doctl apps update <app-id> --spec .do/app.yaml   # after editing secrets in-place
+#    ⚠️ AFTER CREATION, NEVER APPLY THIS FILE AGAIN — see "Updating a live app" below.
 
 # 3. Watch the first deploy:
 doctl apps list
@@ -86,8 +116,8 @@ instead of serving code against an un-migrated database.
 # pooler (port 6543): it doesn't support all migration statements. The direct
 # db.<ref>.supabase.co host is IPv6-only and may be unreachable from App Platform.
 #
-# 1. Set the secret on the app (encrypted at rest), THEN apply the spec:
-doctl apps update <app-id> --spec .do/app.yaml    # adds the `migrate` job
+# 1. Set the secret on the app (encrypted at rest), THEN apply the spec — but
+#    apply the LIVE spec, not this file (see "Updating a live app" below).
 # 2. If you apply the spec before setting SUPABASE_DB_URL, the next deploy will
 #    (by design) fail at the migrate job with a clear message — set the secret
 #    and redeploy.
