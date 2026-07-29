@@ -265,6 +265,26 @@ verified against real Postgres via `supabase db reset` + the seeded states.
 
 ---
 
+## 14b. Supabase traps this repo has already hit
+
+Relocated here 2026-07-29 from `~/.claude/shared/LESSONS.md`: Access Atlas is the only project on
+this machine that uses Supabase, so these were loading into 18 unrelated repos' sessions.
+
+- **RLS is not a GRANT — you need both.** Correct policies still gave "permission denied" on reads
+  and silently no-op'd writes. → In the migration add explicit `grant select … to anon, authenticated`
+  and `grant select,insert,update,delete … to service_role`; same for VIEWS and any *new* server-side
+  reader (grant in the migration adding the reader, not just the one creating the view). Verify by
+  exercising the real read/write paths. (2026-07-07)
+
+- **PostgREST caches the schema, and every git worktree shares one local Supabase stack.** A migrated
+  column returned `column … does not exist` on REST while `psql` saw it fine; separately a parallel
+  worktree's `db reset` silently reverted the shared instance (same `project_id` = same containers),
+  surfacing as axe flagging missing `<title>` everywhere. → `notify pgrst, 'reload schema'` after each
+  migration; don't point parallel worktrees at one stack. *Gap:* the reload lives only in a runbook.
+  (2026-07-13)
+
+---
+
 ## 15. Platform membership (Beau Access Solutions)
 
 Access Atlas is a member app of the **Beau Access Solutions (BAS)** platform.
