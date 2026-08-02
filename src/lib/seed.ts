@@ -115,10 +115,117 @@ const ATTR: Record<string, AttrDef> = {
     requiresPhoto: false,
     appliesToKind: 'provider',
   },
+
+  // ---- Multi-disability rows (migration 0013) -------------------------------
+  // Everything above weights `wheelchair_user` (or nobody), while
+  // src/lib/identity-tags.ts offers five tags — so four of the five weighted
+  // nothing at all and those contributors were second-class in the §4 consensus
+  // math. Rationale, wording caveat and the single-tag limitation are documented
+  // in supabase/migrations/0013_attribute_catalog_multi_disability.sql.
+  interpreter_on_request: {
+    key: 'interpreter_on_request',
+    label: 'ASL interpreter arranged on request',
+    category: 'provider_behavior',
+    reverifyIntervalDays: 365,
+    relevantIdentityTag: 'deaf_hoh',
+    questionText:
+      'On your visit, did the provider arrange an ASL interpreter when you asked for one?',
+    requiresPhoto: false,
+    appliesToKind: 'provider',
+  },
+  staff_communicate_in_writing: {
+    key: 'staff_communicate_in_writing',
+    label: 'Staff will communicate in writing',
+    category: 'provider_behavior',
+    reverifyIntervalDays: 365,
+    relevantIdentityTag: 'deaf_hoh',
+    questionText:
+      'On your visit, were staff willing to communicate in writing (notes, or typing on a phone or tablet)?',
+    requiresPhoto: false,
+    appliesToKind: null,
+  },
+  captions_on_screens: {
+    key: 'captions_on_screens',
+    label: 'Captions turned on for video screens',
+    category: 'facility_objective',
+    reverifyIntervalDays: 365,
+    relevantIdentityTag: 'deaf_hoh',
+    questionText: 'On your visit, were the video screens showing captions?',
+    requiresPhoto: true,
+    appliesToKind: null,
+  },
+  service_animal_welcomed: {
+    key: 'service_animal_welcomed',
+    label: 'Service animal welcomed',
+    category: 'provider_behavior',
+    reverifyIntervalDays: 365,
+    relevantIdentityTag: 'blind_low_vision',
+    questionText:
+      'On your visit, was your service animal welcomed without being questioned or refused entry?',
+    requiresPhoto: false,
+    appliesToKind: null,
+  },
+  staff_read_aloud: {
+    key: 'staff_read_aloud',
+    label: 'Staff read printed information aloud',
+    category: 'provider_behavior',
+    reverifyIntervalDays: 365,
+    relevantIdentityTag: 'blind_low_vision',
+    questionText: 'On your visit, did staff read the menu, forms, or signage aloud when you asked?',
+    requiresPhoto: false,
+    appliesToKind: null,
+  },
+  quiet_waiting_space: {
+    key: 'quiet_waiting_space',
+    label: 'Quieter space to wait',
+    category: 'facility_objective',
+    reverifyIntervalDays: 365,
+    relevantIdentityTag: 'neurodivergent',
+    questionText:
+      'On your visit, was there a quieter area, away from noise and crowds, where you could wait?',
+    requiresPhoto: true,
+    appliesToKind: null,
+  },
+  plain_language_help: {
+    key: 'plain_language_help',
+    label: 'Staff explained things in plain language',
+    category: 'provider_behavior',
+    reverifyIntervalDays: 365,
+    relevantIdentityTag: 'cognitive_access',
+    questionText:
+      'On your visit, did staff explain things in plain language and help you with forms when you asked?',
+    requiresPhoto: false,
+    appliesToKind: null,
+  },
+  seating_available: {
+    key: 'seating_available',
+    label: 'Seating available while waiting',
+    category: 'facility_objective',
+    reverifyIntervalDays: 365,
+    // null: seating blocks chronic-illness / fatigue / ambulatory-disabled
+    // visitors, who the coarse tag list does not name. Privilege nobody rather
+    // than mislabel them (same semantics as 'communicated_directly').
+    relevantIdentityTag: null,
+    questionText: 'On your visit, was there somewhere to sit while you waited?',
+    requiresPhoto: true,
+    appliesToKind: null,
+  },
 };
 
 // The attribute catalog a submitter can self-report against, filtered by kind
 // (null appliesToKind = both). Mirrors supabase/seed.sql's attribute_definitions.
+/**
+ * attribute key -> the reviewer identity tag it weights (§4), or null.
+ *
+ * Exported so a test can hold the line on the inequity migration 0013 fixed: if
+ * a tag is offered on the visit-report form but no attribute weights it, that
+ * contributor's lived experience counts for nothing in the consensus math.
+ * Also backs the supabase/seed.sql parity check (the catalog has two mirrors).
+ */
+export function seedAttributeIdentityTags(): Record<string, string | null> {
+  return Object.fromEntries(Object.values(ATTR).map((a) => [a.key, a.relevantIdentityTag]));
+}
+
 export function seedAttributeDefinitions(kind: ListingKind): AttributeDefOption[] {
   return Object.values(ATTR)
     .filter((a) => a.appliesToKind === null || a.appliesToKind === kind)
