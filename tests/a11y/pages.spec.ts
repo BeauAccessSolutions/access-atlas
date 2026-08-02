@@ -40,6 +40,10 @@ const ROUTES = [
   // from "unknown never matches" (Medicare is NULL in the seed, by design)
   '/providers/?medicaid=1',
   '/providers/?medicare=1',
+  '/providers/?telehealth=1',
+  // the first-report form for a telehealth attribute (photo-free by design —
+  // a screenshot of a consultation would carry other people's health data, §6)
+  '/contribute/report/33333333-3333-3333-3333-333333333333/telehealth_audio_only/',
   // self-service data rights (on-demand; renders the no-DB notice in CI)
   '/account/',
   '/account/delete/',

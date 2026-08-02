@@ -46,11 +46,11 @@ insert into listings (id, kind, name, summary, city, region, postal_code, catego
 -- exercise the unknown path: it must render nothing at all, not "no".
 insert into provider_profiles (
   listing_id, disability_literate,
-  accepting_new_patients, accepts_medicaid, accepts_medicare,
+  accepting_new_patients, accepts_medicaid, accepts_medicare, offers_telehealth,
   coverage_source, coverage_as_of, coverage_note
 ) values
   ('33333333-3333-3333-3333-333333333333', true,
-   true, true, null,
+   true, true, null, true,
    'self_attested', current_date - 30, null);
 
 -- Claims + confirmations, hand-tuned to show every labeling state ------------

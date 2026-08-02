@@ -197,6 +197,48 @@ const ATTR: Record<string, AttrDef> = {
     requiresPhoto: false,
     appliesToKind: null,
   },
+  // ---- Telehealth usability (migration 0015) --------------------------------
+  // Availability is a coverage flag; USABILITY is a real §4 attribute, because
+  // unlike Medicaid these generalize — a platform that drove one blind
+  // patient's screen reader will drive the next one's. requires_photo is false
+  // on all three: the only photo of a telehealth appointment is a screenshot of
+  // a medical consultation (§6).
+  telehealth_platform_accessible: {
+    key: 'telehealth_platform_accessible',
+    label: 'Telehealth platform worked with my screen reader',
+    category: 'facility_objective',
+    reverifyIntervalDays: 365,
+    relevantIdentityTag: 'blind_low_vision',
+    questionText:
+      'On your telehealth appointment, could you use the video platform with your screen reader or by keyboard alone?',
+    requiresPhoto: false,
+    appliesToKind: 'provider',
+  },
+  telehealth_captions_or_interpreter: {
+    key: 'telehealth_captions_or_interpreter',
+    label: 'Telehealth captions or interpreter worked',
+    category: 'facility_objective',
+    reverifyIntervalDays: 365,
+    relevantIdentityTag: 'deaf_hoh',
+    questionText:
+      'On your telehealth appointment, were captions available, or could an ASL interpreter join the call?',
+    requiresPhoto: false,
+    appliesToKind: 'provider',
+  },
+  telehealth_audio_only: {
+    key: 'telehealth_audio_only',
+    label: 'Audio-only appointment allowed',
+    category: 'facility_objective',
+    reverifyIntervalDays: 365,
+    // null: helps poor connections, people without a smartphone, people who
+    // cannot manage video, and people for whom being on camera IS the barrier.
+    // No coarse tag names that group, so privilege nobody.
+    relevantIdentityTag: null,
+    questionText:
+      'On your telehealth appointment, could you take it by phone or audio only, without video?',
+    requiresPhoto: false,
+    appliesToKind: 'provider',
+  },
   seating_available: {
     key: 'seating_available',
     label: 'Seating available while waiting',
@@ -295,6 +337,7 @@ export const LISTINGS: Listing[] = [
         acceptsMedicaid: true,
         // NULL on purpose: exercises the unknown path (must render nothing).
         acceptsMedicare: null,
+        offersTelehealth: true,
         source: 'self_attested',
         asOf: new Date(Date.now() - 30 * 86_400_000).toISOString().slice(0, 10),
         note: null,

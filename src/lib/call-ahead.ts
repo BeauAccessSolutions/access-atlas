@@ -116,6 +116,21 @@ export const ASK_AHEAD: Record<string, AskAheadCopy> = {
     followUp:
       'If they say yes, ask whether I can have extra time, and take the instructions away in writing rather than having to remember them.',
   },
+  telehealth_platform_accessible: {
+    ask: 'Which platform do you use for video appointments, and does it work with a screen reader?',
+    followUp:
+      'Ask for the name of the platform so I can test it before the appointment, and ask what happens if it does not work on the day — whether they will switch to phone rather than cancel.',
+  },
+  telehealth_captions_or_interpreter: {
+    ask: 'For a video appointment, can you turn on captions, or have an ASL interpreter join the call?',
+    followUp:
+      'Ask how far ahead they need to book the interpreter, and get it confirmed in writing. Arranging it is the provider’s responsibility, not yours — the same as for an in-person appointment.',
+  },
+  telehealth_audio_only: {
+    ask: 'Can I take the appointment by phone, without video?',
+    followUp:
+      'If they say video only, ask why — and whether an exception can be made. Audio-only is often allowed but not offered unless you ask.',
+  },
   seating_available: {
     ask: 'Is there somewhere to sit while waiting, and roughly how long is the wait?',
     followUp:
@@ -285,6 +300,12 @@ const COVERAGE_COPY: { key: CoverageKey | null; ask: string; followUp: string }[
     ask: 'Do you accept Medicare?',
     followUp:
       'If they say yes, ask whether they accept assignment, so I know whether I will be billed the difference.',
+  },
+  {
+    key: 'offersTelehealth',
+    ask: 'Do you offer telehealth appointments?',
+    followUp:
+      'If they say yes, ask whether that is open to new patients or established patients only — the two often differ — and whether the first appointment has to be in person.',
   },
   {
     // Deliberately NOT stored (migration 0014): commercial plan networks are
