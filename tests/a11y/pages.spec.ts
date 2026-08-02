@@ -30,6 +30,10 @@ const ROUTES = [
   // report hub (tracked + unreported sections) and the first-report form
   '/contribute/report/11111111-1111-1111-1111-111111111111/',
   '/contribute/report/11111111-1111-1111-1111-111111111111/accessible_parking/',
+  // ask-ahead script: the seeded place (mixed settled + worth-asking) and the
+  // claimless one (every question is "untracked" — the all-questions mode)
+  '/ask-ahead/11111111-1111-1111-1111-111111111111/',
+  '/ask-ahead/44444444-4444-4444-4444-444444444444/',
   // self-service data rights (on-demand; renders the no-DB notice in CI)
   '/account/',
   '/account/delete/',
@@ -128,7 +132,7 @@ test('claimless place exposes the be-the-first CTA into the report hub', async (
 // on-device "sort by distance" feature; §13, ADR docs/adr-0001-nearby-geolocation.md).
 // Everything else — including the list DETAIL pages — must ship no <script> at
 // all (low-bandwidth mandate, §5).
-for (const route of ['/', '/settings/', '/about/', '/about/accessibility/', '/about/help/', '/places/11111111-1111-1111-1111-111111111111/', '/account/', '/account/delete/']) {
+for (const route of ['/', '/settings/', '/about/', '/about/accessibility/', '/about/help/', '/places/11111111-1111-1111-1111-111111111111/', '/ask-ahead/11111111-1111-1111-1111-111111111111/', '/account/', '/account/delete/']) {
   test(`ships zero <script>: ${route}`, async ({ page }) => {
     await page.goto(route);
     await expect(page.locator('script')).toHaveCount(0);

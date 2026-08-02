@@ -1,0 +1,146 @@
+---
+// "Questions to ask before you go" for one listing (§5 plain language).
+//
+// The problem this solves: every trip to an unknown place starts with the same
+// negotiation — asking a stranger about your own body, without knowing which
+// question actually gets a useful answer. "Are you accessible?" reliably gets a
+// confident, useless yes. This page hands the visitor the specific questions
+// worth asking about THIS listing, and the follow-up that turns a vague yes into
+// a real answer.
+//
+// It is deliberately NOT called a "call-ahead script" and never says to phone:
+// a voice call is itself an access barrier for Deaf and hard-of-hearing people,
+// for people with speech disabilities, and for anyone who needs to prepare. The
+// questions work by phone, email, text or a contact form.
+//
+// The list is DERIVED FROM §4 STATE, not fixed: facts the community has already
+// settled are moved out of the way, and the ones that are disputed, stale,
+// unconfirmed or untracked rise to the top — those are exactly where the
+// community cannot yet answer for you.
+//
+// On-demand, zero-JS server-rendered HTML (§5). Prints cleanly — the existing
+// print styles drop the nav/footer chrome, so this is a page you can take with
+// you on paper.
+export const prerender = false;
+
+import Base from '../../layouts/Base.astro';
+import { getAttributeDefinitions, getListing, getStatusesForListing } from '../../lib/repo';
+import { buildAskAhead, reasonNote } from '../../lib/call-ahead';
+
+const { listingId } = Astro.params;
+const listing = listingId ? await getListing(listingId) : null;
+if (!listing) Astro.response.status = 404;
+
+const [statuses, defs] = listing
+  ? await Promise.all([getStatusesForListing(listing.id), getAttributeDefinitions(listing.kind)])
+  : [[], []];
+
+const { ask, settled } = listing ? buildAskAhead(statuses, defs) : { ask: [], settled: [] };
+
+const listingHref = listing
+  ? `/${listing.kind === 'provider' ? 'providers' : 'places'}/${listing.id}/`
+  : null;
+const place = listing ? [listing.city, listing.region].filter(Boolean).join(', ') : '';
+---
+
+{
+  !listing ? (
+    <Base title="Listing not found">
+      <h1>Listing not found</h1>
+      <p>
+        We couldn't find that listing. <a href="/places/">Browse places</a> or{' '}
+        <a href="/providers/">browse providers</a>.
+      </p>
+    </Base>
+  ) : (
+    <Base
+      title={`Questions to ask before you go — ${listing.name}`}
+      description={`Specific accessibility questions worth asking ${listing.name} before you visit.`}
+    >
+      <p><a href={listingHref}>← Back to {listing.name}</a></p>
+      <h1>Questions to ask before you go</h1>
+      <p class="listing-meta">
+        {listing.name}{place ? ` — ${place}` : ''}
+      </p>
+      <p>
+        These are the accessibility questions worth asking about this listing,
+        with the most useful ones first. Ask them however suits you — by phone,
+        email, text, or a contact form. You never have to explain your
+        disability to get an answer.
+      </p>
+      <p class="attr-desc">
+        This page prints. You can take it with you.
+      </p>
+
+      {ask.length > 0 && (
+        <>
+          <h2>Worth asking</h2>
+          <p>
+            The community can't answer these for you yet — that's exactly why
+            they're here.
+          </p>
+          <ol class="ask-list">
+            {ask.map((item) => (
+              <li class="ask-item">
+                <p class="ask-label">{item.label}</p>
+                <p class="ask-question">“{item.ask}”</p>
+                <p class="ask-followup">{item.followUp}</p>
+                <p class="attr-desc">{reasonNote(item.reason)}</p>
+              </li>
+            ))}
+          </ol>
+        </>
+      )}
+
+      {settled.length > 0 && (
+        <>
+          <h2>Already answered by the community</h2>
+          <p>
+            You probably don't need to ask about these. Dates show when each was
+            last confirmed — access facts change, so ask anyway if one of them
+            decides your trip.
+          </p>
+          <ul>
+            {settled.map((item) => (
+              <li>
+                <strong>{item.label}</strong> —{' '}
+                {item.state === 'sourced'
+                  ? 'backed by a certification, audit or partner organization'
+                  : 'community-verified'}
+                {item.lastConfirmedAt && (
+                  <span class="attr-desc">
+                    {' '}(last confirmed {item.lastConfirmedAt.slice(0, 10)})
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      {ask.length === 0 && settled.length === 0 && (
+        <p>
+          There are no accessibility facts tracked for this listing yet, so we
+          have no questions to suggest.{' '}
+          <a href={`/contribute/report/${listing.id}/`}>
+            Report a visit
+          </a>{' '}
+          and you'll be the first.
+        </p>
+      )}
+
+      <div class="disclaimer">
+        <h2>After you go</h2>
+        <p>
+          Whatever you find out, other disabled visitors need to know it — a
+          plain “no, there were two steps” is as valuable as a yes.{' '}
+          <a href={`/contribute/report/${listing.id}/`}>Report your visit</a>.
+        </p>
+        <p>
+          Some questions above mention what the ADA requires. That's general
+          information to help you ask, not legal advice.
+        </p>
+      </div>
+    </Base>
+  )
+}
