@@ -25,7 +25,8 @@
     "seed:import": "node scripts/seed-import.mjs",
     "data-rights": "node scripts/data-rights.mjs",
     "moderate:photo": "node scripts/moderate-photo.mjs",
-    "moderate:takedown": "node scripts/takedown-confirmation.mjs"
+    "moderate:takedown": "node scripts/takedown-confirmation.mjs",
+    "coverage:update": "node scripts/update-coverage.mjs"
   },
   "dependencies": {
     "@astrojs/node": "^9.5.5",
