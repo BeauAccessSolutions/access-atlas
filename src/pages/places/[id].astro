@@ -60,6 +60,13 @@ const photoReportStatus = Astro.url.searchParams.get('photo_report');
       {place && <p class="listing-meta">{place}</p>}
       {listing.summary && <p>{listing.summary}</p>}
 
+      <p class="ask-ahead-link">
+        Going for the first time?{' '}
+        <a href={`/ask-ahead/${listing.id}/`}>Questions to ask before you go</a>{' '}
+        — what to ask, and what to ask next when the answer is a vague “yes,
+        we're accessible”.
+      </p>
+
       <ReportVisitCta
         target="#accessibility"
         hasClaims={statuses.length > 0}
