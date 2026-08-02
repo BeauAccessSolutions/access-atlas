@@ -285,7 +285,21 @@ export const LISTINGS: Listing[] = [
     disabledLedSource: 'sourced',
     representationNote:
       'its designation as a Center for Independent Living, where consumer control — 51% or more of staff and board being disabled people — is a condition of the designation',
-    provider: { disabilityLiterate: true },
+    provider: {
+      disabilityLiterate: true,
+      // Mirrors supabase/seed.sql. `asOf` is computed relative to today so the
+      // seeded fact never drifts into the stale branch as the repo ages —
+      // staleness is exercised by unit tests, not by a rotting fixture.
+      coverage: {
+        acceptingNewPatients: true,
+        acceptsMedicaid: true,
+        // NULL on purpose: exercises the unknown path (must render nothing).
+        acceptsMedicare: null,
+        source: 'self_attested',
+        asOf: new Date(Date.now() - 30 * 86_400_000).toISOString().slice(0, 10),
+        note: null,
+      },
+    },
     lat: 42.901,
     lng: -78.876,
     coordsSource: 'approximate',

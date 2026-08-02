@@ -30,10 +30,16 @@ const ROUTES = [
   // report hub (tracked + unreported sections) and the first-report form
   '/contribute/report/11111111-1111-1111-1111-111111111111/',
   '/contribute/report/11111111-1111-1111-1111-111111111111/accessible_parking/',
-  // ask-ahead script: the seeded place (mixed settled + worth-asking) and the
-  // claimless one (every question is "untracked" — the all-questions mode)
+  // ask-ahead script: the seeded place (mixed settled + worth-asking), the
+  // claimless one (every question is "untracked"), and the PROVIDER, which also
+  // renders the coverage-gate questions (migration 0014)
   '/ask-ahead/11111111-1111-1111-1111-111111111111/',
   '/ask-ahead/44444444-4444-4444-4444-444444444444/',
+  '/ask-ahead/33333333-3333-3333-3333-333333333333/',
+  // coverage filters: one that matches, and one whose honest empty state comes
+  // from "unknown never matches" (Medicare is NULL in the seed, by design)
+  '/providers/?medicaid=1',
+  '/providers/?medicare=1',
   // self-service data rights (on-demand; renders the no-DB notice in CI)
   '/account/',
   '/account/delete/',

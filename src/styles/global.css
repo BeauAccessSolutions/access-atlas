@@ -834,6 +834,22 @@ details p:last-child { margin-bottom: 0; }
 .report-cta-title { margin-top: 0; font-size: 1.15rem; }
 .report-cta p { margin-bottom: 1rem; }
 .report-cta .btn { text-decoration: none; }
+/* -------- Coverage ("Before you book") ------------------------------------
+   The pre-access gate: panel status + Medicaid/Medicare (migration 0014). NOT a
+   §4 validated claim, so it deliberately does NOT reuse the .attr-row / badge
+   styling — a visitor must not read it as community-verified. Yes/no is carried
+   by the TEXT ("Accepting new patients" vs "Not accepting new patients"); the
+   colour is a redundant cue only (WCAG 1.4.1). */
+.coverage { margin: 1.5rem 0; }
+.coverage-list { list-style: none; padding-left: 0; }
+.coverage-list li {
+  border-left: 4px solid var(--color-border);
+  padding: 0.5rem 0 0.5rem 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.coverage-list li.coverage-yes { border-left-color: var(--brand); }
+.coverage-list li.coverage-no { border-left-color: var(--color-muted); }
+
 /* -------- Ask-ahead list (questions to take to a visit) ------------------
    One question per row, kept whole on paper (see the print block below) so a
    question never separates from the follow-up that makes it useful. Numbered
@@ -911,7 +927,8 @@ footer.site .footer-links { margin-bottom: 0; }
      useless when you're reading it aloud to someone. */
   .listing-card,
   .attr-row,
-  .ask-item { break-inside: avoid; page-break-inside: avoid; }
+  .ask-item,
+  .coverage-list li { break-inside: avoid; page-break-inside: avoid; }
   /* Keep the left rule on the question: it's the only cue distinguishing the
      words to say from the surrounding explanation. */
   .ask-question { border-left: 3px solid #000; }

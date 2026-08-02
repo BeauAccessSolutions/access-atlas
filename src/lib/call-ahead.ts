@@ -25,7 +25,8 @@
 // The `followUp` line is the point of the whole feature. "Are you accessible?"
 // reliably gets a confident, useless yes. The follow-up is the specific thing
 // to ask next so the answer means something.
-import type { AttributeStatus } from './types';
+import { presentCoverage, type CoverageKey } from './coverage';
+import type { AttributeStatus, ProviderCoverage } from './types';
 
 export interface AskAheadCopy {
   /** What to say or write, present tense, plain language. */
@@ -249,4 +250,77 @@ export function reasonNote(reason: AskReason): string {
     case 'partly_confirmed':
       return 'Some visitors have confirmed this, but not enough yet to be community-verified.';
   }
+}
+
+// ---------------------------------------------------------------------------
+// Coverage questions (providers only) — the blockers that fire BEFORE
+// accessibility. Migration 0014 stores panel status + Medicaid/Medicare; this
+// turns them into questions, because even a fact we hold needs confirming
+// (panels close in a month) and because the one thing we deliberately DON'T
+// store — commercial insurance — still has to be asked.
+// ---------------------------------------------------------------------------
+
+export interface CoverageQuestion {
+  ask: string;
+  followUp: string;
+  /** What we currently hold, already fail-safe formatted — or null if nothing. */
+  weAreTold: string | null;
+}
+
+const COVERAGE_COPY: { key: CoverageKey | null; ask: string; followUp: string }[] = [
+  {
+    key: 'acceptingNewPatients',
+    ask: 'Are you taking new patients right now?',
+    followUp:
+      'If they are not, ask whether there is a waiting list and how long it usually is — and whether a referral changes the answer.',
+  },
+  {
+    key: 'acceptsMedicaid',
+    ask: 'Do you accept Medicaid?',
+    followUp:
+      'If they say yes, ask whether that covers my specific Medicaid plan — managed-care plans are not all the same — and whether they are taking new Medicaid patients, which can differ from taking new patients generally.',
+  },
+  {
+    key: 'acceptsMedicare',
+    ask: 'Do you accept Medicare?',
+    followUp:
+      'If they say yes, ask whether they accept assignment, so I know whether I will be billed the difference.',
+  },
+  {
+    // Deliberately NOT stored (migration 0014): commercial plan networks are
+    // fragmented, tiered and renamed yearly, so holding them would produce
+    // confident wrong answers about money. Asked, never asserted.
+    key: null,
+    ask: 'Are you in network for my insurance? I can give you the plan name and member ID.',
+    followUp:
+      'Ask them to check the specific plan, not just the insurer — "we take Blue Cross" and "we are in network for your Blue Cross plan" are different answers. Get the name of whoever confirmed it.',
+  },
+];
+
+/**
+ * The coverage questions for a provider, each annotated with what we already
+ * hold so the visitor confirms rather than starts cold.
+ *
+ * Returns [] for places — none of this applies to a cafe.
+ */
+export function buildCoverageQuestions(
+  coverage: ProviderCoverage | null | undefined,
+  now = new Date(),
+): CoverageQuestion[] {
+  return COVERAGE_COPY.map(({ key, ask, followUp }) => {
+    // Fail-safe: presentCoverage publishes nothing without a source AND a date,
+    // so `weAreTold` stays null rather than repeating an unsourced flag (§4).
+    const held = key ? presentCoverage(key, coverage, now) : null;
+    return {
+      ask,
+      followUp,
+      weAreTold: held
+        // Em-dash rather than lowercasing held.text: "Medicaid" and "Medicare"
+        // are proper nouns and must not be flattened mid-sentence.
+        ? `What we hold — ${held.text}, last confirmed ${held.asOf}.${
+            held.isStale ? ' That is over six months old.' : ''
+          }`
+        : null,
+    };
+  });
 }
