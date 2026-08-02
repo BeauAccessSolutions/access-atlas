@@ -111,7 +111,7 @@ export async function getAttributeDefinitions(kind: ListingKind): Promise<Attrib
   if (!isDbConfigured || !supabase) return seedAttributeDefinitions(kind);
   const { data, error } = await supabase
     .from('attribute_definitions')
-    .select('key, label, category, applies_to_kind')
+    .select('key, label, category, applies_to_kind, relevant_identity_tag')
     .or(`applies_to_kind.is.null,applies_to_kind.eq.${kind}`)
     .order('key');
   if (error) throw error;
@@ -120,6 +120,7 @@ export async function getAttributeDefinitions(kind: ListingKind): Promise<Attrib
     label: r.label,
     category: r.category,
     appliesToKind: r.applies_to_kind ?? null,
+    relevantIdentityTag: r.relevant_identity_tag ?? null,
   }));
 }
 
@@ -280,5 +281,6 @@ function rowToStatus(row: any): AttributeStatus {
     lastConfirmedAt: row.last_confirmed_at ?? null,
     isStale: row.is_stale ?? null,
     sourcedNote: row.sourced_note ?? null,
+    relevantIdentityTag: row.relevant_identity_tag ?? null,
   };
 }

@@ -9,6 +9,7 @@ export const prerender = false;
 
 import Base from '../../../../layouts/Base.astro';
 import { getAttributeDefinitions, getListing, getStatusesForListing } from '../../../../lib/repo';
+import { groupByAccessNeed } from '../../../../lib/attribute-groups';
 
 const { listingId } = Astro.params;
 const listing = listingId ? await getListing(listingId) : null;
@@ -22,6 +23,22 @@ const [statuses, defs] = listing
   : [[], []];
 const trackedKeys = new Set(statuses.map((s) => s.attributeKey));
 const unreported = defs.filter((d) => !trackedKeys.has(d.key));
+
+// Grouped by the access need each fact speaks to. The catalog reached 18 facts
+// (migrations 0013 + 0015) and attribute-KEY order had become unreadable — a
+// visitor had to scan all 17 applicable rows to find the two they could speak
+// to. Headings name a SUBJECT, never a permission: anyone may report anything
+// (see attribute-groups.ts).
+const trackedGroups = groupByAccessNeed(
+  statuses,
+  (s) => s.relevantIdentityTag,
+  (s) => s.label,
+);
+const unreportedGroups = groupByAccessNeed(
+  unreported,
+  (d) => d.relevantIdentityTag,
+  (d) => d.label,
+);
 
 const listingHref = listing
   ? `/${listing.kind === 'provider' ? 'providers' : 'places'}/${listing.id}/`
@@ -53,15 +70,25 @@ const listingHref = listing
       {statuses.length > 0 && (
         <>
           <h2>Facts the community is tracking</h2>
-          <ul>
-            {statuses.map((s) => (
-              <li>
-                <a href={`/contribute/confirm/${s.claimId}/`}>
-                  Report your visit for “{s.label}”
-                </a>
-              </li>
-            ))}
-          </ul>
+          <p class="attr-desc">
+            Grouped by the access need each fact speaks to. You can report any of
+            them, whoever you are — the optional tag on the report form only
+            weights your answer for the fact it's relevant to.
+          </p>
+          {trackedGroups.map((group) => (
+            <>
+              <h3>{group.heading}</h3>
+              <ul>
+                {group.items.map((s) => (
+                  <li>
+                    <a href={`/contribute/confirm/${s.claimId}/`}>
+                      Report your visit for “{s.label}”
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ))}
         </>
       )}
 
@@ -72,15 +99,20 @@ const listingHref = listing
             Your visit would be the first report. It stays honestly labeled —
             never “verified” — until at least three independent visits agree.
           </p>
-          <ul>
-            {unreported.map((d) => (
-              <li>
-                <a href={`/contribute/report/${listing.id}/${d.key}/`}>
-                  Be the first to report “{d.label}”
-                </a>
-              </li>
-            ))}
-          </ul>
+          {unreportedGroups.map((group) => (
+            <>
+              <h3>{group.heading}</h3>
+              <ul>
+                {group.items.map((d) => (
+                  <li>
+                    <a href={`/contribute/report/${listing.id}/${d.key}/`}>
+                      Be the first to report “{d.label}”
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ))}
         </>
       )}
 
