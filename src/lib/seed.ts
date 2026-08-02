@@ -276,6 +276,7 @@ export function seedAttributeDefinitions(kind: ListingKind): AttributeDefOption[
       label: a.label,
       category: a.category,
       appliesToKind: a.appliesToKind,
+      relevantIdentityTag: a.relevantIdentityTag,
     }));
 }
 
@@ -514,6 +515,7 @@ export function seedStatuses(now: Date): AttributeStatus[] {
       lastConfirmedAt: last,
       isStale,
       sourcedNote: claim.sourcedNote ?? null,
+      relevantIdentityTag: tag,
     };
   });
 }

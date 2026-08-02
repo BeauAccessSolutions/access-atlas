@@ -108,6 +108,10 @@ export interface AttributeDefOption {
   label: string;
   category: AttributeCategory;
   appliesToKind: ListingKind | null;
+  /** Whose lived experience is weighted for this fact (§4). null = nobody.
+      Drives the access-need grouping in attribute-groups.ts — never a
+      permission to report, only a weighting. */
+  relevantIdentityTag?: string | null;
 }
 
 // A claim plus its attribute's structured question — everything the confirmation
@@ -170,4 +174,6 @@ export interface AttributeStatus {
   lastConfirmedAt: string | null;
   isStale: boolean | null;
   sourcedNote?: string | null;
+  /** See AttributeDefOption.relevantIdentityTag. */
+  relevantIdentityTag?: string | null;
 }
