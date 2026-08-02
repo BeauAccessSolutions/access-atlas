@@ -128,6 +128,44 @@ const panelOpen = active || filters.sort !== 'name';
           </label>
         </p>
       )}
+      {/* Coverage gates (migration 0014) — the blockers that fire BEFORE
+          accessibility. These filter on what the practice (or a directory) told
+          us on a dated basis, NOT on community validation, so the hint says so.
+          Unknown never matches: a provider we have no coverage data for is
+          excluded rather than optimistically included. */}
+      {kind === 'provider' && (
+        <>
+          <p>
+            <label>
+              <input
+                type="checkbox"
+                name="new_patients"
+                value="1"
+                checked={filters.newPatients}
+              />
+              Accepting new patients
+            </label>
+          </p>
+          <p>
+            <label>
+              <input type="checkbox" name="medicaid" value="1" checked={filters.medicaid} />
+              Accepts Medicaid
+            </label>
+          </p>
+          <p>
+            <label>
+              <input type="checkbox" name="medicare" value="1" checked={filters.medicare} />
+              Accepts Medicare
+            </label>
+          </p>
+          <p class="attr-desc">
+            Coverage comes from the practice or a directory on a dated basis, not
+            from community validation, and it changes often. Providers we hold no
+            coverage information for are left out of these filters rather than
+            guessed at — always confirm before you travel.
+          </p>
+        </>
+      )}
     </fieldset>
 
     <p class="filter-actions">

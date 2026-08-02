@@ -9,6 +9,7 @@ import ReportVisitCta from '../../components/ReportVisitCta.astro';
 import PhotoReportBanner from '../../components/PhotoReportBanner.astro';
 import CategoryIcon from '../../components/CategoryIcon.astro';
 import { categoryLabel, isCategory } from '../../lib/categories';
+import { presentAllCoverage } from '../../lib/coverage';
 import { presentRepresentation, representationDefinition } from '../../lib/labeling';
 import { contributionsOpen } from '../../lib/contributor';
 import { getEvidenceForListing, getListing, getStatusesForListing } from '../../lib/repo';
@@ -29,6 +30,11 @@ const [statuses, evidence] = listing
   ? await Promise.all([getStatusesForListing(listing.id), getEvidenceForListing(listing.id)])
   : [[], new Map()];
 const place = listing ? [listing.city, listing.region].filter(Boolean).join(', ') : '';
+// Panel status + coverage (migration 0014). Fail-safe: presentAllCoverage
+// returns ONLY what carries a source AND a date, so an un-sourced or undated
+// flag renders nothing at all rather than a claim we can't stand behind.
+const coverage = listing?.provider ? presentAllCoverage(listing.provider.coverage) : [];
+const coverageStale = coverage.some((c) => c.isStale);
 const prov = listing?.provider;
 const justSubmitted = Astro.url.searchParams.get('submitted') === '1';
 // "Report this photo" is gated on public contributions being open (§13).
@@ -60,6 +66,35 @@ const photoReportStatus = Astro.url.searchParams.get('photo_report');
       )}
       {place && <p class="listing-meta">{place}</p>}
       {listing.summary && <p>{listing.summary}</p>}
+
+      {coverage.length > 0 && (
+        <section class="coverage" aria-labelledby="before-you-book">
+          <h2 id="before-you-book">Before you book</h2>
+          <p>
+            Whether you can be seen at all, before accessibility comes into it.
+            These are not community-validated — they come from the practice or a
+            directory, on the date shown, and they change often.
+          </p>
+          <ul class="coverage-list">
+            {coverage.map((c) => (
+              <li class={c.value ? 'coverage-yes' : 'coverage-no'}>
+                <strong>{c.text}</strong>
+                <br />
+                <span class="attr-desc">
+                  {c.provenance} Last confirmed {c.asOf}.
+                  {c.isStale && ' This is over six months old — check before you travel.'}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p class="attr-desc">
+            {coverageStale
+              ? 'Confirm all of this with the practice before you travel — some of it is out of date.'
+              : 'Confirm with the practice before you travel. Panels close and plan contracts change.'}{' '}
+            <a href={`/ask-ahead/${listing.id}/`}>What to ask</a>.
+          </p>
+        </section>
+      )}
 
       <p class="ask-ahead-link">
         Booking an appointment?{' '}

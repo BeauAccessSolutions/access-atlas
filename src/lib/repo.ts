@@ -11,6 +11,7 @@ import type {
   EvidencePhoto,
   Listing,
   ListingKind,
+  ProviderCoverage,
 } from './types';
 import { supabase, isDbConfigured } from './supabase';
 import {
@@ -30,7 +31,7 @@ export async function getListings(kind?: ListingKind): Promise<Listing[]> {
   let query = supabase
     .from('listings')
     .select(
-      'id, kind, name, summary, city, region, postal_code, category, disabled_owned, disabled_led, disabled_owned_source, disabled_led_source, representation_note, created_at, lat, lng, coords_source, provider_profiles(disability_literate)',
+      'id, kind, name, summary, city, region, postal_code, category, disabled_owned, disabled_led, disabled_owned_source, disabled_led_source, representation_note, created_at, lat, lng, coords_source, provider_profiles(disability_literate, accepting_new_patients, accepts_medicaid, accepts_medicare, coverage_source, coverage_as_of, coverage_note)',
     )
     .order('name');
   if (kind) query = query.eq('kind', kind);
@@ -47,7 +48,7 @@ export async function getListing(id: string): Promise<Listing | null> {
   const { data, error } = await supabase
     .from('listings')
     .select(
-      'id, kind, name, summary, city, region, postal_code, category, disabled_owned, disabled_led, disabled_owned_source, disabled_led_source, representation_note, created_at, lat, lng, coords_source, provider_profiles(disability_literate)',
+      'id, kind, name, summary, city, region, postal_code, category, disabled_owned, disabled_led, disabled_owned_source, disabled_led_source, representation_note, created_at, lat, lng, coords_source, provider_profiles(disability_literate, accepting_new_patients, accepts_medicaid, accepts_medicare, coverage_source, coverage_as_of, coverage_note)',
     )
     .eq('id', id)
     .maybeSingle();
@@ -206,6 +207,31 @@ export async function getAttributeForReport(
 
 // --- row mappers (snake_case DB -> camelCase domain) ------------------------
 
+/**
+ * Coverage columns -> ProviderCoverage, or null when the row carries nothing.
+ *
+ * Note `?? null`, never `!!`: these are THREE-valued and a false must survive as
+ * false (a closed panel is a real answer). Coercing to boolean here would erase
+ * the distinction between "no" and "nobody asked" — the exact conflation
+ * migration 0014 avoids.
+ */
+function rowToCoverage(profile: any): ProviderCoverage | null {
+  if (!profile) return null;
+  const coverage: ProviderCoverage = {
+    acceptingNewPatients: profile.accepting_new_patients ?? null,
+    acceptsMedicaid: profile.accepts_medicaid ?? null,
+    acceptsMedicare: profile.accepts_medicare ?? null,
+    source: profile.coverage_source ?? null,
+    asOf: profile.coverage_as_of ?? null,
+    note: profile.coverage_note ?? null,
+  };
+  const hasAny =
+    coverage.acceptingNewPatients !== null ||
+    coverage.acceptsMedicaid !== null ||
+    coverage.acceptsMedicare !== null;
+  return hasAny ? coverage : null;
+}
+
 function rowToListing(row: any): Listing {
   const profile = Array.isArray(row.provider_profiles)
     ? row.provider_profiles[0]
@@ -230,7 +256,10 @@ function rowToListing(row: any): Listing {
     coordsSource: row.coords_source ?? null,
     provider:
       row.kind === 'provider' && profile
-        ? { disabilityLiterate: !!profile.disability_literate }
+        ? {
+            disabilityLiterate: !!profile.disability_literate,
+            coverage: rowToCoverage(profile),
+          }
         : undefined,
   };
 }

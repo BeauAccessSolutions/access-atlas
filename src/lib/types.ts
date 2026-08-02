@@ -14,6 +14,30 @@ export type ListingKind = 'provider' | 'place';
 // presentRepresentation() in labeling.ts and migration 0012.
 export type RepresentationSource = 'self_attested' | 'sourced';
 
+/** Provenance for the provider coverage facts. Same vocabulary as 0012. */
+export type CoverageSource = 'self_attested' | 'sourced';
+
+/**
+ * The blockers that fire BEFORE accessibility (migration 0014): panel status
+ * and coverage. Deliberately OUTSIDE the §4 consensus model — these are attested
+ * facts with a date, never community-validated claims.
+ *
+ * All three flags are THREE-VALUED: true = yes, false = a real "no" worth
+ * publishing, null/undefined = unknown. Never render these directly; go through
+ * presentCoverage() in coverage.ts, which publishes nothing without a source AND
+ * a date.
+ */
+export interface ProviderCoverage {
+  acceptingNewPatients: boolean | null;
+  acceptsMedicaid: boolean | null;
+  acceptsMedicare: boolean | null;
+  source: CoverageSource | null;
+  /** ISO date this was last confirmed with the practice. No date = unpublishable. */
+  asOf: string | null;
+  /** Plain-language citation for a `sourced` claim (§7). */
+  note?: string | null;
+}
+
 export type AttributeCategory =
   | 'facility_objective'
   | 'provider_behavior'
@@ -58,6 +82,8 @@ export interface Listing {
   // Provider-only competence (§8), self-attested. Absent for places.
   provider?: {
     disabilityLiterate: boolean;
+    /** Panel status + coverage (migration 0014). Absent when nothing recorded. */
+    coverage?: ProviderCoverage | null;
   };
   // When the listing was submitted (ISO). Drives the "recently added" sort so
   // fresh community submissions are discoverable. May be null (seed rows).

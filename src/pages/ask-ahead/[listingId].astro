@@ -25,7 +25,7 @@ export const prerender = false;
 
 import Base from '../../layouts/Base.astro';
 import { getAttributeDefinitions, getListing, getStatusesForListing } from '../../lib/repo';
-import { buildAskAhead, reasonNote } from '../../lib/call-ahead';
+import { buildAskAhead, buildCoverageQuestions, reasonNote } from '../../lib/call-ahead';
 
 const { listingId } = Astro.params;
 const listing = listingId ? await getListing(listingId) : null;
@@ -36,6 +36,10 @@ const [statuses, defs] = listing
   : [[], []];
 
 const { ask, settled } = listing ? buildAskAhead(statuses, defs) : { ask: [], settled: [] };
+// Coverage gates come FIRST for a provider: whether you can be seen at all
+// precedes whether you can get in the door (migration 0014). Empty for places.
+const coverageQuestions =
+  listing?.kind === 'provider' ? buildCoverageQuestions(listing.provider?.coverage) : [];
 
 const listingHref = listing
   ? `/${listing.kind === 'provider' ? 'providers' : 'places'}/${listing.id}/`
@@ -71,6 +75,27 @@ const place = listing ? [listing.city, listing.region].filter(Boolean).join(', '
       <p class="attr-desc">
         This page prints. You can take it with you.
       </p>
+
+      {coverageQuestions.length > 0 && (
+        <>
+          <h2>Ask these first — can you be seen at all?</h2>
+          <p>
+            A practice can be perfectly accessible and still be a wasted trip if
+            the panel is closed or they don't take your coverage. Anything we
+            already hold is shown with the date it was confirmed — it changes
+            often, so confirm it rather than relying on it.
+          </p>
+          <ol class="ask-list">
+            {coverageQuestions.map((item) => (
+              <li class="ask-item">
+                <p class="ask-question">“{item.ask}”</p>
+                <p class="ask-followup">{item.followUp}</p>
+                {item.weAreTold && <p class="attr-desc">{item.weAreTold}</p>}
+              </li>
+            ))}
+          </ol>
+        </>
+      )}
 
       {ask.length > 0 && (
         <>
@@ -118,7 +143,7 @@ const place = listing ? [listing.city, listing.region].filter(Boolean).join(', '
         </>
       )}
 
-      {ask.length === 0 && settled.length === 0 && (
+      {ask.length === 0 && settled.length === 0 && coverageQuestions.length === 0 && (
         <p>
           There are no accessibility facts tracked for this listing yet, so we
           have no questions to suggest.{' '}

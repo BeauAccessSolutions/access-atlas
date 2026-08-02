@@ -8,6 +8,7 @@
 // labels (§4) — a filtered list shows the same honest cards, just fewer.
 import type { Listing, ListingKind } from './types';
 import { isCategory, CATEGORY_LABELS, type Category } from './categories';
+import { coverageMatches } from './coverage';
 
 // How the (already-filtered) list is ordered. Sorting only REORDERS — it never
 // narrows or touches claim labels (§4).
@@ -35,6 +36,13 @@ export interface ListingFilters {
   led: boolean;
   /** Provider competence axis — providers only; ignored for places. */
   literate: boolean;
+  /** Coverage gates (migration 0014) — providers only; ignored for places.
+      Only a PUBLISHABLE `true` matches: unknown never does, because a filter
+      that quietly included "we don't know" would produce exactly the wasted
+      trip the feature exists to prevent (see coverage.ts). */
+  newPatients: boolean;
+  medicaid: boolean;
+  medicare: boolean;
   /** ZIP-code prefix, digits only. Matches listings whose postal code STARTS
       with it, so "142" is the Buffalo area and "14222" is one exact ZIP. */
   zip: string;
@@ -54,6 +62,9 @@ export function parseListingFilters(params: URLSearchParams): ListingFilters {
     owned: params.get('owned') === '1',
     led: params.get('led') === '1',
     literate: params.get('literate') === '1',
+    newPatients: params.get('new_patients') === '1',
+    medicaid: params.get('medicaid') === '1',
+    medicare: params.get('medicare') === '1',
     // Digits only (a ZIP is numeric), capped — a stray query can't balloon it.
     zip: (params.get('zip') ?? '').replace(/\D/g, '').slice(0, 5),
     // Only a known key is honored; anything else falls back to the default order.
@@ -75,7 +86,7 @@ export function hasActiveFilters(f: ListingFilters, kind: ListingKind): boolean 
       f.zip ||
       f.owned ||
       f.led ||
-      (kind === 'provider' && f.literate),
+      (kind === 'provider' && (f.literate || f.newPatients || f.medicaid || f.medicare)),
   );
 }
 
@@ -93,6 +104,11 @@ export function applyListingFilters(listings: Listing[], f: ListingFilters): Lis
     if (f.owned && !l.disabledOwned) return false;
     if (f.led && !l.disabledLed) return false;
     if (f.literate && !l.provider?.disabilityLiterate) return false;
+    // Coverage: fail-safe via coverageMatches — unsourced/undated/unknown never
+    // matches, so a filtered list never implies a fact we can't stand behind.
+    if (f.newPatients && !coverageMatches('acceptingNewPatients', l.provider?.coverage)) return false;
+    if (f.medicaid && !coverageMatches('acceptsMedicaid', l.provider?.coverage)) return false;
+    if (f.medicare && !coverageMatches('acceptsMedicare', l.provider?.coverage)) return false;
     return true;
   });
 }
@@ -111,6 +127,9 @@ export function serializeListingFilters(f: ListingFilters): string {
   if (f.owned) p.set('owned', '1');
   if (f.led) p.set('led', '1');
   if (f.literate) p.set('literate', '1');
+  if (f.newPatients) p.set('new_patients', '1');
+  if (f.medicaid) p.set('medicaid', '1');
+  if (f.medicare) p.set('medicare', '1');
   if (f.sort !== DEFAULT_SORT) p.set('sort', f.sort);
   return p.toString();
 }
@@ -119,7 +138,7 @@ export function serializeListingFilters(f: ListingFilters): string {
 // filter, keep the rest, and show how many listings that would surface.
 export interface BroadenSuggestion {
   /** Which single filter is relaxed (also a stable de-dupe key). */
-  key: 'q' | 'category' | 'county' | 'zip' | 'owned' | 'led' | 'literate';
+  key: 'q' | 'category' | 'county' | 'zip' | 'owned' | 'led' | 'literate' | 'newPatients' | 'medicaid' | 'medicare';
   /** Human phrase naming the dropped constraint, e.g. `ZIP 14222`. */
   label: string;
   /** URL with just this one constraint removed; other filters + sort preserved. */
@@ -146,6 +165,12 @@ function activeConstraints(
   // literate is provider-only (hasActiveFilters ignores it for places).
   if (kind === 'provider' && f.literate)
     c.push({ key: 'literate', label: 'disability-literate', without: { ...f, literate: false } });
+  if (kind === 'provider' && f.newPatients)
+    c.push({ key: 'newPatients', label: 'accepting new patients', without: { ...f, newPatients: false } });
+  if (kind === 'provider' && f.medicaid)
+    c.push({ key: 'medicaid', label: 'accepts Medicaid', without: { ...f, medicaid: false } });
+  if (kind === 'provider' && f.medicare)
+    c.push({ key: 'medicare', label: 'accepts Medicare', without: { ...f, medicare: false } });
   return c;
 }
 
