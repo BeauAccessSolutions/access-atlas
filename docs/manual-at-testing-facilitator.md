@@ -176,13 +176,8 @@ the person.
   requires "findable at the top" and only *records* auto-speaking. Log the
   data; it's an SR/browser characteristic unless the message can't be found
   at all (that IS a failure).
-- **Providers list has no count sentence** (places has one). Known gap, filed
-  once — don't re-file per session.
 - **"Reduce motion" looks like nothing changed.** The site barely animates;
   the saved-and-persisted state is the entire check.
-- **The photo description hint says descriptions are "read aloud."** Braille
-  users read them instead — a small upstream copy improvement is tracked; not
-  a session finding.
 - **The Keycloak sign-in screen** (when that mode exists) is a separate
   system, tested in its own session. Note problems, file them separately.
 

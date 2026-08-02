@@ -83,6 +83,22 @@ for (const route of ROUTES) {
   });
 }
 
+// Both list pages must announce how many results they hold, in the intro copy
+// (§5). A screen-reader user should never have to count rows on one index page
+// because the other one told them. /places had this and /providers did not —
+// the asymmetry was a filed manual-AT finding (PR #17), so it is asserted here
+// rather than re-tested by paid testers every session.
+for (const [route, noun] of [
+  ['/places/', 'place'],
+  ['/providers/', 'provider'],
+] as const) {
+  test(`list page announces its count: ${route}`, async ({ page }) => {
+    await page.goto(route);
+    const main = page.locator('main');
+    await expect(main).toContainText(new RegExp(`\\d+ ${noun}s? listed\\.`));
+  });
+}
+
 // A minimal structural check that survives refactors: every page must expose a
 // single <h1>, a main landmark, and a working skip link (§5). Automated axe
 // won't catch a missing skip link, so we assert it directly.
