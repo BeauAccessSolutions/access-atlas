@@ -61,6 +61,13 @@ const photoReportStatus = Astro.url.searchParams.get('photo_report');
       {place && <p class="listing-meta">{place}</p>}
       {listing.summary && <p>{listing.summary}</p>}
 
+      <p class="ask-ahead-link">
+        Booking an appointment?{' '}
+        <a href={`/ask-ahead/${listing.id}/`}>Questions to ask before you go</a>{' '}
+        — including what to ask about interpreters, equipment and staff training
+        before the day.
+      </p>
+
       <ReportVisitCta
         target="#accessibility"
         hasClaims={statuses.length > 0}
