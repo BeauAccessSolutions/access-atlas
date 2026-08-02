@@ -11,25 +11,16 @@
 -- =============================================================================
 
 -- Attribute catalog (§8) ------------------------------------------------------
-insert into attribute_definitions (key, label, category, applies_to_kind, question_text, requires_photo, reverify_interval_days, relevant_identity_tag) values
-  ('entrance_step_free', 'Step-free entrance', 'facility_objective', null,
-   'On your visit, could you enter with zero steps (level or ramped)?', true, 365, 'wheelchair_user'),
-  ('accessible_restroom', 'Accessible restroom present', 'facility_objective', null,
-   'On your visit, was there a wheelchair-accessible restroom you could use?', true, 365, 'wheelchair_user'),
-  -- accessible_parking applies to BOTH kinds (null): §8b lists accessible parking
-  -- as an objective PROVIDER facility attribute too, not just for places (Gap B).
-  ('accessible_parking', 'Accessible parking', 'facility_objective', null,
-   'On your visit, was there designated accessible parking that was usable?', true, 365, 'wheelchair_user'),
-  ('height_adjustable_exam_table', 'Height-adjustable exam table', 'facility_objective', 'provider',
-   'On your visit, did the provider have a height-adjustable / low-transfer exam table?', true, 365, 'wheelchair_user'),
-  -- accessible_scale: core ADA MDE attribute (§8). Zero seed claims exist anywhere
-  -- (no public registry) — it is a first-person/recruitment target (Gap C).
-  ('accessible_scale', 'Wheelchair-accessible scale', 'facility_objective', 'provider',
-   'On your visit, was there a weight scale you could use as a wheelchair user (roll-on / seated)?', true, 365, 'wheelchair_user'),
-  ('communicated_directly', 'Communicated directly with me', 'provider_behavior', 'provider',
-   'On your visit, did staff speak directly to you (not only to a companion)?', false, 365, null),
-  ('staff_knew_equipment', 'Staff knew how to use accessible equipment', 'provider_behavior', 'provider',
-   'On your visit, did staff know how to use their accessible equipment?', false, 365, 'wheelchair_user');
+-- NOT HERE ANY MORE. The catalog is reference data, not demo data, so it now
+-- lives in the migration chain — supabase/migrations/0013_attribute_catalog_
+-- multi_disability.sql — which is the only path that reaches a live production
+-- database (scripts/migrate-deploy.sh runs `supabase db push` pre-deploy).
+-- seed.sql runs only on a local `db reset`, so a catalog kept here could never
+-- ship. src/lib/seed.ts still mirrors the catalog for rendering with no DB
+-- attached; tests/unit/attribute-catalog.test.ts holds the two in step.
+--
+-- The claims below resolve attribute ids by key, so they read whatever the
+-- migration installed.
 
 -- Listings — a handful in Erie County (§3). disabled_owned / disabled_led live
 -- here now (both kinds, §12); disability_literate stays on provider_profiles.
