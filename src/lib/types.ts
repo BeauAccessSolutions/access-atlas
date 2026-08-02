@@ -31,6 +31,9 @@ export interface ProviderCoverage {
   acceptingNewPatients: boolean | null;
   acceptsMedicaid: boolean | null;
   acceptsMedicare: boolean | null;
+  /** true = telehealth offered, false = in person only, null = unknown.
+      Shares the source/asOf below — same authority, same decay (migration 0015). */
+  offersTelehealth: boolean | null;
   source: CoverageSource | null;
   /** ISO date this was last confirmed with the practice. No date = unpublishable. */
   asOf: string | null;

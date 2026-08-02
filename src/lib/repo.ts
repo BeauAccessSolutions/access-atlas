@@ -31,7 +31,7 @@ export async function getListings(kind?: ListingKind): Promise<Listing[]> {
   let query = supabase
     .from('listings')
     .select(
-      'id, kind, name, summary, city, region, postal_code, category, disabled_owned, disabled_led, disabled_owned_source, disabled_led_source, representation_note, created_at, lat, lng, coords_source, provider_profiles(disability_literate, accepting_new_patients, accepts_medicaid, accepts_medicare, coverage_source, coverage_as_of, coverage_note)',
+      'id, kind, name, summary, city, region, postal_code, category, disabled_owned, disabled_led, disabled_owned_source, disabled_led_source, representation_note, created_at, lat, lng, coords_source, provider_profiles(disability_literate, accepting_new_patients, accepts_medicaid, accepts_medicare, offers_telehealth, coverage_source, coverage_as_of, coverage_note)',
     )
     .order('name');
   if (kind) query = query.eq('kind', kind);
@@ -48,7 +48,7 @@ export async function getListing(id: string): Promise<Listing | null> {
   const { data, error } = await supabase
     .from('listings')
     .select(
-      'id, kind, name, summary, city, region, postal_code, category, disabled_owned, disabled_led, disabled_owned_source, disabled_led_source, representation_note, created_at, lat, lng, coords_source, provider_profiles(disability_literate, accepting_new_patients, accepts_medicaid, accepts_medicare, coverage_source, coverage_as_of, coverage_note)',
+      'id, kind, name, summary, city, region, postal_code, category, disabled_owned, disabled_led, disabled_owned_source, disabled_led_source, representation_note, created_at, lat, lng, coords_source, provider_profiles(disability_literate, accepting_new_patients, accepts_medicaid, accepts_medicare, offers_telehealth, coverage_source, coverage_as_of, coverage_note)',
     )
     .eq('id', id)
     .maybeSingle();
@@ -221,6 +221,7 @@ function rowToCoverage(profile: any): ProviderCoverage | null {
     acceptingNewPatients: profile.accepting_new_patients ?? null,
     acceptsMedicaid: profile.accepts_medicaid ?? null,
     acceptsMedicare: profile.accepts_medicare ?? null,
+    offersTelehealth: profile.offers_telehealth ?? null,
     source: profile.coverage_source ?? null,
     asOf: profile.coverage_as_of ?? null,
     note: profile.coverage_note ?? null,
@@ -228,7 +229,8 @@ function rowToCoverage(profile: any): ProviderCoverage | null {
   const hasAny =
     coverage.acceptingNewPatients !== null ||
     coverage.acceptsMedicaid !== null ||
-    coverage.acceptsMedicare !== null;
+    coverage.acceptsMedicare !== null ||
+    coverage.offersTelehealth !== null;
   return hasAny ? coverage : null;
 }
 

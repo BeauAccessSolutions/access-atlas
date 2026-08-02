@@ -43,6 +43,8 @@ export interface ListingFilters {
   newPatients: boolean;
   medicaid: boolean;
   medicare: boolean;
+  /** Telehealth availability — the trip-remover, not a gate. */
+  telehealth: boolean;
   /** ZIP-code prefix, digits only. Matches listings whose postal code STARTS
       with it, so "142" is the Buffalo area and "14222" is one exact ZIP. */
   zip: string;
@@ -65,6 +67,7 @@ export function parseListingFilters(params: URLSearchParams): ListingFilters {
     newPatients: params.get('new_patients') === '1',
     medicaid: params.get('medicaid') === '1',
     medicare: params.get('medicare') === '1',
+    telehealth: params.get('telehealth') === '1',
     // Digits only (a ZIP is numeric), capped — a stray query can't balloon it.
     zip: (params.get('zip') ?? '').replace(/\D/g, '').slice(0, 5),
     // Only a known key is honored; anything else falls back to the default order.
@@ -86,7 +89,7 @@ export function hasActiveFilters(f: ListingFilters, kind: ListingKind): boolean 
       f.zip ||
       f.owned ||
       f.led ||
-      (kind === 'provider' && (f.literate || f.newPatients || f.medicaid || f.medicare)),
+      (kind === 'provider' && (f.literate || f.newPatients || f.medicaid || f.medicare || f.telehealth)),
   );
 }
 
@@ -109,6 +112,7 @@ export function applyListingFilters(listings: Listing[], f: ListingFilters): Lis
     if (f.newPatients && !coverageMatches('acceptingNewPatients', l.provider?.coverage)) return false;
     if (f.medicaid && !coverageMatches('acceptsMedicaid', l.provider?.coverage)) return false;
     if (f.medicare && !coverageMatches('acceptsMedicare', l.provider?.coverage)) return false;
+    if (f.telehealth && !coverageMatches('offersTelehealth', l.provider?.coverage)) return false;
     return true;
   });
 }
@@ -130,6 +134,7 @@ export function serializeListingFilters(f: ListingFilters): string {
   if (f.newPatients) p.set('new_patients', '1');
   if (f.medicaid) p.set('medicaid', '1');
   if (f.medicare) p.set('medicare', '1');
+  if (f.telehealth) p.set('telehealth', '1');
   if (f.sort !== DEFAULT_SORT) p.set('sort', f.sort);
   return p.toString();
 }
@@ -138,7 +143,7 @@ export function serializeListingFilters(f: ListingFilters): string {
 // filter, keep the rest, and show how many listings that would surface.
 export interface BroadenSuggestion {
   /** Which single filter is relaxed (also a stable de-dupe key). */
-  key: 'q' | 'category' | 'county' | 'zip' | 'owned' | 'led' | 'literate' | 'newPatients' | 'medicaid' | 'medicare';
+  key: 'q' | 'category' | 'county' | 'zip' | 'owned' | 'led' | 'literate' | 'newPatients' | 'medicaid' | 'medicare' | 'telehealth';
   /** Human phrase naming the dropped constraint, e.g. `ZIP 14222`. */
   label: string;
   /** URL with just this one constraint removed; other filters + sort preserved. */
@@ -171,6 +176,8 @@ function activeConstraints(
     c.push({ key: 'medicaid', label: 'accepts Medicaid', without: { ...f, medicaid: false } });
   if (kind === 'provider' && f.medicare)
     c.push({ key: 'medicare', label: 'accepts Medicare', without: { ...f, medicare: false } });
+  if (kind === 'provider' && f.telehealth)
+    c.push({ key: 'telehealth', label: 'offers telehealth', without: { ...f, telehealth: false } });
   return c;
 }
 

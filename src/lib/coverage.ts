@@ -22,7 +22,11 @@ import type { CoverageSource, ProviderCoverage } from './types';
  */
 export const COVERAGE_STALE_DAYS = 180;
 
-export type CoverageKey = 'acceptingNewPatients' | 'acceptsMedicaid' | 'acceptsMedicare';
+export type CoverageKey =
+  | 'acceptingNewPatients'
+  | 'acceptsMedicaid'
+  | 'acceptsMedicare'
+  | 'offersTelehealth';
 
 export interface CoveragePresentation {
   key: CoverageKey;
@@ -47,6 +51,13 @@ const COPY: Record<CoverageKey, { yes: string; no: string }> = {
   },
   acceptsMedicaid: { yes: 'Accepts Medicaid', no: 'Does not accept Medicaid' },
   acceptsMedicare: { yes: 'Accepts Medicare', no: 'Does not accept Medicare' },
+  offersTelehealth: {
+    yes: 'Offers telehealth appointments',
+    // The one flag where `false` is NOT a blocker — it is an absent
+    // alternative, not a closed door. Say that, rather than dressing it up as
+    // bad news ("does not offer telehealth" reads as a failing; it isn't one).
+    no: 'In-person appointments only',
+  },
 };
 
 /** Days between an ISO date and `now`. Negative for future dates. */
@@ -111,8 +122,15 @@ export function presentAllCoverage(
   now = new Date(),
 ): CoveragePresentation[] {
   // Panel status first: it gates everything else. No point knowing they take
-  // your Medicaid if they aren't taking anyone.
-  const order: CoverageKey[] = ['acceptingNewPatients', 'acceptsMedicaid', 'acceptsMedicare'];
+  // your Medicaid if they aren't taking anyone. Telehealth LAST — the three
+  // before it decide whether you can be seen at all; this only decides whether
+  // you have to travel.
+  const order: CoverageKey[] = [
+    'acceptingNewPatients',
+    'acceptsMedicaid',
+    'acceptsMedicare',
+    'offersTelehealth',
+  ];
   return order
     .map((key) => presentCoverage(key, coverage, now))
     .filter((p): p is CoveragePresentation => p !== null);

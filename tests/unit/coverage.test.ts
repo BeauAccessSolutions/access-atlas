@@ -25,6 +25,7 @@ function coverage(over: Partial<ProviderCoverage> = {}): ProviderCoverage {
     acceptingNewPatients: true,
     acceptsMedicaid: true,
     acceptsMedicare: null,
+    offersTelehealth: null,
     source: 'self_attested',
     asOf: daysAgo(30),
     ...over,
@@ -38,6 +39,21 @@ describe('presentCoverage — fail-safe (§4, §14)', () => {
     expect(p?.value).toBe(true);
     expect(p?.isStale).toBe(false);
     expect(p?.asOf).toBe(daysAgo(30));
+  });
+
+  it('does not dress telehealth "no" up as bad news', () => {
+    // The one flag where false is an ABSENT ALTERNATIVE, not a closed door.
+    const p = presentCoverage('offersTelehealth', coverage({ offersTelehealth: false }), NOW);
+    expect(p?.text).toBe('In-person appointments only');
+    expect(p?.text).not.toMatch(/does not/i);
+  });
+
+  it('orders telehealth last — the gates decide if you can be seen at all', () => {
+    const all = presentAllCoverage(
+      coverage({ acceptsMedicare: true, offersTelehealth: true }),
+      NOW,
+    );
+    expect(all[all.length - 1].key).toBe('offersTelehealth');
   });
 
   it('publishes a NO as a real answer, not as silence', () => {
@@ -163,7 +179,17 @@ describe('buildCoverageQuestions', () => {
 
   it('still asks every question when we hold no data (places aside)', () => {
     const qs = buildCoverageQuestions(null, NOW);
-    expect(qs).toHaveLength(4);
+    // 3 gates + telehealth availability + commercial insurance.
+    expect(qs).toHaveLength(5);
     expect(qs.every((q) => q.weAreTold === null)).toBe(true);
+  });
+
+  it('asks about telehealth, and about who it is actually open to', () => {
+    const qs = buildCoverageQuestions(coverage({ offersTelehealth: true }), NOW);
+    const tele = qs.find((q) => /telehealth/i.test(q.ask));
+    expect(tele?.weAreTold).toMatch(/Offers telehealth appointments/);
+    // The trap this follow-up exists for: "yes" often means established
+    // patients only, which is useless to someone trying to become a patient.
+    expect(tele?.followUp).toMatch(/new patients or established/i);
   });
 });
