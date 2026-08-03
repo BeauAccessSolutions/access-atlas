@@ -26,7 +26,9 @@
     "data-rights": "node scripts/data-rights.mjs",
     "moderate:photo": "node scripts/moderate-photo.mjs",
     "moderate:takedown": "node scripts/takedown-confirmation.mjs",
-    "coverage:update": "node scripts/update-coverage.mjs"
+    "coverage:update": "node scripts/update-coverage.mjs",
+    "coverage:sheet": "node scripts/coverage-batch.mjs --call-sheet",
+    "coverage:import": "node scripts/coverage-batch.mjs"
   },
   "dependencies": {
     "@astrojs/node": "^9.5.5",
