@@ -34,7 +34,11 @@ import { storagePathFromPublicUrl } from './data-rights';
 // ---------------------------------------------------------------------------
 
 // Mirrors the moderation_action enum in migration 0008 — keep in lockstep.
-export type ModerationAction = 'photo_redaction' | 'confirmation_takedown';
+// 'coverage_update' is authoring, not moderation (migration 0016 widens this
+// table's purpose to "operator actions on published data" and says so in the
+// table comment). It shares the trail because the shape is identical: ops-only,
+// append-only, actor + reason mandatory, no contributor_id.
+export type ModerationAction = 'photo_redaction' | 'confirmation_takedown' | 'coverage_update';
 
 export interface ModerationAuditEntry {
   action: ModerationAction;
