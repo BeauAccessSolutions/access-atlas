@@ -16,7 +16,7 @@ import { describe, it, expect } from 'vitest';
 import { IDENTITY_TAGS } from '../../src/lib/identity-tags';
 import { seedAttributeDefinitions, seedAttributeIdentityTags } from '../../src/lib/seed';
 
-const TAG_OF = seedAttributeIdentityTags();
+const TAGS_OF = seedAttributeIdentityTags();
 
 /**
  * Attribute keys declared by the migration chain — every
@@ -52,7 +52,7 @@ function migrationAttributeKeys(): string[] {
 
 describe('attribute catalog invariants', () => {
   it('weights every identity tag it offers (§4 lived experience is weighted)', () => {
-    const weighted = new Set(Object.values(TAG_OF).filter((t): t is string => t !== null));
+    const weighted = new Set(Object.values(TAGS_OF).flat());
     const unweighted = IDENTITY_TAGS.filter((t) => !weighted.has(t.key)).map((t) => t.key);
 
     // If this fails: either add an attribute that the new tag can speak to, or
@@ -68,7 +68,30 @@ describe('attribute catalog invariants', () => {
     expect(fromMigrations.length, 'duplicate attribute key across migrations').toBe(
       new Set(fromMigrations).size,
     );
-    expect(Object.keys(TAG_OF).sort()).toEqual([...fromMigrations].sort());
+    expect(Object.keys(TAGS_OF).sort()).toEqual([...fromMigrations].sort());
+  });
+
+  it('lets one attribute weight several access experiences (migration 0018)', () => {
+    // service_animal_welcomed is the case that motivated the array: a guide dog
+    // handler is blind, a hearing dog handler is Deaf, a mobility assistance dog
+    // handler uses a wheelchair — all three are first-person authorities on
+    // whether the animal was welcomed.
+    expect([...(TAGS_OF.service_animal_welcomed ?? [])].sort()).toEqual([
+      'blind_low_vision',
+      'deaf_hoh',
+      'wheelchair_user',
+    ]);
+  });
+
+  it('keeps every OTHER attribute single-tagged or untagged', () => {
+    // Widening loosens an attribute's verification bar, so it must stay a
+    // deliberate, argued, per-attribute decision — not something that creeps in.
+    // If this fails, the new multi-tag attribute needs its own justification in
+    // the migration, then add it here.
+    const widened = Object.entries(TAGS_OF)
+      .filter(([, tags]) => tags.length > 1)
+      .map(([key]) => key);
+    expect(widened).toEqual(['service_animal_welcomed']);
   });
 
   it('gives non-wheelchair visitors something to report at a PLACE', () => {
@@ -77,9 +100,7 @@ describe('attribute catalog invariants', () => {
     // cafe with nothing to report. Every offered tag must be weighted by at
     // least one attribute that applies to places.
     const placeTags = new Set(
-      seedAttributeDefinitions('place')
-        .map((d) => TAG_OF[d.key] ?? null)
-        .filter((t): t is string => t !== null),
+      seedAttributeDefinitions('place').flatMap((d) => TAGS_OF[d.key] ?? []),
     );
     const missing = IDENTITY_TAGS.filter((t) => !placeTags.has(t.key)).map((t) => t.key);
     expect(missing).toEqual([]);

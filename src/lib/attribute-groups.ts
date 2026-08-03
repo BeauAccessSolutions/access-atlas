@@ -46,25 +46,34 @@ export interface AttributeGroup<T> {
  * Pure and generic so the same ordering serves both the tracked-claims list and
  * the not-yet-reported list without either drifting from the other.
  *
- * `tagOf` returns the attribute's `relevant_identity_tag`. An unrecognized tag
- * (a catalog row weighting something no longer offered) falls into the shared
- * group rather than vanishing — a fact must never become unreportable because
- * the tag vocabulary moved underneath it.
+ * `tagsOf` returns the attribute's `relevant_identity_tags`. Since migration
+ * 0018 an attribute may name SEVERAL, and it then appears under EACH of them —
+ * a Deaf visitor scanning their own section must find "Service animal welcomed"
+ * there, not only under blind and low-vision. Appearing twice is the point: the
+ * groups answer "what can I speak to", and the honest answer for that fact is
+ * "several of you can".
+ *
+ * An unrecognized tag (a catalog row weighting something no longer offered), or
+ * no tags at all, lands in the shared group rather than vanishing — a fact must
+ * never become unreportable because the tag vocabulary moved underneath it.
  */
 export function groupByAccessNeed<T>(
   items: T[],
-  tagOf: (item: T) => string | null | undefined,
+  tagsOf: (item: T) => string[] | null | undefined,
   labelOf: (item: T) => string,
 ): AttributeGroup<T>[] {
   const known = new Set(IDENTITY_TAGS.map((t) => t.key));
   const buckets = new Map<string | null, T[]>();
-
-  for (const item of items) {
-    const raw = tagOf(item);
-    const tag = raw && known.has(raw) ? raw : null;
+  const push = (tag: string | null, item: T) => {
     const bucket = buckets.get(tag);
     if (bucket) bucket.push(item);
     else buckets.set(tag, [item]);
+  };
+
+  for (const item of items) {
+    const recognized = (tagsOf(item) ?? []).filter((t) => known.has(t));
+    if (recognized.length === 0) push(null, item);
+    else for (const tag of recognized) push(tag, item);
   }
 
   // IDENTITY_TAGS order, then the shared group. Not a ranking — see header.

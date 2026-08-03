@@ -18,7 +18,7 @@ interface AttrDef {
   label: string;
   category: AttributeCategory;
   reverifyIntervalDays: number;
-  relevantIdentityTag: string | null;
+  relevantIdentityTags: string[];
   questionText: string;
   requiresPhoto: boolean;
   appliesToKind: ListingKind | null; // null = both places and providers
@@ -45,7 +45,7 @@ const ATTR: Record<string, AttrDef> = {
     label: 'Step-free entrance',
     category: 'facility_objective',
     reverifyIntervalDays: 365,
-    relevantIdentityTag: 'wheelchair_user',
+    relevantIdentityTags: ['wheelchair_user'],
     questionText: 'On your visit, could you enter with zero steps (level or ramped)?',
     requiresPhoto: true,
     appliesToKind: null,
@@ -55,7 +55,7 @@ const ATTR: Record<string, AttrDef> = {
     label: 'Accessible restroom present',
     category: 'facility_objective',
     reverifyIntervalDays: 365,
-    relevantIdentityTag: 'wheelchair_user',
+    relevantIdentityTags: ['wheelchair_user'],
     questionText: 'On your visit, was there a wheelchair-accessible restroom you could use?',
     requiresPhoto: true,
     appliesToKind: null,
@@ -65,7 +65,7 @@ const ATTR: Record<string, AttrDef> = {
     label: 'Accessible parking',
     category: 'facility_objective',
     reverifyIntervalDays: 365,
-    relevantIdentityTag: 'wheelchair_user',
+    relevantIdentityTags: ['wheelchair_user'],
     questionText: 'On your visit, was there designated accessible parking that was usable?',
     requiresPhoto: true,
     // Both kinds (§8b lists provider parking as objective too — Gap B).
@@ -76,7 +76,7 @@ const ATTR: Record<string, AttrDef> = {
     label: 'Height-adjustable exam table',
     category: 'facility_objective',
     reverifyIntervalDays: 365,
-    relevantIdentityTag: 'wheelchair_user',
+    relevantIdentityTags: ['wheelchair_user'],
     questionText:
       'On your visit, did the provider have a height-adjustable / low-transfer exam table?',
     requiresPhoto: true,
@@ -87,7 +87,7 @@ const ATTR: Record<string, AttrDef> = {
     label: 'Wheelchair-accessible scale',
     category: 'facility_objective',
     reverifyIntervalDays: 365,
-    relevantIdentityTag: 'wheelchair_user',
+    relevantIdentityTags: ['wheelchair_user'],
     questionText:
       'On your visit, was there a weight scale you could use as a wheelchair user (roll-on / seated)?',
     requiresPhoto: true,
@@ -100,7 +100,7 @@ const ATTR: Record<string, AttrDef> = {
     label: 'Communicated directly with me',
     category: 'provider_behavior',
     reverifyIntervalDays: 365,
-    relevantIdentityTag: null,
+    relevantIdentityTags: [],
     questionText: 'On your visit, did staff speak directly to you (not only to a companion)?',
     requiresPhoto: false,
     appliesToKind: 'provider',
@@ -110,7 +110,7 @@ const ATTR: Record<string, AttrDef> = {
     label: 'Staff knew how to use accessible equipment',
     category: 'provider_behavior',
     reverifyIntervalDays: 365,
-    relevantIdentityTag: 'wheelchair_user',
+    relevantIdentityTags: ['wheelchair_user'],
     questionText: 'On your visit, did staff know how to use their accessible equipment?',
     requiresPhoto: false,
     appliesToKind: 'provider',
@@ -127,7 +127,7 @@ const ATTR: Record<string, AttrDef> = {
     label: 'ASL interpreter arranged on request',
     category: 'provider_behavior',
     reverifyIntervalDays: 365,
-    relevantIdentityTag: 'deaf_hoh',
+    relevantIdentityTags: ['deaf_hoh'],
     questionText:
       'On your visit, did the provider arrange an ASL interpreter when you asked for one?',
     requiresPhoto: false,
@@ -138,7 +138,7 @@ const ATTR: Record<string, AttrDef> = {
     label: 'Staff will communicate in writing',
     category: 'provider_behavior',
     reverifyIntervalDays: 365,
-    relevantIdentityTag: 'deaf_hoh',
+    relevantIdentityTags: ['deaf_hoh'],
     questionText:
       'On your visit, were staff willing to communicate in writing (notes, or typing on a phone or tablet)?',
     requiresPhoto: false,
@@ -149,7 +149,7 @@ const ATTR: Record<string, AttrDef> = {
     label: 'Captions turned on for video screens',
     category: 'facility_objective',
     reverifyIntervalDays: 365,
-    relevantIdentityTag: 'deaf_hoh',
+    relevantIdentityTags: ['deaf_hoh'],
     questionText: 'On your visit, were the video screens showing captions?',
     requiresPhoto: true,
     appliesToKind: null,
@@ -159,7 +159,12 @@ const ATTR: Record<string, AttrDef> = {
     label: 'Service animal welcomed',
     category: 'provider_behavior',
     reverifyIntervalDays: 365,
-    relevantIdentityTag: 'blind_low_vision',
+    // Guide dog (blind), hearing dog (Deaf), mobility assistance dog — each
+    // handler has first-person standing on whether the animal was welcomed
+    // (migration 0018 part 2). Psychiatric service dogs deliberately absent:
+    // no coarse tag MEANS "psychiatric disability", and stretching one would
+    // mislabel rather than include.
+    relevantIdentityTags: ['blind_low_vision', 'deaf_hoh', 'wheelchair_user'],
     questionText:
       'On your visit, was your service animal welcomed without being questioned or refused entry?',
     requiresPhoto: false,
@@ -170,7 +175,7 @@ const ATTR: Record<string, AttrDef> = {
     label: 'Staff read printed information aloud',
     category: 'provider_behavior',
     reverifyIntervalDays: 365,
-    relevantIdentityTag: 'blind_low_vision',
+    relevantIdentityTags: ['blind_low_vision'],
     questionText: 'On your visit, did staff read the menu, forms, or signage aloud when you asked?',
     requiresPhoto: false,
     appliesToKind: null,
@@ -180,7 +185,7 @@ const ATTR: Record<string, AttrDef> = {
     label: 'Quieter space to wait',
     category: 'facility_objective',
     reverifyIntervalDays: 365,
-    relevantIdentityTag: 'neurodivergent',
+    relevantIdentityTags: ['neurodivergent'],
     questionText:
       'On your visit, was there a quieter area, away from noise and crowds, where you could wait?',
     requiresPhoto: true,
@@ -191,7 +196,7 @@ const ATTR: Record<string, AttrDef> = {
     label: 'Staff explained things in plain language',
     category: 'provider_behavior',
     reverifyIntervalDays: 365,
-    relevantIdentityTag: 'cognitive_access',
+    relevantIdentityTags: ['cognitive_access'],
     questionText:
       'On your visit, did staff explain things in plain language and help you with forms when you asked?',
     requiresPhoto: false,
@@ -208,7 +213,7 @@ const ATTR: Record<string, AttrDef> = {
     label: 'Telehealth platform worked with my screen reader',
     category: 'facility_objective',
     reverifyIntervalDays: 365,
-    relevantIdentityTag: 'blind_low_vision',
+    relevantIdentityTags: ['blind_low_vision'],
     questionText:
       'On your telehealth appointment, could you use the video platform with your screen reader or by keyboard alone?',
     requiresPhoto: false,
@@ -219,7 +224,7 @@ const ATTR: Record<string, AttrDef> = {
     label: 'Telehealth captions or interpreter worked',
     category: 'facility_objective',
     reverifyIntervalDays: 365,
-    relevantIdentityTag: 'deaf_hoh',
+    relevantIdentityTags: ['deaf_hoh'],
     questionText:
       'On your telehealth appointment, were captions available, or could an ASL interpreter join the call?',
     requiresPhoto: false,
@@ -233,7 +238,7 @@ const ATTR: Record<string, AttrDef> = {
     // null: helps poor connections, people without a smartphone, people who
     // cannot manage video, and people for whom being on camera IS the barrier.
     // No coarse tag names that group, so privilege nobody.
-    relevantIdentityTag: null,
+    relevantIdentityTags: [],
     questionText:
       'On your telehealth appointment, could you take it by phone or audio only, without video?',
     requiresPhoto: false,
@@ -247,7 +252,7 @@ const ATTR: Record<string, AttrDef> = {
     // null: seating blocks chronic-illness / fatigue / ambulatory-disabled
     // visitors, who the coarse tag list does not name. Privilege nobody rather
     // than mislabel them (same semantics as 'communicated_directly').
-    relevantIdentityTag: null,
+    relevantIdentityTags: [],
     questionText: 'On your visit, was there somewhere to sit while you waited?',
     requiresPhoto: true,
     appliesToKind: null,
@@ -257,15 +262,15 @@ const ATTR: Record<string, AttrDef> = {
 // The attribute catalog a submitter can self-report against, filtered by kind
 // (null appliesToKind = both). Mirrors supabase/seed.sql's attribute_definitions.
 /**
- * attribute key -> the reviewer identity tag it weights (§4), or null.
+ * attribute key -> the reviewer identity tags it weights (§4). Empty = none.
  *
  * Exported so a test can hold the line on the inequity migration 0013 fixed: if
  * a tag is offered on the visit-report form but no attribute weights it, that
  * contributor's lived experience counts for nothing in the consensus math.
  * Also backs the supabase/seed.sql parity check (the catalog has two mirrors).
  */
-export function seedAttributeIdentityTags(): Record<string, string | null> {
-  return Object.fromEntries(Object.values(ATTR).map((a) => [a.key, a.relevantIdentityTag]));
+export function seedAttributeIdentityTags(): Record<string, string[]> {
+  return Object.fromEntries(Object.values(ATTR).map((a) => [a.key, a.relevantIdentityTags]));
 }
 
 export function seedAttributeDefinitions(kind: ListingKind): AttributeDefOption[] {
@@ -276,7 +281,7 @@ export function seedAttributeDefinitions(kind: ListingKind): AttributeDefOption[
       label: a.label,
       category: a.category,
       appliesToKind: a.appliesToKind,
-      relevantIdentityTag: a.relevantIdentityTag,
+      relevantIdentityTags: a.relevantIdentityTags,
     }));
 }
 
@@ -442,7 +447,7 @@ export function seedClaimForConfirm(claimId: string): ClaimForConfirm | null {
     attributeLabel: claim.attr.label,
     questionText: claim.attr.questionText,
     requiresPhoto: claim.attr.requiresPhoto,
-    relevantIdentityTag: claim.attr.relevantIdentityTag,
+    relevantIdentityTags: claim.attr.relevantIdentityTags,
   };
 }
 
@@ -471,7 +476,7 @@ export function seedAttributeForReport(
     attributeLabel: attr.label,
     questionText: attr.questionText,
     requiresPhoto: attr.requiresPhoto,
-    relevantIdentityTag: attr.relevantIdentityTag,
+    relevantIdentityTags: attr.relevantIdentityTags,
     existingClaimId: existing?.id ?? null,
   };
 }
@@ -483,9 +488,14 @@ function computeStatus(claim: Claim): AttributeState {
   const dissent = claim.confirmations.filter((c) => !c.agrees);
   if (dissent.length > 0) return 'disputed';
   if (claim.sourced) return 'sourced';
-  const tag = claim.attr.relevantIdentityTag;
-  const weighted = tag ? agree.filter((c) => c.tags.includes(tag)).length : 0;
-  if (agree.length >= 3 && (tag === null || weighted >= 1)) return 'community_verified';
+  // Mirrors the SQL `d.relevant_identity_tags && f.reviewer_identity_tags`
+  // (migration 0018). For a one-element tag set this is identical to the old
+  // equality test — that equivalence is what made the refactor safe.
+  const tags = claim.attr.relevantIdentityTags;
+  const weighted = tags.length
+    ? agree.filter((c) => c.tags.some((t) => tags.includes(t))).length
+    : 0;
+  if (agree.length >= 3 && (tags.length === 0 || weighted >= 1)) return 'community_verified';
   if (agree.length >= 1) return 'community_confirmations';
   return 'self_reported';
 }
@@ -501,7 +511,7 @@ export function seedStatuses(now: Date): AttributeStatus[] {
   return CLAIMS.map((claim) => {
     const agree = claim.confirmations.filter((c) => c.agrees);
     const last = lastConfirmedAt(claim);
-    const tag = claim.attr.relevantIdentityTag;
+    const tags = claim.attr.relevantIdentityTags;
     const isStale =
       last === null
         ? null
@@ -516,11 +526,13 @@ export function seedStatuses(now: Date): AttributeStatus[] {
       state: computeStatus(claim),
       agreeCount: agree.length,
       dissentCount: claim.confirmations.length - agree.length,
-      weightedAgreeCount: tag ? agree.filter((c) => c.tags.includes(tag)).length : 0,
+      weightedAgreeCount: tags.length
+        ? agree.filter((c) => c.tags.some((t) => tags.includes(t))).length
+        : 0,
       lastConfirmedAt: last,
       isStale,
       sourcedNote: claim.sourcedNote ?? null,
-      relevantIdentityTag: tag,
+      relevantIdentityTags: tags,
     };
   });
 }

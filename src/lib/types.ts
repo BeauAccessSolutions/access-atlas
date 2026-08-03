@@ -117,10 +117,11 @@ export interface AttributeDefOption {
   label: string;
   category: AttributeCategory;
   appliesToKind: ListingKind | null;
-  /** Whose lived experience is weighted for this fact (§4). null = nobody.
-      Drives the access-need grouping in attribute-groups.ts — never a
-      permission to report, only a weighting. */
-  relevantIdentityTag?: string | null;
+  /** Whose lived experience is weighted for this fact (§4). Empty = nobody.
+      An attribute may name SEVERAL (migration 0018) — a service animal handler
+      may be blind, Deaf, or a wheelchair user. Drives the access-need grouping
+      in attribute-groups.ts — never a permission to report, only a weighting. */
+  relevantIdentityTags?: string[];
 }
 
 // A claim plus its attribute's structured question — everything the confirmation
@@ -133,7 +134,7 @@ export interface ClaimForConfirm {
   attributeLabel: string;
   questionText: string;
   requiresPhoto: boolean;
-  relevantIdentityTag: string | null;
+  relevantIdentityTags: string[];
 }
 
 // Everything the "report a fact we don't track yet" form needs (the first-report
@@ -149,7 +150,7 @@ export interface AttributeForReport {
   attributeLabel: string;
   questionText: string;
   requiresPhoto: boolean;
-  relevantIdentityTag: string | null;
+  relevantIdentityTags: string[];
   existingClaimId: string | null;
 }
 
@@ -183,6 +184,6 @@ export interface AttributeStatus {
   lastConfirmedAt: string | null;
   isStale: boolean | null;
   sourcedNote?: string | null;
-  /** See AttributeDefOption.relevantIdentityTag. */
-  relevantIdentityTag?: string | null;
+  /** See AttributeDefOption.relevantIdentityTags. */
+  relevantIdentityTags?: string[];
 }
