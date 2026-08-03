@@ -139,12 +139,18 @@ try {
 }
 
 console.log('\nWritten. Audit row:', result.auditId);
-if (result.clearedEntirely) {
-  console.log('Every flag is now unknown — source, date and note were cleared with them.');
+if (result.cleared.length > 0) {
+  console.log(`Cleared (now unknown, publishing nothing): ${result.cleared.join(', ')}.`);
+}
+
+const published = presentAllCoverage(result.after);
+if (published.length === 0) {
   console.log('This provider now publishes NO coverage information.');
 } else {
+  // Each line carries its OWN source and date (migration 0017) — facts this
+  // write didn't touch keep exactly the provenance they already had.
   console.log('\nWhat the site will now publish:');
-  for (const c of presentAllCoverage(result.after)) {
+  for (const c of published) {
     console.log(`  • ${c.text} — ${c.provenance} Last confirmed ${c.asOf}.${c.isStale ? ' (STALE)' : ''}`);
   }
 }

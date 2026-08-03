@@ -18,28 +18,37 @@ export type RepresentationSource = 'self_attested' | 'sourced';
 export type CoverageSource = 'self_attested' | 'sourced';
 
 /**
- * The blockers that fire BEFORE accessibility (migration 0014): panel status
- * and coverage. Deliberately OUTSIDE the §4 consensus model — these are attested
- * facts with a date, never community-validated claims.
+ * The blockers that fire BEFORE accessibility (migrations 0014-0017): panel
+ * status, coverage, telehealth availability. Deliberately OUTSIDE the §4
+ * consensus model — these are attested facts with a date, never
+ * community-validated claims.
  *
- * All three flags are THREE-VALUED: true = yes, false = a real "no" worth
- * publishing, null/undefined = unknown. Never render these directly; go through
- * presentCoverage() in coverage.ts, which publishes nothing without a source AND
- * a date.
+ * ONE FACT, ONE PROVENANCE. Migration 0017 gave every fact its own source and
+ * date after a shared one caused the same bug twice (relabelling facts nobody
+ * re-confirmed). `source` and `asOf` are REQUIRED here, mirroring the NOT NULL
+ * columns: a fact that cannot be published cannot be represented.
+ *
+ * UNKNOWN IS THE ABSENCE OF A FACT — no null-value branch, no "set but
+ * unsourced" state. If the key isn't present, we don't know.
  */
-export interface ProviderCoverage {
-  acceptingNewPatients: boolean | null;
-  acceptsMedicaid: boolean | null;
-  acceptsMedicare: boolean | null;
-  /** true = telehealth offered, false = in person only, null = unknown.
-      Shares the source/asOf below — same authority, same decay (migration 0015). */
-  offersTelehealth: boolean | null;
-  source: CoverageSource | null;
-  /** ISO date this was last confirmed with the practice. No date = unpublishable. */
-  asOf: string | null;
-  /** Plain-language citation for a `sourced` claim (§7). */
+export interface CoverageFact {
+  value: boolean;
+  source: CoverageSource;
+  /** ISO date (YYYY-MM-DD) this fact was confirmed with the practice. */
+  asOf: string;
+  /** Citation for a `sourced` fact (§7). Null for self-attested. */
   note?: string | null;
 }
+
+/** A provider's coverage facts, keyed by fact key. A missing key = unknown. */
+export type ProviderCoverage = Partial<Record<CoverageKey, CoverageFact>>;
+
+/** The coverage fact vocabulary. Text in the DB so a new fact is a data change. */
+export type CoverageKey =
+  | 'acceptingNewPatients'
+  | 'acceptsMedicaid'
+  | 'acceptsMedicare'
+  | 'offersTelehealth';
 
 export type AttributeCategory =
   | 'facility_objective'

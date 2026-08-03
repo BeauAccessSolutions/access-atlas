@@ -41,17 +41,17 @@ insert into listings (id, kind, name, summary, city, region, postal_code, catego
    'Not a real business. A test fixture with no accessibility reports, used to exercise the "be the first to report" flow.',
    'Buffalo', 'Erie County', '14213', 'business', true, false, 42.9160, -78.8950, 'approximate');
 
--- Coverage (migration 0014) carries a SOURCE and a DATE, because without both
--- the UI publishes nothing. accepts_medicare is deliberately left NULL to
--- exercise the unknown path: it must render nothing at all, not "no".
-insert into provider_profiles (
-  listing_id, disability_literate,
-  accepting_new_patients, accepts_medicaid, accepts_medicare, offers_telehealth,
-  coverage_source, coverage_as_of, coverage_note
-) values
-  ('33333333-3333-3333-3333-333333333333', true,
-   true, true, null, true,
-   'self_attested', current_date - 30, null);
+insert into provider_profiles (listing_id, disability_literate) values
+  ('33333333-3333-3333-3333-333333333333', true);
+
+-- Coverage facts (migration 0017): ONE ROW PER FACT, each with its own source
+-- and date, both NOT NULL — an unpublishable fact is unstorable. Medicare is
+-- deliberately ABSENT rather than null: unknown is the absence of a row now,
+-- and it must render nothing at all, not "no".
+insert into provider_coverage_facts (listing_id, key, value, source, as_of, note) values
+  ('33333333-3333-3333-3333-333333333333', 'accepting_new_patients', true, 'self_attested', current_date - 30, null),
+  ('33333333-3333-3333-3333-333333333333', 'accepts_medicaid',       true, 'self_attested', current_date - 30, null),
+  ('33333333-3333-3333-3333-333333333333', 'offers_telehealth',      true, 'self_attested', current_date - 30, null);
 
 -- Claims + confirmations, hand-tuned to show every labeling state ------------
 -- (§4). Contributors are pseudonymous placeholders.

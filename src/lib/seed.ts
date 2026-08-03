@@ -330,19 +330,24 @@ export const LISTINGS: Listing[] = [
       'its designation as a Center for Independent Living, where consumer control — 51% or more of staff and board being disabled people — is a condition of the designation',
     provider: {
       disabilityLiterate: true,
-      // Mirrors supabase/seed.sql. `asOf` is computed relative to today so the
-      // seeded fact never drifts into the stale branch as the repo ages —
-      // staleness is exercised by unit tests, not by a rotting fixture.
-      coverage: {
-        acceptingNewPatients: true,
-        acceptsMedicaid: true,
-        // NULL on purpose: exercises the unknown path (must render nothing).
-        acceptsMedicare: null,
-        offersTelehealth: true,
-        source: 'self_attested',
-        asOf: new Date(Date.now() - 30 * 86_400_000).toISOString().slice(0, 10),
-        note: null,
-      },
+      // Mirrors supabase/seed.sql. Per-fact provenance (migration 0017): each
+      // fact carries its OWN source and date, so a later partial update can
+      // never restamp the others. `asOf` is relative to today so the fixture
+      // never rots into the stale branch — staleness is exercised by unit
+      // tests. acceptsMedicare is ABSENT rather than null: unknown is now the
+      // absence of a fact, and must render nothing at all (not "no").
+      coverage: (() => {
+        const told = {
+          source: 'self_attested' as const,
+          asOf: new Date(Date.now() - 30 * 86_400_000).toISOString().slice(0, 10),
+          note: null,
+        };
+        return {
+          acceptingNewPatients: { value: true, ...told },
+          acceptsMedicaid: { value: true, ...told },
+          offersTelehealth: { value: true, ...told },
+        };
+      })(),
     },
     lat: 42.901,
     lng: -78.876,

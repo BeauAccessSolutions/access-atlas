@@ -15,9 +15,12 @@
 // listing UUID, and no operator is going to look up forty of those by hand.
 //
 // SAFETY, all of it inherited rather than reinvented:
-//   * Every row goes through the SAME validateCoverageWrite + carriedOverFlags
-//     rules as the single-record CLI. Bulk gets no weaker standard — that is
-//     exactly where a weaker standard would do the most damage.
+//   * Every row goes through the SAME validateCoverageWrite rules as the
+//     single-record CLI. Bulk gets no weaker standard — that is exactly where a
+//     weaker standard would do the most damage. (Before migration 0017 it also
+//     needed a carriedOverFlags check, because one shared source/date meant a
+//     partial row could relabel facts it never mentioned. Per-fact provenance
+//     removed that whole class of problem.)
 //   * The whole batch is validated BEFORE anything is written. A forty-row
 //     import that half-applies is worse than one that refuses.
 //   * The `name` column is checked against the database. A spreadsheet where
@@ -44,7 +47,7 @@ if (maj < 23 && !(maj === 22 && min >= 6)) {
 const { parseCoverageBatch, toCsv, CALL_SHEET_COLUMNS } = await import(
   '../src/lib/coverage-batch.ts'
 );
-const { validateCoverageWrite, carriedOverFlags, updateProviderCoverage } = await import(
+const { validateCoverageWrite, updateProviderCoverage, rowsToCoverage } = await import(
   '../src/lib/coverage-write.ts'
 );
 const { COVERAGE_STALE_DAYS } = await import('../src/lib/coverage.ts');
@@ -52,30 +55,16 @@ const { COVERAGE_STALE_DAYS } = await import('../src/lib/coverage.ts');
 const args = parseArgs(process.argv.slice(2));
 const admin = serviceClient();
 
-const COVERAGE_SELECT =
-  'listing_id, accepting_new_patients, accepts_medicaid, accepts_medicare, offers_telehealth, coverage_source, coverage_as_of, coverage_note';
+const FACT_SELECT = 'listing_id, key, value, source, as_of, note';
 
-/** DB row -> the ProviderCoverage shape the shared helpers expect. */
-function toCoverage(row) {
-  if (!row) return null;
-  const c = {
-    acceptingNewPatients: row.accepting_new_patients ?? null,
-    acceptsMedicaid: row.accepts_medicaid ?? null,
-    acceptsMedicare: row.accepts_medicare ?? null,
-    offersTelehealth: row.offers_telehealth ?? null,
-    source: row.coverage_source ?? null,
-    asOf: row.coverage_as_of ?? null,
-    note: row.coverage_note ?? null,
-  };
-  const hasAny =
-    c.acceptingNewPatients !== null ||
-    c.acceptsMedicaid !== null ||
-    c.acceptsMedicare !== null ||
-    c.offersTelehealth !== null;
-  return hasAny ? c : null;
-}
+/** A fact's cell value for the sheet: 'yes' / 'no' / blank when unknown. */
+const cell = (fact) => (fact === undefined ? '' : fact.value ? 'yes' : 'no');
 
-const cell = (v) => (v === null || v === undefined ? '' : v ? 'yes' : 'no');
+/** The freshest as_of across a provider's facts — drives the stale ranking. */
+const newestAsOf = (coverage) => {
+  const dates = Object.values(coverage).map((f) => f.asOf).filter(Boolean).sort();
+  return dates.length ? dates[dates.length - 1] : null;
+};
 
 // ---------------------------------------------------------------------------
 // Mode 1: export the call sheet
@@ -90,14 +79,20 @@ if (args['call-sheet'] || args.out || args.export) {
     console.error(`Could not read providers: ${error.message}`);
     process.exit(1);
   }
-  const { data: profiles, error: pErr } = await admin
-    .from('provider_profiles')
-    .select(COVERAGE_SELECT);
+  const { data: facts, error: pErr } = await admin
+    .from('provider_coverage_facts')
+    .select(FACT_SELECT);
   if (pErr) {
-    console.error(`Could not read provider profiles: ${pErr.message}`);
+    console.error(`Could not read coverage facts: ${pErr.message}`);
     process.exit(1);
   }
-  const byListing = new Map((profiles ?? []).map((p) => [p.listing_id, p]));
+  // Group the per-fact rows (migration 0017) back into one map per provider.
+  const byListing = new Map();
+  for (const f of facts ?? []) {
+    const rows = byListing.get(f.listing_id) ?? [];
+    rows.push(f);
+    byListing.set(f.listing_id, rows);
+  }
 
   const today = new Date();
   const staleBefore = new Date(today.getTime() - COVERAGE_STALE_DAYS * 86_400_000)
@@ -107,29 +102,31 @@ if (args['call-sheet'] || args.out || args.export) {
   // Most-needing-a-call first: nothing recorded, then stale, then the rest.
   const ranked = (providers ?? [])
     .map((p) => {
-      const row = byListing.get(p.id);
-      const coverage = toCoverage(row);
-      const asOf = row?.coverage_as_of ?? null;
-      const priority = !coverage ? 0 : !asOf || asOf < staleBefore ? 1 : 2;
-      return { p, row, coverage, priority };
+      const coverage = rowsToCoverage(byListing.get(p.id));
+      const known = Object.keys(coverage).length > 0;
+      const asOf = newestAsOf(coverage);
+      // Rank by how badly a call is needed: nothing recorded, then stale, then
+      // current. With per-fact dates, "stale" is judged on the freshest one.
+      const priority = !known ? 0 : !asOf || asOf < staleBefore ? 1 : 2;
+      return { p, coverage, priority };
     })
     .sort((a, b) => a.priority - b.priority || a.p.name.localeCompare(b.p.name));
 
   const csv = toCsv(
     CALL_SHEET_COLUMNS,
-    ranked.map(({ p, row }) => [
+    ranked.map(({ p, coverage }) => [
       p.id,
       p.name,
-      cell(row?.accepting_new_patients),
-      cell(row?.accepts_medicaid),
-      cell(row?.accepts_medicare),
-      cell(row?.offers_telehealth),
-      row?.coverage_source ?? 'self_attested',
+      cell(coverage.acceptingNewPatients),
+      cell(coverage.acceptsMedicaid),
+      cell(coverage.acceptsMedicare),
+      cell(coverage.offersTelehealth),
+      coverage.acceptingNewPatients?.source ?? 'self_attested',
       // Deliberately BLANK, not the stored date: as_of means "when you confirmed
       // it", so carrying the old date forward would let a fresh call be filed
       // under a stale one. The operator types the date they called.
       '',
-      row?.coverage_note ?? '',
+      coverage.acceptingNewPatients?.note ?? '',
       '',
     ]),
   );
@@ -178,11 +175,6 @@ if (lErr) {
 }
 const listingById = new Map((listings ?? []).map((l) => [l.id, l]));
 
-const { data: profiles } = ids.length
-  ? await admin.from('provider_profiles').select(COVERAGE_SELECT).in('listing_id', ids)
-  : { data: [] };
-const profileByListing = new Map((profiles ?? []).map((p) => [p.listing_id, p]));
-
 for (const row of rows) {
   const { line, request, declaredName } = row;
   const listing = listingById.get(request.listingId);
@@ -204,17 +196,10 @@ for (const row of rows) {
     );
     continue;
   }
+  // No carried-over-provenance check any more: since migration 0017 each fact
+  // owns its source and date, so leaving a cell blank simply leaves that fact
+  // — and its provenance — exactly as it was.
   for (const p of validateCoverageWrite(request)) errors.push(`Row ${line}: ${p}`);
-
-  const before = toCoverage(profileByListing.get(request.listingId));
-  const carried = carriedOverFlags(before, request);
-  if (carried.length > 0) {
-    errors.push(
-      `Row ${line} ("${listing.name}"): changes the source/date but leaves ${carried.join(', ')} ` +
-        `blank while already published — they would be relabelled with provenance nobody gave them. ` +
-        `Re-state them in the row, or set them to unknown.`,
-    );
-  }
 }
 
 if (errors.length > 0) {
