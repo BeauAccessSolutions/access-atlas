@@ -1,38 +1,39 @@
-// Writing provider coverage (migration 0016). The seam between "who told us"
-// and "what we store".
+// Writing provider coverage (migrations 0016-0017).
 //
-// THE RULE THIS FILE ENFORCES: never store what we could not publish.
+// THE RULE: never store what we could not publish. Since 0017 the schema
+// enforces most of it — `provider_coverage_facts.source` and `.as_of` are NOT
+// NULL, so a fact without provenance is unstorable rather than merely
+// unrenderable. What is left here is the part SQL can't express: a `sourced`
+// fact needs a citation, a date must be real and not in the future, and a write
+// must say who did it and how they know.
 //
-// src/lib/coverage.ts already refuses to RENDER a coverage fact without a value,
-// a source and a real date. That is a fail-safe at the last possible moment, and
-// it is the right backstop — but a database full of unpublishable rows is its
-// own problem: it looks like data, it reports like data, and every future reader
-// has to re-derive why none of it shows up. So the same rules are enforced at
-// the door. A write that could not be published is rejected, not stored.
+// WHAT 0017 DELETED. This file used to carry `carriedOverFlags`, a guard against
+// our own schema: because one source/date covered the whole provider, updating
+// one fact would silently relabel the others with provenance nobody gave them.
+// It caused a real bug in the single-record path and constant friction in the
+// bulk one. Per-fact provenance removes the problem, so the guard is gone —
+// **a partial write is now simply safe**, which is what it always looked like.
 //
 // Coverage has NO consensus layer (0014) — a single write publishes immediately,
 // with no three-confirmation bar and no dissent freeze to absorb a mistake. That
 // is why this path is ops-only, why `reason` and `actor` are mandatory, and why
 // every write lands in the append-only audit with its before-state.
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { CoverageSource, ProviderCoverage } from './types';
+import type { CoverageKey, CoverageSource, ProviderCoverage } from './types';
+import { COVERAGE_DB_KEYS, COVERAGE_KEY_BY_DB, COVERAGE_ORDER } from './coverage';
 import { recordModerationAudit } from './moderation';
 
-/** The three-valued input for one flag. `unknown` clears it back to NULL. */
+/** Per-fact input. `unknown` deletes the fact (we no longer claim to know). */
 export type CoverageInput = boolean | 'unknown';
 
-export interface CoverageUpdate {
-  acceptingNewPatients?: CoverageInput;
-  acceptsMedicaid?: CoverageInput;
-  acceptsMedicare?: CoverageInput;
-  offersTelehealth?: CoverageInput;
-}
+export type CoverageUpdate = Partial<Record<CoverageKey, CoverageInput>>;
 
 export interface CoverageWriteRequest {
   listingId: string;
   values: CoverageUpdate;
+  /** Provenance for the facts SET by this write. Irrelevant to ones cleared. */
   source: CoverageSource;
-  /** ISO date (YYYY-MM-DD) this was confirmed with the practice. */
+  /** ISO date (YYYY-MM-DD) these facts were confirmed with the practice. */
   asOf: string;
   /** Citation, required when source is 'sourced' (§7 — a sourced claim must be checkable). */
   note?: string | null;
@@ -43,19 +44,12 @@ export interface CoverageWriteRequest {
 }
 
 export interface CoverageWriteResult {
-  before: ProviderCoverage | null;
+  before: ProviderCoverage;
   after: ProviderCoverage;
   auditId: string;
-  /** True when every flag ended up unknown — source/date are cleared with them. */
-  clearedEntirely: boolean;
+  /** Fact keys deleted by this write (set back to unknown). */
+  cleared: CoverageKey[];
 }
-
-const FLAGS = [
-  ['acceptingNewPatients', 'accepting_new_patients'],
-  ['acceptsMedicaid', 'accepts_medicaid'],
-  ['acceptsMedicare', 'accepts_medicare'],
-  ['offersTelehealth', 'offers_telehealth'],
-] as const;
 
 /** YYYY-MM-DD, a real calendar date, not in the future. */
 export function isPublishableAsOf(asOf: string, now = new Date()): boolean {
@@ -71,7 +65,7 @@ export function isPublishableAsOf(asOf: string, now = new Date()): boolean {
 /**
  * Validate a write request. Returns the problems; empty means publishable.
  *
- * Pure and exported so the ops CLI can fail before touching the database, and
+ * Pure and exported so the ops CLIs can fail before touching the database, and
  * so the rules are unit-testable without one.
  */
 export function validateCoverageWrite(req: CoverageWriteRequest, now = new Date()): string[] {
@@ -81,16 +75,16 @@ export function validateCoverageWrite(req: CoverageWriteRequest, now = new Date(
   if (!req.reason?.trim()) problems.push('A reason is required — record how you know.');
   if (!req.actor?.trim()) problems.push('An actor is required.');
 
-  const provided = FLAGS.filter(([key]) => req.values[key] !== undefined);
+  const provided = COVERAGE_ORDER.filter((key) => req.values[key] !== undefined);
   if (provided.length === 0) {
-    problems.push('Set at least one coverage flag (yes / no / unknown).');
+    problems.push('Set at least one coverage fact (yes / no / unknown).');
   }
 
-  // If everything is being cleared, source and date are meaningless — and
-  // demanding them would block the legitimate "we were wrong, retract it" path.
-  const allUnknown =
-    provided.length > 0 && provided.every(([key]) => req.values[key] === 'unknown');
-  if (allUnknown) return problems;
+  // Provenance describes what is being SET. A write that only clears facts needs
+  // none — demanding a source for a fact being *removed* would block the
+  // legitimate "our note was wrong, retract it" path.
+  const setting = provided.filter((key) => req.values[key] !== 'unknown');
+  if (setting.length === 0) return problems;
 
   if (req.source !== 'self_attested' && req.source !== 'sourced') {
     problems.push("Source must be 'self_attested' or 'sourced'.");
@@ -108,61 +102,30 @@ export function validateCoverageWrite(req: CoverageWriteRequest, now = new Date(
   return problems;
 }
 
-/**
- * Flags that would SURVIVE this write without being re-stated, while the shared
- * provenance changes underneath them.
- *
- * Migration 0014 stores ONE source/date/note for the whole coverage record —
- * right when the record is written in one go, wrong the moment a partial write
- * carries a new provenance. Updating only `--medicare` from a directory would
- * silently relabel the practice's own self-attested panel status as "From: NY
- * State of Health directory", asserting a provenance nobody has. That is exactly
- * the failure migration 0012 fixed for representation, reappearing here.
- *
- * So this is detected and refused rather than papered over. Returns the flag
- * names at risk; empty means the write is safe.
- */
-export function carriedOverFlags(
-  before: ProviderCoverage | null,
-  req: Pick<CoverageWriteRequest, 'values' | 'source' | 'asOf' | 'note'>,
-): string[] {
-  if (!before) return [];
-
-  const provenanceUnchanged =
-    before.source === req.source &&
-    before.asOf === req.asOf &&
-    (before.note?.trim() || null) === (req.note?.trim() || null);
-  // Same call, same batch: adding a flag to provenance that already describes it
-  // is exactly right, and must stay frictionless.
-  if (provenanceUnchanged) return [];
-
-  return FLAGS.filter(
-    ([key]) => before[key] !== null && req.values[key] === undefined,
-  ).map(([key]) => key);
-}
-
-function rowToCoverage(row: any): ProviderCoverage | null {
-  if (!row) return null;
-  const coverage: ProviderCoverage = {
-    acceptingNewPatients: row.accepting_new_patients ?? null,
-    acceptsMedicaid: row.accepts_medicaid ?? null,
-    acceptsMedicare: row.accepts_medicare ?? null,
-    offersTelehealth: row.offers_telehealth ?? null,
-    source: row.coverage_source ?? null,
-    asOf: row.coverage_as_of ?? null,
-    note: row.coverage_note ?? null,
-  };
-  const hasAny = FLAGS.some(([key]) => coverage[key] !== null);
-  return hasAny ? coverage : null;
+/** provider_coverage_facts rows -> the keyed ProviderCoverage map. */
+export function rowsToCoverage(rows: any[] | null | undefined): ProviderCoverage {
+  const coverage: ProviderCoverage = {};
+  for (const row of rows ?? []) {
+    const key = COVERAGE_KEY_BY_DB[row.key];
+    // An unrecognized key (a fact retired from the vocabulary) is ignored rather
+    // than crashing the page — the DB column is free text on purpose.
+    if (!key) continue;
+    coverage[key] = {
+      value: !!row.value,
+      source: row.source,
+      asOf: typeof row.as_of === 'string' ? row.as_of.slice(0, 10) : row.as_of,
+      note: row.note ?? null,
+    };
+  }
+  return coverage;
 }
 
 /**
  * Apply a coverage update and record it in the append-only audit.
  *
- * Only the flags present in `values` change; omitted ones keep whatever they
- * held. `'unknown'` clears a flag back to NULL (publishing nothing for it), and
- * clearing ALL of them clears the shared source/date/note too rather than
- * leaving orphaned provenance behind describing nothing.
+ * Only the facts present in `values` change; every other fact keeps its own
+ * source and date untouched — that is the whole point of 0017. `'unknown'`
+ * deletes a fact (we stop claiming to know it).
  */
 export async function updateProviderCoverage(
   admin: SupabaseClient,
@@ -171,11 +134,13 @@ export async function updateProviderCoverage(
 ): Promise<CoverageWriteResult> {
   const problems = validateCoverageWrite(req, now);
   if (problems.length > 0) {
-    throw new Error(`Refusing to write an unpublishable coverage record:\n  - ${problems.join('\n  - ')}`);
+    throw new Error(
+      `Refusing to write an unpublishable coverage record:\n  - ${problems.join('\n  - ')}`,
+    );
   }
 
   // The listing must exist AND be a provider — coverage is meaningless on a
-  // cafe, and a typo'd id must fail loudly rather than silently insert nothing.
+  // cafe, and a typo'd id must fail loudly rather than silently write nothing.
   const { data: listing, error: lErr } = await admin
     .from('listings')
     .select('id, kind, name')
@@ -184,67 +149,63 @@ export async function updateProviderCoverage(
   if (lErr) throw new Error(`Could not read listing: ${lErr.message}`);
   if (!listing) throw new Error(`No listing with id ${req.listingId}.`);
   if (listing.kind !== 'provider') {
-    throw new Error(`Listing "${listing.name}" is a place, not a provider — coverage does not apply.`);
-  }
-
-  const { data: beforeRow, error: bErr } = await admin
-    .from('provider_profiles')
-    .select(
-      'accepting_new_patients, accepts_medicaid, accepts_medicare, offers_telehealth, coverage_source, coverage_as_of, coverage_note',
-    )
-    .eq('listing_id', req.listingId)
-    .maybeSingle();
-  if (bErr) throw new Error(`Could not read provider profile: ${bErr.message}`);
-  const before = rowToCoverage(beforeRow);
-
-  // Refuse to relabel facts this write did not actually re-confirm (see
-  // carriedOverFlags). Fail before any mutation.
-  const carried = carriedOverFlags(before, req);
-  if (carried.length > 0) {
     throw new Error(
-      `This write changes the shared source/date, but leaves ${carried.length} already-published ` +
-        `flag(s) untouched: ${carried.join(', ')}.\n` +
-        `Coverage stores ONE source and date for the whole record, so those would be silently ` +
-        `relabelled with provenance they don't have.\n` +
-        `Either re-state them in this write (if your new source covers them too), or set them to ` +
-        `unknown to retract them.`,
+      `Listing "${listing.name}" is a place, not a provider — coverage does not apply.`,
     );
   }
 
-  const patch: Record<string, unknown> = { listing_id: req.listingId };
-  for (const [key, column] of FLAGS) {
+  const { data: beforeRows, error: bErr } = await admin
+    .from('provider_coverage_facts')
+    .select('key, value, source, as_of, note')
+    .eq('listing_id', req.listingId);
+  if (bErr) throw new Error(`Could not read coverage facts: ${bErr.message}`);
+  const before = rowsToCoverage(beforeRows);
+
+  const cleared: CoverageKey[] = [];
+  const upserts: Record<string, unknown>[] = [];
+  for (const key of COVERAGE_ORDER) {
     const value = req.values[key];
-    if (value === undefined) continue;
-    patch[column] = value === 'unknown' ? null : value;
+    if (value === undefined) continue; // untouched — keeps its own provenance
+    if (value === 'unknown') {
+      cleared.push(key);
+      continue;
+    }
+    upserts.push({
+      listing_id: req.listingId,
+      key: COVERAGE_DB_KEYS[key],
+      value,
+      source: req.source,
+      as_of: req.asOf,
+      note: req.note?.trim() || null,
+      updated_at: new Date(now).toISOString(),
+    });
   }
 
-  // Would anything remain published after this write? Merge the patch over the
-  // existing row rather than looking at the patch alone — clearing one flag
-  // while another survives must NOT drop the shared provenance.
-  const stillSet = FLAGS.some(([key, column]) =>
-    column in patch ? patch[column] !== null : (beforeRow?.[column] ?? null) !== null,
-  );
-
-  if (stillSet) {
-    patch.coverage_source = req.source;
-    patch.coverage_as_of = req.asOf;
-    patch.coverage_note = req.note?.trim() || null;
-  } else {
-    // Nothing publishable left: drop the provenance with it, so no orphaned
-    // source/date sits in the row describing nothing.
-    patch.coverage_source = null;
-    patch.coverage_as_of = null;
-    patch.coverage_note = null;
+  if (cleared.length > 0) {
+    const { error } = await admin
+      .from('provider_coverage_facts')
+      .delete()
+      .eq('listing_id', req.listingId)
+      .in(
+        'key',
+        cleared.map((k) => COVERAGE_DB_KEYS[k]),
+      );
+    if (error) throw new Error(`Coverage clear failed: ${error.message}`);
   }
 
-  const { data: afterRow, error: uErr } = await admin
-    .from('provider_profiles')
-    .upsert(patch, { onConflict: 'listing_id' })
-    .select(
-      'accepting_new_patients, accepts_medicaid, accepts_medicare, offers_telehealth, coverage_source, coverage_as_of, coverage_note',
-    )
-    .single();
-  if (uErr) throw new Error(`Coverage write failed: ${uErr.message}`);
+  if (upserts.length > 0) {
+    const { error } = await admin
+      .from('provider_coverage_facts')
+      .upsert(upserts, { onConflict: 'listing_id,key' });
+    if (error) throw new Error(`Coverage write failed: ${error.message}`);
+  }
+
+  const { data: afterRows, error: aErr } = await admin
+    .from('provider_coverage_facts')
+    .select('key, value, source, as_of, note')
+    .eq('listing_id', req.listingId);
+  if (aErr) throw new Error(`Could not re-read coverage facts: ${aErr.message}`);
+  const after = rowsToCoverage(afterRows);
 
   const auditId = await recordModerationAudit(admin, {
     action: 'coverage_update',
@@ -252,25 +213,13 @@ export async function updateProviderCoverage(
     reason: req.reason,
     actor: req.actor,
     details: {
-      before: before ?? null,
-      after: rowToCoverage(afterRow),
-      changed: FLAGS.filter(([key]) => req.values[key] !== undefined).map(([key]) => key),
+      before,
+      after,
+      changed: COVERAGE_ORDER.filter((key) => req.values[key] !== undefined),
+      cleared,
       listingName: listing.name,
     },
   });
 
-  return {
-    before,
-    after: rowToCoverage(afterRow) ?? {
-      acceptingNewPatients: null,
-      acceptsMedicaid: null,
-      acceptsMedicare: null,
-      offersTelehealth: null,
-      source: null,
-      asOf: null,
-      note: null,
-    },
-    auditId,
-    clearedEntirely: !stillSet,
-  };
+  return { before, after, auditId, cleared };
 }

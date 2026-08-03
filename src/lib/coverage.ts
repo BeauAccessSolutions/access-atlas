@@ -1,16 +1,22 @@
-// Provider coverage: the blockers that fire BEFORE accessibility (migration
-// 0014). Whether a practice is taking new patients, and whether they take
-// Medicaid / Medicare.
+// Provider coverage: the blockers that fire BEFORE accessibility (migrations
+// 0014-0017). Whether a practice is taking new patients, whether they take
+// Medicaid / Medicare, and whether they offer telehealth.
 //
 // These are NOT §4 attributes. No claims, no confirmations, no
 // `community_verified`, no consensus formula. They are attested facts with a
-// date on them, and everything here exists to make sure we never say more than
-// that. The failure mode is specific and expensive: tell someone a practice
-// takes their Medicaid, they travel there, and they are turned away at the desk
-// or billed. So the presenter below is fail-safe in the same way
-// presentRepresentation is (migration 0012) — no value, no source, or no date
-// publishes NOTHING.
-import type { CoverageSource, ProviderCoverage } from './types';
+// date on them, and the failure mode is specific and expensive: tell someone a
+// practice takes their Medicaid, they travel there, and they are turned away at
+// the desk or billed.
+//
+// WHAT CHANGED IN 0017, and why this file got shorter. Coverage used to be
+// three-valued booleans plus ONE shared source/date for the whole provider, so
+// the presenter carried a four-branch fail-safe refusing to publish anything
+// missing a piece — and a partial update could still relabel facts nobody
+// re-confirmed. Now each fact is its own row with NOT NULL source and as_of, so
+// **a fact that cannot be published cannot be stored**. The fail-safe lives in
+// the schema. What remains here is presentation, plus one belt-and-braces date
+// check: degrading to silence beats degrading to a claim.
+import type { CoverageFact, CoverageKey, CoverageSource, ProviderCoverage } from './types';
 
 /**
  * How long a coverage fact stays presentable before we flag it as stale.
@@ -22,11 +28,32 @@ import type { CoverageSource, ProviderCoverage } from './types';
  */
 export const COVERAGE_STALE_DAYS = 180;
 
-export type CoverageKey =
-  | 'acceptingNewPatients'
-  | 'acceptsMedicaid'
-  | 'acceptsMedicare'
-  | 'offersTelehealth';
+export type { CoverageKey };
+
+/** App camelCase key -> the snake_case key stored in provider_coverage_facts. */
+export const COVERAGE_DB_KEYS: Record<CoverageKey, string> = {
+  acceptingNewPatients: 'accepting_new_patients',
+  acceptsMedicaid: 'accepts_medicaid',
+  acceptsMedicare: 'accepts_medicare',
+  offersTelehealth: 'offers_telehealth',
+};
+
+/** The reverse map, for reading rows back. */
+export const COVERAGE_KEY_BY_DB = Object.fromEntries(
+  Object.entries(COVERAGE_DB_KEYS).map(([k, v]) => [v, k as CoverageKey]),
+) as Record<string, CoverageKey>;
+
+export function isCoverageKey(key: unknown): key is CoverageKey {
+  return typeof key === 'string' && key in COVERAGE_DB_KEYS;
+}
+
+/** The order a visitor needs these in — see presentAllCoverage. */
+export const COVERAGE_ORDER: CoverageKey[] = [
+  'acceptingNewPatients',
+  'acceptsMedicaid',
+  'acceptsMedicare',
+  'offersTelehealth',
+];
 
 export interface CoveragePresentation {
   key: CoverageKey;
@@ -36,7 +63,7 @@ export interface CoveragePresentation {
   value: boolean;
   /** Where it came from, in plain words. */
   provenance: string;
-  /** ISO date (YYYY-MM-DD) this was last confirmed with the practice. */
+  /** ISO date (YYYY-MM-DD) this fact was last confirmed with the practice. */
   asOf: string;
   /** Past COVERAGE_STALE_DAYS — render the re-check warning. */
   isStale: boolean;
@@ -53,14 +80,14 @@ const COPY: Record<CoverageKey, { yes: string; no: string }> = {
   acceptsMedicare: { yes: 'Accepts Medicare', no: 'Does not accept Medicare' },
   offersTelehealth: {
     yes: 'Offers telehealth appointments',
-    // The one flag where `false` is NOT a blocker — it is an absent
+    // The one fact where `false` is NOT a blocker — it is an absent
     // alternative, not a closed door. Say that, rather than dressing it up as
     // bad news ("does not offer telehealth" reads as a failing; it isn't one).
     no: 'In-person appointments only',
   },
 };
 
-/** Days between an ISO date and `now`. Negative for future dates. */
+/** Days between an ISO date and `now`. NaN if unparseable. */
 function daysSince(isoDate: string, now: Date): number {
   const then = Date.parse(`${isoDate.slice(0, 10)}T00:00:00Z`);
   if (Number.isNaN(then)) return Number.NaN;
@@ -78,40 +105,29 @@ function provenanceText(source: CoverageSource, note: string | null | undefined)
 }
 
 /**
- * What may be published for one coverage fact — or null.
+ * What may be published for one coverage fact — or null when we hold none.
  *
- * FAIL-SAFE, in this order:
- *   * value is null/undefined  -> nobody asked. Publish nothing.
- *   * no source                -> we can't say where it came from. Publish nothing.
- *   * no / unparseable date    -> an undated coverage claim is exactly the
- *                                 unverifiable trust claim §14 forbids. Publish
- *                                 nothing.
- *   * a FUTURE date            -> corrupt data; refuse rather than render a fact
- *                                 confirmed tomorrow.
- *
- * Do NOT add a "helpful" fallback to any of these branches. The fallback is the
- * bug (migration 0012).
+ * The schema guarantees a stored fact has a source and a date (0017), so the
+ * only refusals left are structural: no fact at all, or a date that is corrupt
+ * or in the future.
  */
 export function presentCoverage(
   key: CoverageKey,
   coverage: ProviderCoverage | null | undefined,
   now = new Date(),
 ): CoveragePresentation | null {
-  if (!coverage) return null;
-  const value = coverage[key];
-  if (value === null || value === undefined) return null;
-  if (!coverage.source) return null;
-  if (!coverage.asOf) return null;
+  const fact: CoverageFact | undefined = coverage?.[key];
+  if (!fact) return null;
 
-  const age = daysSince(coverage.asOf, now);
+  const age = daysSince(fact.asOf, now);
   if (Number.isNaN(age) || age < 0) return null;
 
   return {
     key,
-    text: value ? COPY[key].yes : COPY[key].no,
-    value,
-    provenance: provenanceText(coverage.source, coverage.note),
-    asOf: coverage.asOf.slice(0, 10),
+    text: fact.value ? COPY[key].yes : COPY[key].no,
+    value: fact.value,
+    provenance: provenanceText(fact.source, fact.note),
+    asOf: fact.asOf.slice(0, 10),
     isStale: age > COVERAGE_STALE_DAYS,
   };
 }
@@ -125,15 +141,9 @@ export function presentAllCoverage(
   // your Medicaid if they aren't taking anyone. Telehealth LAST — the three
   // before it decide whether you can be seen at all; this only decides whether
   // you have to travel.
-  const order: CoverageKey[] = [
-    'acceptingNewPatients',
-    'acceptsMedicaid',
-    'acceptsMedicare',
-    'offersTelehealth',
-  ];
-  return order
-    .map((key) => presentCoverage(key, coverage, now))
-    .filter((p): p is CoveragePresentation => p !== null);
+  return COVERAGE_ORDER.map((key) => presentCoverage(key, coverage, now)).filter(
+    (p): p is CoveragePresentation => p !== null,
+  );
 }
 
 /**

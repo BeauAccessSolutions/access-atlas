@@ -1,17 +1,18 @@
 // Writing provider coverage (migration 0016).
 //
-// The rule under test: NEVER STORE WHAT WE COULD NOT PUBLISH. coverage.ts
-// already refuses to render an unsourced or undated fact, but a database full of
-// unpublishable rows is its own problem — it looks like data and reports like
-// data. So the same rules are enforced at the door, and these tests are mostly
-// about what the write path REFUSES.
+// The rule under test: NEVER STORE WHAT WE COULD NOT PUBLISH.
+//
+// Migration 0017 moved most of that rule into the schema — source and as_of are
+// NOT NULL on provider_coverage_facts, so an unpublishable fact is now
+// unstorable rather than merely unrenderable. What is left here is the part SQL
+// cannot express: a `sourced` fact needs a citation, a date must be real and not
+// in the future, and a write must say who did it and how they know.
+//
+// The `carriedOverFlags` suite that used to live here is GONE, deliberately: it
+// guarded against our own shared-provenance schema, and 0017 removed the schema
+// problem. A partial write is now simply safe.
 import { describe, it, expect } from 'vitest';
-import {
-  carriedOverFlags,
-  isPublishableAsOf,
-  validateCoverageWrite,
-} from '../../src/lib/coverage-write';
-import type { ProviderCoverage } from '../../src/lib/types';
+import { isPublishableAsOf, validateCoverageWrite } from '../../src/lib/coverage-write';
 
 const NOW = new Date('2026-08-02T12:00:00Z');
 
@@ -95,10 +96,22 @@ describe('validateCoverageWrite — refuses the unpublishable', () => {
   it('reports EVERY problem at once, not one per run', () => {
     // An operator on the phone should not have to re-run four times.
     const problems = validateCoverageWrite(
-      req({ reason: '', asOf: 'nope', source: 'sourced', values: {} }),
+      // A fact IS set here, so the provenance rules apply: missing reason,
+      // sourced-without-note, and an unparseable date should all surface.
+      req({ reason: '', asOf: 'nope', source: 'sourced', note: '' }),
       NOW,
     );
-    expect(problems.length).toBeGreaterThanOrEqual(4);
+    expect(problems.length).toBeGreaterThanOrEqual(3);
+    expect(problems.some((p) => /reason/i.test(p))).toBe(true);
+    expect(problems.some((p) => /note/i.test(p))).toBe(true);
+    expect(problems.some((p) => /past-or-today/i.test(p))).toBe(true);
+  });
+
+  it('does not nag about source or date when nothing is being set', () => {
+    // With no facts supplied the operator's real problem is "you set nothing" —
+    // adding provenance complaints on top would bury it.
+    const problems = validateCoverageWrite(req({ values: {} }), NOW);
+    expect(problems).toEqual([expect.stringMatching(/at least one/i)]);
   });
 });
 
@@ -130,9 +143,9 @@ describe('validateCoverageWrite — the retraction path', () => {
     expect(problems).toContainEqual(expect.stringMatching(/reason/i));
   });
 
-  it('still demands provenance when only SOME flags are cleared', () => {
-    // One flag cleared and another set is a normal publish, not a retraction —
-    // the surviving fact needs a source and a date like any other.
+  it('still demands provenance when a write both clears AND sets', () => {
+    // Clearing one fact while setting another is a normal publish, not a pure
+    // retraction — the fact being SET needs its own source and date.
     const problems = validateCoverageWrite(
       req({
         values: { acceptsMedicaid: 'unknown', acceptsMedicare: true },
@@ -142,105 +155,5 @@ describe('validateCoverageWrite — the retraction path', () => {
       NOW,
     );
     expect(problems.length).toBeGreaterThan(0);
-  });
-});
-
-describe('carriedOverFlags — the relabelling trap', () => {
-  // Found by verifying against Postgres, not by reasoning: updating ONE flag
-  // with a new source relabelled the other three, because migration 0014 stores
-  // one source/date for the whole record. The practice's own self-attested
-  // panel status was published as "From: NY State of Health directory" — a
-  // provenance nobody had. Migration 0012's bug, in a new place.
-  const before: ProviderCoverage = {
-    acceptingNewPatients: true,
-    acceptsMedicaid: true,
-    acceptsMedicare: null,
-    offersTelehealth: true,
-    source: 'self_attested',
-    asOf: '2026-07-03',
-    note: null,
-  };
-
-  it('flags the facts a new source would silently relabel', () => {
-    const carried = carriedOverFlags(before, {
-      values: { acceptsMedicare: true },
-      source: 'sourced',
-      asOf: '2026-08-02',
-      note: 'NY State of Health directory',
-    });
-    expect(carried.sort()).toEqual([
-      'acceptingNewPatients',
-      'acceptsMedicaid',
-      'offersTelehealth',
-    ]);
-  });
-
-  it('allows a partial add under the SAME provenance', () => {
-    // Same call, same batch: extending provenance that already describes these
-    // facts is correct, and must stay frictionless.
-    expect(
-      carriedOverFlags(before, {
-        values: { acceptsMedicare: true },
-        source: 'self_attested',
-        asOf: '2026-07-03',
-        note: null,
-      }),
-    ).toEqual([]);
-  });
-
-  it('allows a new provenance when everything is re-stated', () => {
-    expect(
-      carriedOverFlags(before, {
-        values: {
-          acceptingNewPatients: false,
-          acceptsMedicaid: true,
-          acceptsMedicare: true,
-          offersTelehealth: true,
-        },
-        source: 'sourced',
-        asOf: '2026-08-02',
-        note: 'directory',
-      }),
-    ).toEqual([]);
-  });
-
-  it('counts an explicit retraction as re-stating', () => {
-    // Clearing a flag is a decision about it, not a silent carry-over.
-    expect(
-      carriedOverFlags(before, {
-        values: {
-          acceptingNewPatients: 'unknown',
-          acceptsMedicaid: 'unknown',
-          acceptsMedicare: true,
-          offersTelehealth: 'unknown',
-        },
-        source: 'sourced',
-        asOf: '2026-08-02',
-        note: 'directory',
-      }),
-    ).toEqual([]);
-  });
-
-  it('has nothing to carry over on a first write', () => {
-    expect(
-      carriedOverFlags(null, {
-        values: { acceptsMedicaid: true },
-        source: 'sourced',
-        asOf: '2026-08-02',
-        note: 'x',
-      }),
-    ).toEqual([]);
-  });
-
-  it('treats an empty note and a null note as the same provenance', () => {
-    // Otherwise a cosmetic --note "" would trip the guard on an identical batch.
-    expect(
-      carriedOverFlags(before, {
-        values: { acceptsMedicare: true },
-        source: 'self_attested',
-        asOf: '2026-07-03',
-        note: '   ',
-      }),
-    ).toEqual([]);
   });
 });

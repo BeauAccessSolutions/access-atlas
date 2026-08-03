@@ -12,12 +12,12 @@
 // sheet would silently wipe every fact it didn't mention. To clear a fact you
 // type `unknown`, which is a decision someone made, not the absence of one.
 //
-// That choice re-opens the relabelling trap that coverage-write.ts guards
-// against: leaving a published flag blank while stamping a new date would
-// relabel it with provenance nobody gave it. So the batch runs the SAME
-// carriedOverFlags check per row and rejects the row, rather than inventing a
-// second, weaker rule for bulk. The call sheet pre-fills current values
-// precisely so "still true" is expressed by leaving the value in place.
+// That choice USED to re-open a trap: with one shared source/date per provider
+// (migration 0014), leaving a published fact blank while stamping a new date
+// relabelled it with provenance nobody gave it, so every row had to be checked
+// by `carriedOverFlags` and operators were made to re-state facts they had never
+// asked about. Migration 0017 gave each fact its own source and date, so a
+// partial row is now simply safe and that guard is gone. Blank means blank.
 //
 // VALIDATE THE WHOLE BATCH BEFORE WRITING ANY OF IT — the same posture as
 // seed-import.mjs ("refuses unknown attribute keys instead of silently dropping
