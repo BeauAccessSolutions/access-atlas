@@ -111,7 +111,7 @@ export async function getAttributeDefinitions(kind: ListingKind): Promise<Attrib
   if (!isDbConfigured || !supabase) return seedAttributeDefinitions(kind);
   const { data, error } = await supabase
     .from('attribute_definitions')
-    .select('key, label, category, applies_to_kind, relevant_identity_tag')
+    .select('key, label, category, applies_to_kind, relevant_identity_tags')
     .or(`applies_to_kind.is.null,applies_to_kind.eq.${kind}`)
     .order('key');
   if (error) throw error;
@@ -120,7 +120,7 @@ export async function getAttributeDefinitions(kind: ListingKind): Promise<Attrib
     label: r.label,
     category: r.category,
     appliesToKind: r.applies_to_kind ?? null,
-    relevantIdentityTag: r.relevant_identity_tag ?? null,
+    relevantIdentityTags: r.relevant_identity_tags ?? [],
   }));
 }
 
@@ -132,7 +132,7 @@ export async function getClaimForConfirm(claimId: string): Promise<ClaimForConfi
   const { data, error } = await supabase
     .from('attribute_claims')
     .select(
-      'id, listing_id, listings(name, kind), attribute_definitions(label, question_text, requires_photo, relevant_identity_tag)',
+      'id, listing_id, listings(name, kind), attribute_definitions(label, question_text, requires_photo, relevant_identity_tags)',
     )
     .eq('id', claimId)
     .maybeSingle();
@@ -153,7 +153,7 @@ export async function getClaimForConfirm(claimId: string): Promise<ClaimForConfi
     attributeLabel: attr.label,
     questionText: attr.question_text,
     requiresPhoto: !!attr.requires_photo,
-    relevantIdentityTag: attr.relevant_identity_tag ?? null,
+    relevantIdentityTags: attr.relevant_identity_tags ?? [],
   };
 }
 
@@ -173,7 +173,7 @@ export async function getAttributeForReport(
     supabase.from('listings').select('id, name, kind').eq('id', listingId).maybeSingle(),
     supabase
       .from('attribute_definitions')
-      .select('id, key, label, question_text, requires_photo, relevant_identity_tag, applies_to_kind')
+      .select('id, key, label, question_text, requires_photo, relevant_identity_tags, applies_to_kind')
       .eq('key', attributeKey)
       .maybeSingle(),
   ]);
@@ -201,7 +201,7 @@ export async function getAttributeForReport(
     attributeLabel: def.label,
     questionText: def.question_text,
     requiresPhoto: !!def.requires_photo,
-    relevantIdentityTag: def.relevant_identity_tag ?? null,
+    relevantIdentityTags: def.relevant_identity_tags ?? [],
     existingClaimId: claimRes.data?.id ?? null,
   };
 }
@@ -256,6 +256,6 @@ function rowToStatus(row: any): AttributeStatus {
     lastConfirmedAt: row.last_confirmed_at ?? null,
     isStale: row.is_stale ?? null,
     sourcedNote: row.sourced_note ?? null,
-    relevantIdentityTag: row.relevant_identity_tag ?? null,
+    relevantIdentityTags: row.relevant_identity_tags ?? [],
   };
 }

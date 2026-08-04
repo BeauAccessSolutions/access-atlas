@@ -31,12 +31,12 @@ const unreported = defs.filter((d) => !trackedKeys.has(d.key));
 // (see attribute-groups.ts).
 const trackedGroups = groupByAccessNeed(
   statuses,
-  (s) => s.relevantIdentityTag,
+  (s) => s.relevantIdentityTags,
   (s) => s.label,
 );
 const unreportedGroups = groupByAccessNeed(
   unreported,
-  (d) => d.relevantIdentityTag,
+  (d) => d.relevantIdentityTags,
   (d) => d.label,
 );
 

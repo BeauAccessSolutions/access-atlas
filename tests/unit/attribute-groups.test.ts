@@ -8,15 +8,15 @@ import { groupByAccessNeed, SHARED_GROUP_HEADING } from '../../src/lib/attribute
 import { IDENTITY_TAGS } from '../../src/lib/identity-tags';
 import { seedAttributeDefinitions } from '../../src/lib/seed';
 
-const item = (label: string, tag: string | null) => ({ label, tag });
+const item = (label: string, ...tags: string[]) => ({ label, tags });
 const groupOf = (items: ReturnType<typeof item>[]) =>
-  groupByAccessNeed(items, (i) => i.tag, (i) => i.label);
+  groupByAccessNeed(items, (i) => i.tags, (i) => i.label);
 
 describe('groupByAccessNeed', () => {
   it('orders groups by the fixed IDENTITY_TAGS order, shared group last', () => {
     // Input deliberately in the "wrong" order — output must not depend on it.
     const groups = groupOf([
-      item('Everyone fact', null),
+      item('Everyone fact'),
       item('Neuro fact', 'neurodivergent'),
       item('Chair fact', 'wheelchair_user'),
       item('Deaf fact', 'deaf_hoh'),
@@ -59,6 +59,15 @@ describe('groupByAccessNeed', () => {
     expect(groupOf([])).toEqual([]);
   });
 
+  it('lists a multi-tag fact under EVERY need it serves', () => {
+    // Since migration 0018 an attribute may weight several tags. A Deaf visitor
+    // must find "Service animal welcomed" in their own section, not only under
+    // blind and low-vision.
+    const groups = groupOf([item('Service animal welcomed', 'blind_low_vision', 'deaf_hoh')]);
+    expect(groups.map((g) => g.tag)).toEqual(['blind_low_vision', 'deaf_hoh']);
+    for (const g of groups) expect(g.items.map((i) => i.label)).toEqual(['Service animal welcomed']);
+  });
+
   it('headings name a subject, never a permission', () => {
     // "If you use a wheelchair" would read as a gate and suppress reports the
     // consensus model actively wants (anyone may report; the tag only weights).
@@ -72,10 +81,11 @@ describe('groupByAccessNeed', () => {
 
 describe('the real catalog, as the report hub renders it', () => {
   it('groups every provider fact without loss', () => {
+    // A multi-tag fact appears more than once by design (0018), so the invariant
+    // is coverage — every key reachable — not a count.
     const defs = seedAttributeDefinitions('provider');
-    const groups = groupByAccessNeed(defs, (d) => d.relevantIdentityTag, (d) => d.label);
+    const groups = groupByAccessNeed(defs, (d) => d.relevantIdentityTags, (d) => d.label);
     const grouped = groups.flatMap((g) => g.items);
-    expect(grouped).toHaveLength(defs.length);
     expect(new Set(grouped.map((d) => d.key)).size).toBe(defs.length);
   });
 
@@ -83,7 +93,7 @@ describe('the real catalog, as the report hub renders it', () => {
     // Before this, a provider's 17 facts rendered as one arbitrary key-ordered
     // list. If this collapses back to one group, the ordering fix is undone.
     const defs = seedAttributeDefinitions('provider');
-    const groups = groupByAccessNeed(defs, (d) => d.relevantIdentityTag, (d) => d.label);
+    const groups = groupByAccessNeed(defs, (d) => d.relevantIdentityTags, (d) => d.label);
     expect(groups.length).toBeGreaterThanOrEqual(5);
   });
 
@@ -91,7 +101,7 @@ describe('the real catalog, as the report hub renders it', () => {
     // The grouping is only meaningful if the tag actually survives the read
     // path; a mirror that drops it would silently produce one shared group.
     const defs = seedAttributeDefinitions('provider');
-    expect(defs.some((d) => d.relevantIdentityTag === 'deaf_hoh')).toBe(true);
-    expect(defs.some((d) => d.relevantIdentityTag === null)).toBe(true);
+    expect(defs.some((d) => d.relevantIdentityTags?.includes('deaf_hoh'))).toBe(true);
+    expect(defs.some((d) => d.relevantIdentityTags?.length === 0)).toBe(true);
   });
 });
