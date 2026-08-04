@@ -50,7 +50,7 @@ const { parseCoverageBatch, toCsv, CALL_SHEET_COLUMNS } = await import(
 const { validateCoverageWrite, updateProviderCoverage, rowsToCoverage } = await import(
   '../src/lib/coverage-write.ts'
 );
-const { COVERAGE_STALE_DAYS } = await import('../src/lib/coverage.ts');
+const { isCoverageStale } = await import('../src/lib/coverage.ts');
 
 const args = parseArgs(process.argv.slice(2));
 const admin = serviceClient();
@@ -95,19 +95,21 @@ if (args['call-sheet'] || args.out || args.export) {
   }
 
   const today = new Date();
-  const staleBefore = new Date(today.getTime() - COVERAGE_STALE_DAYS * 86_400_000)
-    .toISOString()
-    .slice(0, 10);
 
   // Most-needing-a-call first: nothing recorded, then stale, then the rest.
   const ranked = (providers ?? [])
     .map((p) => {
       const coverage = rowsToCoverage(byListing.get(p.id));
       const known = Object.keys(coverage).length > 0;
-      const asOf = newestAsOf(coverage);
       // Rank by how badly a call is needed: nothing recorded, then stale, then
-      // current. With per-fact dates, "stale" is judged on the freshest one.
-      const priority = !known ? 0 : !asOf || asOf < staleBefore ? 1 : 2;
+      // current. Staleness is judged PER FACT against that fact's own window
+      // (they differ — a panel status goes stale in 90 days, telehealth in a
+      // year), so a provider whose panel status is four months old ranks as
+      // needing a call even though its Medicaid answer is still fresh.
+      const anyStale = Object.entries(coverage).some(([key, fact]) =>
+        isCoverageStale(key, fact.asOf, today),
+      );
+      const priority = !known ? 0 : anyStale ? 1 : 2;
       return { p, coverage, priority };
     })
     .sort((a, b) => a.priority - b.priority || a.p.name.localeCompare(b.p.name));

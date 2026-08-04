@@ -82,7 +82,7 @@ const photoReportStatus = Astro.url.searchParams.get('photo_report');
                 <br />
                 <span class="attr-desc">
                   {c.provenance} Last confirmed {c.asOf}.
-                  {c.isStale && ' This is over six months old — check before you travel.'}
+                  {c.isStale && ` This is over ${c.staleAfter} old — check before you travel.`}
                 </span>
               </li>
             ))}

@@ -19,14 +19,58 @@
 import type { CoverageFact, CoverageKey, CoverageSource, ProviderCoverage } from './types';
 
 /**
- * How long a coverage fact stays presentable before we flag it as stale.
+ * How long each coverage fact stays presentable before we flag it as stale.
  *
- * 180 days — deliberately HALF the 365-day attribute re-verification cadence
- * (§13). Physical facts decay when something breaks; coverage decays on a
- * business cycle: plan years turn over annually and a panel can close in a
- * month. A year-old "accepting new patients" is not evidence about today.
+ * PER FACT, not one number, because these decay at genuinely different rates
+ * and a single window was wrong in both directions at once:
+ *
+ *   * `acceptingNewPatients` — 90 days. The fastest-moving and the most
+ *     trip-wasting: a panel can close in a month. A five-month-old "accepting
+ *     new patients" was being published with no warning at all.
+ *   * `acceptsMedicaid` / `acceptsMedicare` — 180 days. These move on a
+ *     contract cycle; plan years turn over annually, and mid-year network
+ *     changes happen but are not monthly.
+ *   * `offersTelehealth` — 365 days. A service line, not a cycle. A practice
+ *     offering telehealth in March is almost certainly still offering it in
+ *     December, and warning "this is old" about a stable fact trains people to
+ *     ignore the warning where it actually matters.
+ *
+ * The attribute side keeps its interval in the DB (`reverify_interval_days`,
+ * per row) because attributes are extensible data. Coverage fact keys are a
+ * FIXED app-side vocabulary (migration 0017), and this is presentation policy
+ * that will be tuned, so it lives here — guarded by a test that it covers
+ * exactly the key vocabulary.
+ *
+ * Still a judgement, not evidence: nobody has watched real coverage data decay
+ * yet. Tune once there is a calling campaign's worth of history.
  */
-export const COVERAGE_STALE_DAYS = 180;
+export const COVERAGE_STALE_DAYS: Record<CoverageKey, number> = {
+  acceptingNewPatients: 90,
+  acceptsMedicaid: 180,
+  acceptsMedicare: 180,
+  offersTelehealth: 365,
+};
+
+/**
+ * The staleness window in words, e.g. "three months".
+ *
+ * Exists so the warning copy is DERIVED from the actual window. It used to be
+ * hardcoded as "over six months old" in two separate files, which meant any
+ * change to the number silently made the sentence a lie.
+ */
+export function stalenessWindowPhrase(key: CoverageKey): string {
+  const days = COVERAGE_STALE_DAYS[key];
+  if (days >= 365) return 'a year';
+  const months = Math.round(days / 30);
+  const WORDS: Record<number, string> = { 1: 'a month', 2: 'two months', 3: 'three months', 6: 'six months', 9: 'nine months' };
+  return WORDS[months] ?? `${months} months`;
+}
+
+/** Is this fact past its own window? Shared by the presenter and the call sheet. */
+export function isCoverageStale(key: CoverageKey, asOf: string, now = new Date()): boolean {
+  const age = daysSince(asOf, now);
+  return !Number.isNaN(age) && age > COVERAGE_STALE_DAYS[key];
+}
 
 export type { CoverageKey };
 
@@ -65,8 +109,10 @@ export interface CoveragePresentation {
   provenance: string;
   /** ISO date (YYYY-MM-DD) this fact was last confirmed with the practice. */
   asOf: string;
-  /** Past COVERAGE_STALE_DAYS — render the re-check warning. */
+  /** Past this fact's own window — render the re-check warning. */
   isStale: boolean;
+  /** The window in words ("three months"), so copy can't drift from the number. */
+  staleAfter: string;
 }
 
 const COPY: Record<CoverageKey, { yes: string; no: string }> = {
@@ -128,7 +174,8 @@ export function presentCoverage(
     value: fact.value,
     provenance: provenanceText(fact.source, fact.note),
     asOf: fact.asOf.slice(0, 10),
-    isStale: age > COVERAGE_STALE_DAYS,
+    isStale: age > COVERAGE_STALE_DAYS[key],
+    staleAfter: stalenessWindowPhrase(key),
   };
 }
 
