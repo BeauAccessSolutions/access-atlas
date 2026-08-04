@@ -13,8 +13,10 @@
 // never speaks for another's.
 import { describe, it, expect } from 'vitest';
 import {
+  COVERAGE_ORDER,
   COVERAGE_STALE_DAYS,
   coverageMatches,
+  isCoverageStale,
   presentAllCoverage,
   presentCoverage,
 } from '../../src/lib/coverage';
@@ -90,21 +92,59 @@ describe('presentCoverage', () => {
   it('flags a fact older than the staleness window', () => {
     const fresh = presentCoverage(
       'acceptsMedicaid',
-      coverage({ acceptsMedicaid: fact(true, { asOf: daysAgo(COVERAGE_STALE_DAYS) }) }),
+      coverage({ acceptsMedicaid: fact(true, { asOf: daysAgo(COVERAGE_STALE_DAYS.acceptsMedicaid) }) }),
       NOW,
     );
     const stale = presentCoverage(
       'acceptsMedicaid',
-      coverage({ acceptsMedicaid: fact(true, { asOf: daysAgo(COVERAGE_STALE_DAYS + 1) }) }),
+      coverage({ acceptsMedicaid: fact(true, { asOf: daysAgo(COVERAGE_STALE_DAYS.acceptsMedicaid + 1) }) }),
       NOW,
     );
     expect(fresh?.isStale).toBe(false);
     expect(stale?.isStale).toBe(true);
   });
 
-  it('decays twice as fast as an attribute claim', () => {
-    // Coverage moves on a business cycle, not a breakage cycle (§13 uses 365).
-    expect(COVERAGE_STALE_DAYS).toBe(180);
+  it('gives each fact its own window, fastest for panel status', () => {
+    // One number was wrong in both directions: too lax for a panel that can
+    // close in a month, too strict for a telehealth service line that barely
+    // moves. Panel status must be the tightest of the four.
+    expect(COVERAGE_STALE_DAYS.acceptingNewPatients).toBeLessThan(
+      COVERAGE_STALE_DAYS.acceptsMedicaid,
+    );
+    expect(COVERAGE_STALE_DAYS.offersTelehealth).toBeGreaterThan(
+      COVERAGE_STALE_DAYS.acceptsMedicaid,
+    );
+    // No fact may outlive the 365-day attribute cadence — coverage decays on a
+    // business cycle and must never be treated as more durable than a physical
+    // fact about a building.
+    for (const days of Object.values(COVERAGE_STALE_DAYS)) {
+      expect(days).toBeGreaterThan(0);
+      expect(days).toBeLessThanOrEqual(365);
+    }
+  });
+
+  it('isCoverageStale judges each fact against its OWN window', () => {
+    // The call sheet ranks by this, so a provider with a four-month-old panel
+    // status must rank as needing a call even though a four-month-old Medicaid
+    // answer is still fresh.
+    expect(isCoverageStale('acceptingNewPatients', daysAgo(120), NOW)).toBe(true);
+    expect(isCoverageStale('acceptsMedicaid', daysAgo(120), NOW)).toBe(false);
+    expect(isCoverageStale('offersTelehealth', daysAgo(200), NOW)).toBe(false);
+  });
+
+  it('covers exactly the coverage key vocabulary', () => {
+    // The windows live in TS rather than the DB, so a new fact key must not be
+    // able to arrive without one — it would silently get `undefined` days and
+    // never go stale.
+    expect(Object.keys(COVERAGE_STALE_DAYS).sort()).toEqual([...COVERAGE_ORDER].sort());
+  });
+
+  it('derives the warning phrase from the window, so copy cannot drift', () => {
+    // "over six months old" used to be hardcoded in two files; changing the
+    // number would have made both sentences lie.
+    const p = presentCoverage('acceptingNewPatients', coverage(), NOW);
+    expect(p?.staleAfter).toBe('three months');
+    expect(presentCoverage('offersTelehealth', coverage(), NOW)?.staleAfter).toBe('a year');
   });
 
   it('does not dress telehealth "no" up as bad news', () => {
@@ -138,7 +178,7 @@ describe('facts are independent (the point of migration 0017)', () => {
 
   it('lets one fact be stale while another is fresh', () => {
     const mixed = coverage({
-      acceptsMedicaid: fact(true, { asOf: daysAgo(COVERAGE_STALE_DAYS + 30) }),
+      acceptsMedicaid: fact(true, { asOf: daysAgo(COVERAGE_STALE_DAYS.acceptsMedicaid + 30) }),
     });
     expect(presentCoverage('acceptsMedicaid', mixed, NOW)?.isStale).toBe(true);
     expect(presentCoverage('acceptingNewPatients', mixed, NOW)?.isStale).toBe(false);
@@ -208,7 +248,7 @@ describe('coverage filters', () => {
   it('keeps a stale-but-true fact in the results (it is still information)', () => {
     const f = parseListingFilters(new URLSearchParams('medicaid=1'));
     const stale = provider(
-      coverage({ acceptsMedicaid: fact(true, { asOf: daysAgo(COVERAGE_STALE_DAYS + 60) }) }),
+      coverage({ acceptsMedicaid: fact(true, { asOf: daysAgo(COVERAGE_STALE_DAYS.acceptsMedicaid + 60) }) }),
     );
     expect(applyListingFilters([stale], f)).toHaveLength(1);
   });

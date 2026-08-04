@@ -339,7 +339,7 @@ export function buildCoverageQuestions(
         // Em-dash rather than lowercasing held.text: "Medicaid" and "Medicare"
         // are proper nouns and must not be flattened mid-sentence.
         ? `What we hold — ${held.text}, last confirmed ${held.asOf}.${
-            held.isStale ? ' That is over six months old.' : ''
+            held.isStale ? ` That is over ${held.staleAfter} old.` : ''
           }`
         : null,
     };
