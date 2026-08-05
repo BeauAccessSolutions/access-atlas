@@ -5,25 +5,32 @@ the small layer of **native** behaviour that strengthens the App Review **4.2**
 (minimum functionality) case beyond the sign-in-gated camera. Read ADR 0003 and
 [ios-testflight.md](ios-testflight.md) first.
 
-Everything here lives in the native `ios/` project, which is **generated on a Mac**
+Everything here lives in the native `ios/` project, which is generated on a Mac
 (`npx cap add ios`) and **gitignored** — none of it is committable web-repo code, so
 this doc is the source of truth for it.
 
-All steps assume the machine quirks from `bas-platform/docs/mobile-and-testflight.md`:
-`LANG=en_US.UTF-8` (CocoaPods) and
-`DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer`.
+> **This project is Swift Package Manager–based, not CocoaPods** (Capacitor 8 — there
+> is `ios/App/CapApp-SPM/Package.swift` and no `Podfile`). So: no `pod install`, no
+> CocoaPods UTF-8 quirk, and you open **`ios/App/App.xcodeproj`** (there is no
+> `.xcworkspace`). `npx cap sync ios` wires plugins into `CapApp-SPM/Package.swift`
+> automatically. Set `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer`.
 
 ## 0. Prerequisites (once)
 
+The `ios/` project already exists on the build Mac, so **do not** run `npx cap add ios`
+(that would regenerate it). Just add the plugins and sync:
+
 ```
-# from the repo root, on the Mac
-npm install @capacitor/camera @capacitor/haptics        # runtime plugins
-npx cap add ios                                         # generates ios/ (needs CocoaPods)
-npx cap sync ios
+# from the repo root, on the Mac. Versions matched to Capacitor core 8.4.2:
+npm install @capacitor/camera@^8 @capacitor/haptics@^8   # resolves camera 8.2.2 / haptics 8.0.2
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer npx cap sync ios
 ```
 
-`@capacitor/share` is only needed if native-shell Share is pursued later (ADR 0003
-defers it); it is **not** required for the layer below.
+`npm install` updates `package.json` + `package-lock.json` — commit them; they are
+real native-build deps and the web build never imports them (the confirm script uses
+the global bridge), so web CI is unaffected. Confirm with `npm run check` +
+`npm run test:unit`. `@capacitor/share` is only needed if native-shell Share is
+pursued later (ADR 0003 defers it); it is **not** required for the layer below.
 
 ## 1. App Shortcuts — Home-screen quick actions (ADR 0003 item 1)
 
@@ -89,7 +96,7 @@ app straight to the right list. VoiceOver: the actions are announced by their ti
 ## 2. Native camera (ADR 0002) — Info.plist usage strings
 
 `public/confirm-camera.js` already ships from the web app and calls
-`window.Capacitor.Plugins.Camera` via the global bridge. The pod (step 0) plus these
+`window.Capacitor.Plugins.Camera` via the global bridge. The plugin (step 0) plus these
 usage strings are all the native side needs:
 
 ```xml
@@ -139,6 +146,6 @@ it is the strongest distinctly-native signal but the most work.
 ## Build & submit
 
 After the above, follow [ios-testflight.md](ios-testflight.md) Phase 2–3 to archive
-and upload a **new** build (mandatory — current builds 2–4 have no camera pod), then
+and upload a **new** build (mandatory — current builds 2–4 have no camera plugin), then
 the App Store submission checklist. Because the camera is sign-in-gated, include a
 **demo Keycloak account** and a review-note walkthrough in App Review Information.
