@@ -363,6 +363,12 @@ verified against real Postgres via `supabase db reset` + the seeded states.
 - ❌ Do **not** design for nationwide/NYC scale in the MVP — WNY density first.
 - ❌ Do **not** treat automated a11y passing as "accessible" — manual AT testing is required.
 - ❌ Do **not** make trust claims the implementation can't verify.
+- ❌ Do **not** store ONE value for several facts that can be updated independently. This has produced
+  three separate defects: one `relevant_identity_tag` per attribute (0018), one `coverage_source`/
+  `as_of` per provider (0017), one staleness window for four coverage facts (#47). Each looked correct
+  until something needed to update *part* of it — then it either relabelled facts nobody re-confirmed,
+  or needed a guard (`carriedOverFlags`) that existed only to protect us from our own schema. **If a
+  guard exists to stop a partial update going wrong, suspect the shape, not the update.**
 
 ---
 
@@ -376,6 +382,13 @@ this machine that uses Supabase, so these were loading into 18 unrelated repos' 
   and `grant select,insert,update,delete … to service_role`; same for VIEWS and any *new* server-side
   reader (grant in the migration adding the reader, not just the one creating the view). Verify by
   exercising the real read/write paths. (2026-07-07)
+  **DROPPING A VIEW DROPS ITS GRANTS.** A migration that must `drop view` to change a column's name or
+  type has to RE-GRANT every role afterwards, including ones granted by a *later* migration than the
+  one that created the view — 0009's `service_role` grant on `attribute_claim_status` is the easy one
+  to lose, and losing it breaks the ops takedown path, not browsing, so it fails far from the change.
+  After any view drop/recreate, verify each role with `set role <r>; select count(*) from <view>;`.
+  Related ordering trap: Postgres refuses to drop a column a view depends on, so the order is
+  drop-view → alter-table → recreate-view → re-grant. (2026-08-03, migration 0018)
 
 - **PostgREST caches the schema, and every git worktree shares one local Supabase stack.** A migrated
   column returned `column … does not exist` on REST while `psql` saw it fine; separately a parallel

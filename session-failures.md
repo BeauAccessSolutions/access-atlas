@@ -30,3 +30,22 @@
 - [bas-platform commit]: a peer session's `git add -A` had already swept both of my audit docs into an unrelated commit (`fda1bb8`, "correct the claim that the CIT tab icons need an EAS build"). No work lost, but the audit docs are now attributed to a CIT tracker commit.
 
 ---
+
+## Session: 2026-08-05
+
+**Project:** access-directory (Access Atlas) — reverse-engineered the user need, then shipped 11 PRs (#36–#47)
+
+### Failures
+- [gh pr merge --delete-branch]: merging #36 with `--delete-branch` deleted the base branch of stacked PR #37, which GitHub CLOSED rather than retargeting; `gh pr edit --base main` and `gh pr reopen` both refused ("Cannot change the base branch of a closed pull request"). → Rebased `--onto origin/main` to drop the squashed commit, force-pushed, opened #38 as a replacement. Logged as a shared lesson.
+- [migration 0018]: `db reset` failed — `alter table … drop column relevant_identity_tag` while `attribute_claim_status` still depended on it. → Reordered to drop-view → alter → recreate-view → re-grant. Also nearly lost 0009's `service_role` grant, since dropping a view drops its grants; added to CLAUDE.md §14b.
+- [my own code, #43]: the first successful coverage write relabelled three facts the operator never re-confirmed, publishing a practice's self-attestation as "From: NY State of Health directory" — migration 0012's bug in a new place. Every unit test passed; only exercising it against real Postgres exposed it. → Added `carriedOverFlags`, then removed the whole class of problem in #45 with per-fact provenance.
+- [npm run test:a11y]: whole suite failed at 0ms — Playwright's chromium binary was missing after an update. Misread as a real regression for one run. → `npx playwright install chromium`.
+- [local Supabase]: kong/rest/studio containers had been OOM-killed 8 days earlier; `supabase start` reported status and exited 7 without reviving them, so the app got `TypeError: fetch failed` while `psql` worked fine. → `supabase stop` then `start`.
+- [browser tool]: `computer{action:left_click, ref}` reported success at plausible coordinates but no radio/checkbox actually toggled (both clicks resolved to the same y). → Verified state with `javascript_tool`, switched to `form_input`; submitted via `form.requestSubmit()`. Separately `read_page` returned "(empty page)" at `viewport 0x0` until an explicit `resize_window {width,height}` — the `preset` form did not fix it.
+- [my own test]: the seed.sql/seed.ts parity test parsed the SQL by slicing to the first `;` — and a comment I had just written contained "(wheelchair_user);", truncating the block to 7 of 15 keys. → Fixed the parser to strip whole-line SQL comments before slicing.
+- [zsh globbing]: two commands aborted on unquoted globs (`--include=*.astro`, `shared/*.py`); the null-result guard caught both before I recorded a false absence.
+- [wrap-up, bas-platform]: edited the hub `TRACKER.md` while a peer session was actively committing (last commit 90s old) and had uncommitted §1 changes in the same file. → Reverted my edit, restored their tree exactly, skipped the hub commit. Fed back into the wrap-up skill.
+- [wrap-up, shared/LESSONS.md]: followed the skill's backup → `checkout HEAD` → re-apply procedure, but a peer session expanded an entry *in place* mid-procedure, so the "provably yours" diff came back carrying their prose. → Left both versions uncommitted rather than racing another cycle; added the caveat to the skill.
+- [my own reporting]: told the user "#45's backfill hasn't run against production yet" — `doctl` showed every commit from #43 onward had already deployed ACTIVE/SUPERSEDED through the fail-closed migrate gate. → Corrected in the same session; check deploy state before asserting it.
+
+---
